@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <include
+        android:id="@+id/done_cancel_bar"
+        layout="@layout/layout_done_cancel" />
+
+    <com.android.camera.CropImageView
+        android:id="@+id/crop_image"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/turn"
+        android:layout_below="@id/done_cancel_bar"
+        android:background="@drawable/texture" />
+
+    <TextView
+        android:id="@+id/turn"
+        style="@style/DoneCancelBar"
+        android:layout_alignParentBottom="true"
+        android:gravity="center"
+        android:text="@string/turn"
+        android:textColor="@color/button_text"
+        android:textSize="15sp" />
+
+</RelativeLayout>

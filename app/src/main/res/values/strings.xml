@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">功夫贷</string>
+    <string name="loading_dialog_message">加载中&#8230;</string>
+
+    <string name="pick_photo">选择图片</string>
+    <string name="pick_no_sdcard">没有sd卡</string>
+    <string name="pick_video">选择视频</string>
 </resources>

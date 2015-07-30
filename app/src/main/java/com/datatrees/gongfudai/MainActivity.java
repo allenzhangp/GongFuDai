@@ -11,7 +11,6 @@ import android.os.Bundle;
 import android.os.SystemClock;
 import android.provider.MediaStore;
 import android.util.Log;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 
@@ -21,7 +20,6 @@ import com.datatrees.gongfudai.adapter.TestFoodListAdapter;
 import com.datatrees.gongfudai.base.BaseActivity;
 import com.datatrees.gongfudai.model.TestModel;
 import com.datatrees.gongfudai.net.GsonRequest;
-import com.datatrees.gongfudai.utils.BK;
 import com.datatrees.gongfudai.utils.FileUtils;
 import com.datatrees.gongfudai.utils.PickUtils;
 
@@ -42,7 +40,7 @@ public class MainActivity extends BaseActivity {
 
     @Bind(R.id.list_view)
     ListView listView;
-    public final static String[] imageThumbUrls = new String[] {
+    public final static String[] imageThumbUrls = new String[]{
             "http://img.my.csdn.net/uploads/201407/26/1406383299_1976.jpg",
             "http://img.my.csdn.net/uploads/201407/26/1406383291_6518.jpg",
             "http://img.my.csdn.net/uploads/201407/26/1406383291_8239.jpg",
@@ -127,7 +125,7 @@ public class MainActivity extends BaseActivity {
             "http://img.my.csdn.net/uploads/201407/26/1406382767_4772.jpg",
             "http://img.my.csdn.net/uploads/201407/26/1406382766_4924.jpg",
             "http://img.my.csdn.net/uploads/201407/26/1406382766_5762.jpg",
-            "http://img.my.csdn.net/uploads/201407/26/1406382765_7341.jpg" };
+            "http://img.my.csdn.net/uploads/201407/26/1406382765_7341.jpg"};
 
     ArrayList<String> listData = new ArrayList<String>();
 
@@ -171,15 +169,15 @@ public class MainActivity extends BaseActivity {
         }
     }
 
-    //	@OnClick(R.id.btn_tack_photo)
+    @OnClick(R.id.btn_tack_photo)
     public void onclickTackP() {
-        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);// action is
+        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);//action is
         // capture
         intent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
         startActivityForResult(intent, TACK_PICTURE_RC);
     }
 
-    //	@OnClick(R.id.btn_pic_photo)
+    @OnClick(R.id.btn_pic_photo)
     public void onclickPicP() {
         PickUtils.pickImage(this, PICK_IMAGE_RC);
     }
@@ -210,7 +208,6 @@ public class MainActivity extends BaseActivity {
     }
 
     private File bitmap2file(Bitmap bitmap) {
-        // 这样我们就可以读取较大的图片而不会内存溢出了。如果你想把压缩后的图片保存在Sdcard上的话就很简单了：
         String stringDate = "image_" + SystemClock.uptimeMillis();
         String folderPath = FileUtils.getExtImageFilesDir().getPath();
         String fileName = stringDate + ".jpg";

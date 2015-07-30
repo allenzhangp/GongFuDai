@@ -1,6 +1,13 @@
 package com.datatrees.gongfudai.adapter;
 
+import android.content.Context;
+import android.view.View;
+import android.widget.TextView;
+
+import com.android.volley.toolbox.NetworkImageView;
 import com.datatrees.gongfudai.base.SimpleBaseAdapter;
+
+import java.util.List;
 
 /**
  * Created by ucmed on 2015/7/30.

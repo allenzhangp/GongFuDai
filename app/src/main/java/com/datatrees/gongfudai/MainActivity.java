@@ -1,12 +1,38 @@
 package com.datatrees.gongfudai;
 
+import android.annotation.SuppressLint;
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.SystemClock;
+import android.provider.MediaStore;
+import android.util.Log;
 import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.ListView;
 
+import com.android.camera.Crop;
+import com.android.volley.Response;
+import com.datatrees.gongfudai.adapter.TestFoodListAdapter;
 import com.datatrees.gongfudai.base.BaseActivity;
+import com.datatrees.gongfudai.model.TestModel;
+import com.datatrees.gongfudai.net.GsonRequest;
 import com.datatrees.gongfudai.utils.BK;
+import com.datatrees.gongfudai.utils.FileUtils;
+import com.datatrees.gongfudai.utils.PickUtils;
+
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.util.ArrayList;
 
 import butterknife.Bind;
+import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 /**
@@ -125,12 +151,12 @@ public class MainActivity extends BaseActivity {
         getData();
 
         String macAddress = AndroidUtil.getWifiMacAddress(this);
-        Log.e("TAG","macAddress:"+macAddress);
+        Log.e("TAG", "macAddress:" + macAddress);
     }
 
     private void getData() {
         executeRequest(new GsonRequest<TestModel>("http://www.google.com", TestModel.class,
-                new Listener<TestModel>() {
+                new Response.Listener<TestModel>() {
 
                     @Override
                     public void onResponse(TestModel response) {

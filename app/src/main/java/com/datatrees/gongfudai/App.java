@@ -1,6 +1,9 @@
 package com.datatrees.gongfudai;
 
 import android.app.Application;
+import android.content.Context;
+
+import com.datatrees.gongfudai.net.VolleyUtil;
 
 /**
  * Created by zhangping on 15/7/25.

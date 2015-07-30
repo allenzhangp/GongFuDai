@@ -1,9 +1,14 @@
-package com.zp.baseapp.net;
+package com.datatrees.gongfudai.net;
 
 import android.app.ActivityManager;
 import android.content.Context;
 import android.util.Log;
 import android.widget.ImageView;
+
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.toolbox.ImageLoader;
+import com.android.volley.toolbox.Volley;
 
 
 /**

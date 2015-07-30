@@ -1,4 +1,4 @@
-package com.zp.baseapp.net.cache;
+package com.datatrees.gongfudai.net.cache;
 
 import java.lang.ref.SoftReference;
 import java.util.LinkedHashMap;

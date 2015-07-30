@@ -1,12 +1,11 @@
 /*
  * StringRequest.java
- * classes : com.hengtian.zdwpoaapp.net.StringRequest
  * @author Allen Zhang
  * V 1.0.0
  * Create at 2014-6-20 下午2:20:59
  */
 
-package com.zp.baseapp.net;
+package com.datatrees.gongfudai.net;
 
 import java.io.UnsupportedEncodingException;
 

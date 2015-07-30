@@ -1,7 +1,10 @@
 package com.datatrees.gongfudai.base;
 
 import android.app.Activity;
-import com.datatrees.gongfudai.volley.com.android.volley.toolbox.
+import android.app.Dialog;
+import android.app.ProgressDialog;
+
+import com.datatrees.gongfudai.net.VolleyUtil;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;

@@ -9,6 +9,7 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.Volley;
+import com.datatrees.gongfudai.net.cache.BitmapLruCache;
 
 
 /**
@@ -34,7 +35,7 @@ public class VolleyUtil {
 		int maxSize = manager.getMemoryClass() / RATE; // 比如 64M/8,单位为M
 
 		// BitmapLruCache自定义缓存class，android本身支持二级缓存，在BitmapLruCache封装一个软引用缓存
-		mImageLoader = new ImageLoader(mRequestQueue, new com.zp.baseapp.net.cache.BitmapLruCache(
+		mImageLoader = new ImageLoader(mRequestQueue, new BitmapLruCache(
 				1024 * 1024 * maxSize));
 
 		Log.i(TAG, "Volley初始化完成");

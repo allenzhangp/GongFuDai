@@ -6,6 +6,7 @@ import android.widget.TextView;
 
 import com.android.volley.toolbox.NetworkImageView;
 import com.datatrees.gongfudai.base.SimpleBaseAdapter;
+import com.datatrees.gongfudai.net.VolleyUtil;
 
 import java.util.List;
 

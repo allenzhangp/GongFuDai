@@ -48,7 +48,6 @@ public abstract class SimpleBaseAdapter<T> extends BaseAdapter {
 	 * 
 	 * @param position
 	 * @param convertView
-	 * @param parent
 	 * @param holder
 	 * @return
 	 */

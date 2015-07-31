@@ -1,9 +1,5 @@
 package com.datatrees.gongfudai.utils;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.ContentUris;
@@ -21,7 +17,12 @@ import android.support.v4.app.Fragment;
 import android.support.v4.content.CursorLoader;
 import android.widget.Toast;
 
-import com.zp.baseapp.R;
+import com.datatrees.gongfudai.R;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+
 
 @SuppressLint("NewApi")
 public class PickUtils {
@@ -416,10 +417,10 @@ public class PickUtils {
 	}
 	/**
 	 * 
+	 * @param path
 	 * @param reqWidth
 	 * @param reqHeight
-	 * @param options
-	 * @throws IOException 
+	 * @throws IOException
 	 */
 	public static Bitmap  calculateInSampleSize(String path, int reqWidth, int reqHeight) throws IOException {
 		BitmapFactory.Options options = new Options();

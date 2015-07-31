@@ -8,6 +8,7 @@ import android.webkit.CookieSyncManager;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,7 +26,7 @@ public class CustomWebView extends WebView {
     }
 
     public CustomWebView(Context context, AttributeSet attrs) {
-        this(context, attrs, com.android.internal.R.attr.webViewStyle);
+        this(context, attrs, 0);
     }
 
     public CustomWebView(Context context, AttributeSet attrs, int defStyle) {

@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 
-package com.android.volley.toolbox;
+package com.datatrees.gongfudai.volley.toolbox;
 
-import com.android.volley.AuthFailureError;
+import com.datatrees.gongfudai.volley.AuthFailureError;
 
 /**
  * An interface for interacting with auth tokens.

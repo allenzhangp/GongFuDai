@@ -4,7 +4,8 @@ import android.content.Context;
 import android.view.View;
 import android.widget.TextView;
 
-import com.android.volley.toolbox.NetworkImageView;
+import com.datatrees.gongfudai.R;
+import com.datatrees.gongfudai.volley.toolbox.NetworkImageView;
 import com.datatrees.gongfudai.base.SimpleBaseAdapter;
 import com.datatrees.gongfudai.net.VolleyUtil;
 

@@ -14,10 +14,10 @@
  * limitations under the License.
  */
 
-package com.android.volley.toolbox;
+package com.datatrees.gongfudai.volley.toolbox;
 
-import com.android.volley.Cache;
-import com.android.volley.NetworkResponse;
+import com.datatrees.gongfudai.volley.Cache;
+import com.datatrees.gongfudai.volley.NetworkResponse;
 
 import org.apache.http.impl.cookie.DateParseException;
 import org.apache.http.impl.cookie.DateUtils;

@@ -14,13 +14,13 @@
  * limitations under the License.
  */
 
-package com.android.volley.toolbox;
+package com.datatrees.gongfudai.volley.toolbox;
 
-import com.android.volley.NetworkResponse;
-import com.android.volley.Request;
-import com.android.volley.Response;
-import com.android.volley.Response.ErrorListener;
-import com.android.volley.Response.Listener;
+import com.datatrees.gongfudai.volley.NetworkResponse;
+import com.datatrees.gongfudai.volley.Request;
+import com.datatrees.gongfudai.volley.Response;
+import com.datatrees.gongfudai.volley.Response.ErrorListener;
+import com.datatrees.gongfudai.volley.Response.Listener;
 
 import java.io.UnsupportedEncodingException;
 
@@ -28,7 +28,7 @@ import java.io.UnsupportedEncodingException;
  * A canned request for retrieving the response body at a given URL as a String.
  */
 public class StringRequest extends Request<String> {
-    private final Listener<String> mListener;
+    private final Response.Listener<String> mListener;
 
     /**
      * Creates a new request with the given method.
@@ -51,7 +51,7 @@ public class StringRequest extends Request<String> {
      * @param listener Listener to receive the String response
      * @param errorListener Error listener, or null to ignore errors
      */
-    public StringRequest(String url, Listener<String> listener, ErrorListener errorListener) {
+    public StringRequest(String url, Response.Listener<String> listener, ErrorListener errorListener) {
         this(Method.GET, url, listener, errorListener);
     }
 

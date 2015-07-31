@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 
-package com.android.volley.toolbox;
+package com.datatrees.gongfudai.volley.toolbox;
 
-import com.android.volley.AuthFailureError;
+import com.datatrees.gongfudai.volley.AuthFailureError;
 
 import android.accounts.Account;
 import android.accounts.AccountManager;

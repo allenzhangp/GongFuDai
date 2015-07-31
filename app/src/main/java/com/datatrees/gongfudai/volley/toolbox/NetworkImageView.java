@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.android.volley.toolbox;
+package com.datatrees.gongfudai.volley.toolbox;
 
 import android.content.Context;
 import android.text.TextUtils;
@@ -21,9 +21,9 @@ import android.util.AttributeSet;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.ImageView;
 
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.ImageLoader.ImageContainer;
-import com.android.volley.toolbox.ImageLoader.ImageListener;
+import com.datatrees.gongfudai.volley.VolleyError;
+import com.datatrees.gongfudai.volley.toolbox.ImageLoader.ImageContainer;
+import com.datatrees.gongfudai.volley.toolbox.ImageLoader.ImageListener;
 
 /**
  * Handles fetching an image from a URL as well as the life-cycle of the

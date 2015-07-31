@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.android.volley.toolbox;
+package com.datatrees.gongfudai.volley.toolbox;
 
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.Config;
@@ -21,11 +21,11 @@ import android.os.Handler;
 import android.os.Looper;
 import android.widget.ImageView;
 import android.widget.ImageView.ScaleType;
-import com.android.volley.Request;
-import com.android.volley.RequestQueue;
-import com.android.volley.Response.ErrorListener;
-import com.android.volley.Response.Listener;
-import com.android.volley.VolleyError;
+import com.datatrees.gongfudai.volley.Request;
+import com.datatrees.gongfudai.volley.RequestQueue;
+import com.datatrees.gongfudai.volley.Response.ErrorListener;
+import com.datatrees.gongfudai.volley.Response.Listener;
+import com.datatrees.gongfudai.volley.VolleyError;
 
 import java.util.HashMap;
 import java.util.LinkedList;

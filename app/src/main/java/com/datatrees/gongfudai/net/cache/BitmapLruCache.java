@@ -1,6 +1,6 @@
 package com.datatrees.gongfudai.net.cache;
 
-import com.android.volley.toolbox.ImageLoader.ImageCache;
+import com.datatrees.gongfudai.volley.toolbox.ImageLoader.ImageCache;
 
 import android.graphics.Bitmap;
 import android.support.v4.util.LruCache;

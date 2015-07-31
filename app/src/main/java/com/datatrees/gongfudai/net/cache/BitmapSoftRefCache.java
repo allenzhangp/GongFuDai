@@ -4,7 +4,7 @@ import java.lang.ref.SoftReference;
 import java.util.LinkedHashMap;
 
 import android.graphics.Bitmap;
-import com.android.volley.toolbox.ImageLoader.ImageCache;
+import com.datatrees.gongfudai.volley.toolbox.ImageLoader.ImageCache;
 /**
  * BitmapSoftRefCache
  * @author Serena Lee

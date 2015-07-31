@@ -14,12 +14,12 @@
  * limitations under the License.
  */
 
-package com.android.volley.toolbox;
+package com.datatrees.gongfudai.volley.toolbox;
 
 import android.os.SystemClock;
 
-import com.android.volley.Cache;
-import com.android.volley.VolleyLog;
+import com.datatrees.gongfudai.volley.Cache;
+import com.datatrees.gongfudai.volley.VolleyLog;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;

@@ -171,11 +171,12 @@ public class MainActivity extends BaseActivity {
     }
 
     @OnClick(R.id.btn_cutsom_webview)
-    public void toWebview(){
+    public void toWebview() {
         String url = "https://xui.ptlogin2.qq.com/cgi-bin/xlogin?appid=522005705&daid=4&s_url=https://mail.qq.com/cgi-bin/login?vt=passport%26vm=wpt%26ft=loginpage%26target=&style=25&low_login=1&proxy_url=https://mail.qq.com/proxy.html&need_qr=0&hide_border=1&border_radius=0&self_regurl=http://zc.qq.com/chs/index.html?type=1&app_id=11005?t=regist&pt_feedback_link=http://support.qq.com/discuss/350_1.shtml&css=https://res.mail.qq.com/zh_CN/htmledition/style/ptlogin_input24e6b9.css";
-        String[] endUrls = {""};
+        String[] endUrls = {"https://w.mail.qq.com/cgi-bin/mobile"};
         startActivity(new Intent(this, WebClientActivity.class).putExtra("visit_url", url).putExtra("end_urls", endUrls));
     }
+
     @OnClick(R.id.btn_tack_photo)
     public void onclickTackP() {
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);//action is

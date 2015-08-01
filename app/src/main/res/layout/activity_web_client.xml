@@ -1,8 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.datatrees.gongfudai.widget.CustomWebView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/custom_webview"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-</com.datatrees.gongfudai.widget.CustomWebView>
+    <com.datatrees.gongfudai.widget.CustomWebView
+        android:id="@+id/custom_webview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+    </com.datatrees.gongfudai.widget.CustomWebView>
+
+</LinearLayout>

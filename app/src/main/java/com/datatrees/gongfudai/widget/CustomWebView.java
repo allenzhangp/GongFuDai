@@ -3,13 +3,12 @@ package com.datatrees.gongfudai.widget;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.webkit.CookieManager;
 import android.webkit.CookieSyncManager;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
-
+import com.datatrees.gongfudai.R;
 import com.datatrees.gongfudai.utils.StringUtils;
 
 import java.util.ArrayList;
@@ -26,11 +25,13 @@ public class CustomWebView extends WebView {
     private OnVisitEndUrl onVisitEndUrl;
 
     public CustomWebView(Context context) {
-        this(context, null);
+        super(context);
+        init();
     }
 
     public CustomWebView(Context context, AttributeSet attrs) {
-        this(context, attrs, 0);
+        super(context, attrs);
+        init();
     }
 
     public CustomWebView(Context context, AttributeSet attrs, int defStyle) {
@@ -55,7 +56,7 @@ public class CustomWebView extends WebView {
         boolean isEnd = false;
         if (StringUtils.isNotTrimBlank(url) && endUrls != null && endUrls.length > 0) {
             for (int i = 0; i < endUrls.length; i++) {
-                if (endUrls[i].equals(url)) {
+                if (url.contains(endUrls[i])) {
                     isEnd = true;
                     break;
                 }
@@ -66,13 +67,12 @@ public class CustomWebView extends WebView {
 
     private void init() {
         cookies = new ArrayList<String>();
-        getSettings().setAppCacheEnabled(false);
         getSettings().setJavaScriptEnabled(true);
         setWebViewClient(new WebViewClient() {
 
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
-                Log.i("TAG","loadUrl-->"+url);
+                Log.i("TAG", "loadUrl-->" + url);
                 if (isEnd(url) && onVisitEndUrl != null)
                     onVisitEndUrl.onVisitEndUrl(url, (String[]) cookies.toArray(new String[cookies.size()]));
                 else
@@ -91,29 +91,6 @@ public class CustomWebView extends WebView {
             }
 
         });
-    }
-
-    public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if ((keyCode == KeyEvent.KEYCODE_BACK) && canGoBack()) {
-            goBack();
-            return true;
-        }
-        return super.onKeyDown(keyCode, event);
-    }
-
-    /**
-     * 同步一下cookie
-     */
-    public static void synCookies(Context context, String url) {
-        CookieSyncManager.createInstance(context);
-        CookieSyncManager.createInstance(context);
-        CookieManager cookieManager = CookieManager.getInstance();
-        cookieManager.getCookie(url);
-        cookieManager.setAcceptCookie(true);
-        cookieManager.removeSessionCookie();//移除
-//        cookieManager.removeAllCookies(null);
-//        cookieManager.setCookie(url, cookies);//cookies是在HttpClient中获得的cookie
-        CookieSyncManager.getInstance().sync();
     }
 
     public void setOnVisitEndUrl(OnVisitEndUrl onVisitEndUrl) {

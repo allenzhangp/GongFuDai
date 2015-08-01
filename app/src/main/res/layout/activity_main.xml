@@ -10,6 +10,12 @@
         android:layout_height="wrap_content" />
 
     <Button
+        android:id="@+id/btn_contacts_access"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Access to the contact" />
+
+    <Button
         android:id="@+id/btn_cutsom_webview"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

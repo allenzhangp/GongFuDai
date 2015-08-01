@@ -17,9 +17,11 @@ import android.widget.ListView;
 import com.android.camera.Crop;
 import com.datatrees.gongfudai.adapter.TestFoodListAdapter;
 import com.datatrees.gongfudai.base.BaseActivity;
+import com.datatrees.gongfudai.model.ContactData;
 import com.datatrees.gongfudai.model.TestModel;
 import com.datatrees.gongfudai.net.GsonRequest;
 import com.datatrees.gongfudai.ui.WebClientActivity;
+import com.datatrees.gongfudai.utils.ContactsAccessPublic;
 import com.datatrees.gongfudai.utils.FileUtils;
 import com.datatrees.gongfudai.utils.PickUtils;
 import com.datatrees.gongfudai.volley.Response;
@@ -29,6 +31,8 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -39,8 +43,6 @@ import butterknife.OnClick;
  */
 public class MainActivity extends BaseActivity {
 
-    @Bind(R.id.list_view)
-    ListView listView;
     public final static String[] imageThumbUrls = new String[]{
             "http://img.my.csdn.net/uploads/201407/26/1406383299_1976.jpg",
             "http://img.my.csdn.net/uploads/201407/26/1406383291_6518.jpg",
@@ -127,15 +129,14 @@ public class MainActivity extends BaseActivity {
             "http://img.my.csdn.net/uploads/201407/26/1406382766_4924.jpg",
             "http://img.my.csdn.net/uploads/201407/26/1406382766_5762.jpg",
             "http://img.my.csdn.net/uploads/201407/26/1406382765_7341.jpg"};
-
-    ArrayList<String> listData = new ArrayList<String>();
-
-    @Bind(R.id.image_view)
-    ImageView image_view;
-
-    private Uri imageUri;
     public static int PICK_IMAGE_RC = 1001;
     public static int TACK_PICTURE_RC = 1002;
+    @Bind(R.id.list_view)
+    ListView listView;
+    ArrayList<String> listData = new ArrayList<String>();
+    @Bind(R.id.image_view)
+    ImageView image_view;
+    private Uri imageUri;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -168,6 +169,12 @@ public class MainActivity extends BaseActivity {
         for (int i = 0; i < imageThumbUrls.length; i++) {
             listData.add(imageThumbUrls[i]);
         }
+    }
+
+    @OnClick(R.id.btn_contacts_access)
+    public void accessContacts() {
+        ContactsAccessPublic.getPhoneContacts2(this);
+        ContactsAccessPublic.getSIMContacts(this);
     }
 
     @OnClick(R.id.btn_cutsom_webview)

@@ -33,16 +33,6 @@ public class ContactsAccessPublic {
      */
     private static final int PHONES_NUMBER_INDEX = 1;
 
-    /**
-     * 头像ID*
-     */
-    private static final int PHONES_PHOTO_ID_INDEX = 2;
-
-    /**
-     * 联系人的ID*
-     */
-    private static final int PHONES_CONTACT_ID_INDEX = 3;
-
     public static void getPhoneContacts(Context context) {
         String str = "";
         // 得到contentresolver对象

@@ -4,9 +4,9 @@ package com.datatrees.gongfudai.model;
  * Created by ucmed on 2015/8/1.
  */
 public class ContactData {
-    public String id;
-    public String name;
-    public String number;
+    private String id;
+    private String name;
+    private String number;
 
     public void setId(String idValue) {
         id = idValue;
@@ -30,5 +30,10 @@ public class ContactData {
 
     public String getNumber() {
         return number;
+    }
+
+    @Override
+    public String toString() {
+        return "contact_id:" + id + ",contact_name:" + name + ",contact_number:" + number;
     }
 }

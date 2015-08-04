@@ -31,7 +31,6 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import butterknife.Bind;
@@ -173,9 +172,7 @@ public class MainActivity extends BaseActivity {
 
     @OnClick(R.id.btn_contacts_access)
     public void accessContacts() {
-       // ContactsAccessPublic.getPhoneContacts2(this);
-       // ContactsAccessPublic.getSIMContacts(this);
-        ContactsAccessPublic.getContacts(this);
+      List<ContactData> contactDataList = ContactsAccessPublic.getContacts(this, null);
     }
 
     @OnClick(R.id.btn_cutsom_webview)

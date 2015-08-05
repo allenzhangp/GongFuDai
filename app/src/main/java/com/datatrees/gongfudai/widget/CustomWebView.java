@@ -4,11 +4,9 @@ import android.content.Context;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.webkit.CookieManager;
-import android.webkit.CookieSyncManager;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
-import com.datatrees.gongfudai.R;
 import com.datatrees.gongfudai.utils.StringUtils;
 
 import java.util.ArrayList;
@@ -47,7 +45,7 @@ public class CustomWebView extends WebView {
         if (cookies != null)
             cookies.clear();
         else
-            cookies = new ArrayList<String>();
+            cookies = new ArrayList<>();
         this.endUrls = endUrls;
         loadUrl(url);
     }
@@ -66,7 +64,7 @@ public class CustomWebView extends WebView {
     }
 
     private void init() {
-        cookies = new ArrayList<String>();
+        cookies = new ArrayList<>();
         getSettings().setJavaScriptEnabled(true);
         setWebViewClient(new WebViewClient() {
 
@@ -98,6 +96,6 @@ public class CustomWebView extends WebView {
     }
 
     public interface OnVisitEndUrl {
-        public void onVisitEndUrl(String endUrl, String[] cookies);
+        void onVisitEndUrl(String endUrl, String[] cookies);
     }
 }

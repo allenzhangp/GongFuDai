@@ -25,6 +25,7 @@ import com.datatrees.gongfudai.utils.ContactsAccessPublic;
 import com.datatrees.gongfudai.utils.FileUtils;
 import com.datatrees.gongfudai.utils.PickUtils;
 import com.datatrees.gongfudai.volley.Response;
+import com.umeng.analytics.MobclickAgent;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -141,6 +142,7 @@ public class MainActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        MobclickAgent.updateOnlineConfig(this);
         ButterKnife.bind(this);
         setData();
         imageUri = FileUtils.buildUri();

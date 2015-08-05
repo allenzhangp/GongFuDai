@@ -39,6 +39,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 /**
+ * main activity
  * Created by zhangping on 15/7/25.
  */
 public class MainActivity extends BaseActivity {
@@ -133,7 +134,7 @@ public class MainActivity extends BaseActivity {
     public static int TACK_PICTURE_RC = 1002;
     @Bind(R.id.list_view)
     ListView listView;
-    ArrayList<String> listData = new ArrayList<String>();
+    private ArrayList<String> listData = new ArrayList<String>();
     @Bind(R.id.image_view)
     ImageView image_view;
     private Uri imageUri;

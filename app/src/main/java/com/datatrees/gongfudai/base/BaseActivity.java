@@ -10,12 +10,36 @@ import com.datatrees.gongfudai.utils.ToastUtils;
 import com.datatrees.gongfudai.volley.Request;
 import com.datatrees.gongfudai.volley.Response;
 import com.datatrees.gongfudai.volley.VolleyError;
+import com.umeng.analytics.MobclickAgent;
 
 /**
  * Created by zhangping on 15/7/25.
  */
 public class BaseActivity extends Activity {
     Dialog loading;
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        try {
+            MobclickAgent.openActivityDurationTrack(false);
+            MobclickAgent.onResume(this);          //统计时长
+            MobclickAgent.onPageStart(getClass().getName());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        try {
+            MobclickAgent.onPause(this);
+            MobclickAgent.onPageEnd(getClass().getName());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
     protected void showLoading() {
         try {

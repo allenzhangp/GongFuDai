@@ -5,4 +5,19 @@
     <string name="pick_photo">选择图片</string>
     <string name="pick_no_sdcard">没有sd卡</string>
     <string name="pick_video">选择视频</string>
+    
+    <!-- home-->
+    <string name="home_sw">声望</string>
+    <string name="home_qz">钱庄</string>
+    <string name="home_mj">秘籍</string>
+
+    <!--info-->
+    <string name="info_sup">信息补充</string>
+    <string name="info_tip">功夫贷将确保您的信息安全,请放心使用</string>
+    <string name="info_ds">电商验证</string>
+    <string name="info_lxr">紧急联系人</string>
+    <string name="info_sfyz">身份验证</string>
+    <string name="info_xxaq">信息安全</string>
+    <string name="info_yj">邮箱验证</string>
+    <string name="info_yys">运营商验证</string>
 </resources>

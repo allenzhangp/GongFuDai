@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <include layout="@layout/layout_header" />
+
+    <com.datatrees.gongfudai.ui.DrawableCenterTextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/bg_header"
+        android:drawableLeft="@drawable/ico_info_tip"
+        android:gravity="center_vertical"
+        android:singleLine="true"
+        android:text="@string/info_tip"
+        android:textColor="@color/info_text"
+        android:textSize="@dimen/normal_size" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/bg_header"
+        android:orientation="horizontal"
+        android:padding="@dimen/padding">
+
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/padding"
+            android:layout_weight="1"
+            android:drawablePadding="@dimen/padding"
+            android:drawableTop="@mipmap/bg_card_id"
+            android:gravity="center"
+            android:text="@string/info_sfyz"
+            android:textColor="@color/info_text"
+            android:textSize="@dimen/normal_size"
+            android:id="@+id/dasd_d" />
+
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/padding"
+            android:layout_weight="1"
+            android:drawablePadding="@dimen/padding"
+            android:drawableTop="@mipmap/bg_lxr"
+            android:text="@string/info_lxr"
+            android:textColor="@color/info_text"
+            android:textSize="@dimen/normal_size" />
+
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/padding"
+            android:layout_weight="1"
+            android:drawablePadding="@dimen/padding"
+            android:drawableTop="@mipmap/bg_yj"
+            android:text="@string/info_yj"
+            android:textColor="@color/info_text"
+            android:textSize="@dimen/normal_size" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/bg_header"
+        android:orientation="horizontal">
+
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/padding"
+            android:layout_weight="1"
+            android:drawableTop="@mipmap/bg_yys"
+            android:text="@string/info_yys"
+            android:textColor="@color/info_text"
+            android:textSize="@dimen/normal_size" />
+
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/padding"
+            android:layout_weight="1"
+            android:drawableTop="@mipmap/bg_ds"
+            android:text="@string/info_ds"
+            android:textColor="@color/info_text"
+            android:textSize="@dimen/normal_size" />
+
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/padding"
+            android:layout_weight="1"
+            android:drawableTop="@mipmap/bg_xxyq"
+            android:text="@string/info_xxaq"
+            android:textColor="@color/info_text"
+            android:textSize="@dimen/normal_size" />
+    </LinearLayout>
+</LinearLayout>

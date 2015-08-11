@@ -33,15 +33,15 @@
 
             <ImageView
                 android:id="@+id/iv_idcard_bg"
-                android:layout_width="@dimen/width_image"
-                android:layout_height="@dimen/width_image"
+                android:layout_width="@dimen/width_image_info_b"
+                android:layout_height="@dimen/width_image_info_b"
                 android:layout_centerHorizontal="true"
                 android:background="@drawable/bg_circle" />
 
             <ImageView
                 android:id="@+id/iv_idcard"
-                android:layout_width="@dimen/width_image"
-                android:layout_height="@dimen/width_image"
+                android:layout_width="@dimen/width_image_info"
+                android:layout_height="@dimen/width_image_info"
                 android:layout_centerHorizontal="true"
                 android:src="@mipmap/bg_card_id" />
 
@@ -54,7 +54,7 @@
                 android:layout_marginTop="@dimen/padding_half"
                 android:text="@string/info_sfyz"
                 android:textColor="@color/white"
-                android:textSize="@dimen/size_normal" />
+                android:textSize="@dimen/size_small" />
         </RelativeLayout>
 
         <RelativeLayout android:id="@+id/rlyt_lxr"
@@ -67,16 +67,16 @@
 
             <ImageView
                 android:id="@+id/iv_lxr_bg"
-                android:layout_width="@dimen/width_image"
-                android:layout_height="@dimen/width_image"
+                android:layout_width="@dimen/width_image_info_b"
+                android:layout_height="@dimen/width_image_info_b"
                 android:layout_centerHorizontal="true"
                 android:background="@drawable/bg_circle"
                 android:visibility="invisible" />
 
             <ImageView
                 android:id="@+id/iv_lxr"
-                android:layout_width="@dimen/width_image"
-                android:layout_height="@dimen/width_image"
+                android:layout_width="@dimen/width_image_info"
+                android:layout_height="@dimen/width_image_info"
                 android:layout_centerHorizontal="true"
                 android:src="@mipmap/bg_lxr" />
 
@@ -89,7 +89,7 @@
                 android:layout_marginTop="@dimen/padding_half"
                 android:text="@string/info_lxr"
                 android:textColor="@color/info_text"
-                android:textSize="@dimen/size_normal" />
+                android:textSize="@dimen/size_small" />
         </RelativeLayout>
 
         <RelativeLayout  android:id="@+id/rlyt_yj"
@@ -102,16 +102,16 @@
 
             <ImageView
                 android:id="@+id/iv_yj_bg"
-                android:layout_width="@dimen/width_image"
-                android:layout_height="@dimen/width_image"
+                android:layout_width="@dimen/width_image_info_b"
+                android:layout_height="@dimen/width_image_info_b"
                 android:layout_centerHorizontal="true"
                 android:background="@drawable/bg_circle"
                 android:visibility="invisible" />
 
             <ImageView
                 android:id="@+id/iv_yj"
-                android:layout_width="@dimen/width_image"
-                android:layout_height="@dimen/width_image"
+                android:layout_width="@dimen/width_image_info"
+                android:layout_height="@dimen/width_image_info"
                 android:layout_centerHorizontal="true"
                 android:src="@mipmap/bg_yj" />
 
@@ -124,7 +124,7 @@
                 android:layout_marginTop="@dimen/padding_half"
                 android:text="@string/info_yj"
                 android:textColor="@color/info_text"
-                android:textSize="@dimen/size_normal" />
+                android:textSize="@dimen/size_small" />
         </RelativeLayout>
 
     </LinearLayout>
@@ -145,16 +145,16 @@
 
             <ImageView
                 android:id="@+id/iv_yys_bg"
-                android:layout_width="@dimen/width_image"
-                android:layout_height="@dimen/width_image"
+                android:layout_width="@dimen/width_image_info_b"
+                android:layout_height="@dimen/width_image_info_b"
                 android:layout_centerHorizontal="true"
                 android:background="@drawable/bg_circle"
                 android:visibility="invisible" />
 
             <ImageView
                 android:id="@+id/iv_yys"
-                android:layout_width="@dimen/width_image"
-                android:layout_height="@dimen/width_image"
+                android:layout_width="@dimen/width_image_info"
+                android:layout_height="@dimen/width_image_info"
                 android:layout_centerHorizontal="true"
                 android:src="@mipmap/bg_yys" />
 
@@ -167,7 +167,7 @@
                 android:layout_marginTop="@dimen/padding_half"
                 android:text="@string/info_yys"
                 android:textColor="@color/info_text"
-                android:textSize="@dimen/size_normal" />
+                android:textSize="@dimen/size_small" />
         </RelativeLayout>
 
         <RelativeLayout  android:id="@+id/rlyt_ds"
@@ -178,16 +178,16 @@
 
             <ImageView
                 android:id="@+id/iv_ds_bg"
-                android:layout_width="@dimen/width_image"
-                android:layout_height="@dimen/width_image"
+                android:layout_width="@dimen/width_image_info_b"
+                android:layout_height="@dimen/width_image_info_b"
                 android:layout_centerHorizontal="true"
                 android:background="@drawable/bg_circle"
                 android:visibility="invisible" />
 
             <ImageView
                 android:id="@+id/iv_ds"
-                android:layout_width="@dimen/width_image"
-                android:layout_height="@dimen/width_image"
+                android:layout_width="@dimen/width_image_info"
+                android:layout_height="@dimen/width_image_info"
                 android:layout_centerHorizontal="true"
                 android:src="@mipmap/bg_ds" />
 
@@ -200,7 +200,7 @@
                 android:layout_marginTop="@dimen/padding_half"
                 android:text="@string/info_ds"
                 android:textColor="@color/info_text"
-                android:textSize="@dimen/size_normal" />
+                android:textSize="@dimen/size_small" />
         </RelativeLayout>
 
 
@@ -214,16 +214,16 @@
 
             <ImageView
                 android:id="@+id/iv_xxyq_bg"
-                android:layout_width="@dimen/width_image"
-                android:layout_height="@dimen/width_image"
+                android:layout_width="@dimen/width_image_info_b"
+                android:layout_height="@dimen/width_image_info_b"
                 android:layout_centerHorizontal="true"
                 android:background="@drawable/bg_circle"
                 android:visibility="invisible" />
 
             <ImageView
                 android:id="@+id/iv_xxyq"
-                android:layout_width="@dimen/width_image"
-                android:layout_height="@dimen/width_image"
+                android:layout_width="@dimen/width_image_info"
+                android:layout_height="@dimen/width_image_info"
                 android:layout_centerHorizontal="true"
                 android:src="@mipmap/bg_xxyq" />
 
@@ -236,7 +236,7 @@
                 android:layout_marginTop="@dimen/padding_half"
                 android:text="@string/info_xxaq"
                 android:textColor="@color/info_text"
-                android:textSize="@dimen/size_normal" />
+                android:textSize="@dimen/size_small" />
         </RelativeLayout>
 
 

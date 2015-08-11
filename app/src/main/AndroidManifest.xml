@@ -45,7 +45,7 @@
             android:name=".information.InfoSupplementaryActivity"
             android:configChanges="keyboardHidden|screenLayout"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustPan|stateAlwaysHidden" />
+            android:windowSoftInputMode="adjustResize|stateAlwaysHidden" />
 
         <activity
             android:name="com.android.camera.CropImage"

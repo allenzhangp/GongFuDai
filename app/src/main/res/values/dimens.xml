@@ -8,6 +8,8 @@
     <dimen name="header_btn_width">30dp</dimen>
     <dimen name="header_height">60dp</dimen>
     <dimen name="width_image">90dp</dimen>
+    <dimen name="width_image_info">50dp</dimen>
+    <dimen name="width_image_info_b">50dp</dimen>
 
     <dimen name="size_big">20sp</dimen>
     <dimen name="size_title">18sp</dimen>

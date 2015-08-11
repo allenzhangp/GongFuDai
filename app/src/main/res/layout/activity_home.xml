@@ -32,7 +32,7 @@
             android:gravity="center"
             android:singleLine="true"
             android:textColor="@color/white"
-            android:textSize="@dimen/title_size" />
+            android:textSize="@dimen/size_title" />
 
         <ImageButton
             android:id="@+id/ibtn_operation"
@@ -45,9 +45,8 @@
             android:src="@drawable/btn_add_selector" />
     </RelativeLayout>
 
-    <fragment
-        android:name="com.datatrees.gongfudai.TestFragment"
-        android:id="@+id/fragment_container"
+    <FrameLayout
+        android:id="@id/fragment_container"
         android:layout_weight="1"
         android:layout_width="match_parent"
         android:layout_height="0dp" />

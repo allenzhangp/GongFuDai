@@ -5,7 +5,9 @@
     <string name="pick_photo">选择图片</string>
     <string name="pick_no_sdcard">没有sd卡</string>
     <string name="pick_video">选择视频</string>
-    
+
+    <string name="submit_txt">提交</string>
+    <string name="next_step">下一步</string>
     <!-- home-->
     <string name="home_sw">声望</string>
     <string name="home_qz">钱庄</string>
@@ -17,7 +19,27 @@
     <string name="info_ds">电商验证</string>
     <string name="info_lxr">紧急联系人</string>
     <string name="info_sfyz">身份验证</string>
+    <string name="info_sfyz_pz">身份证拍照验证</string>
     <string name="info_xxaq">信息安全</string>
     <string name="info_yj">邮箱验证</string>
     <string name="info_yys">运营商验证</string>
+    <string name="info_take_photo_tip1">拍摄身份证正面照</string>
+    <string name="info_take_photo_tip2">拍摄手持身份证照</string>
+    <string name="info_take_photo_tip3">拍摄身份证反面照</string>
+    <string name="info_real_name">真实姓名</string>
+    <string name="info_idcard">身份证号</string>
+    <string name="info_edit">修改</string>
+    <string name="info_mobile_phone">手机</string>
+    <string name="info_name">姓名</string>
+    <string name="info_name_hint">请输入真实姓名</string>
+    <string name="info_gx">关系</string>
+    <string name="info_qins">亲属</string>
+    <string name="info_tongs">同事</string>
+    <string name="info_friend">朋友</string>
+    <string name="info_email_tip">邮件解析说明</string>
+    <string name="info_email_tip2">目前仅支持上述邮件服务商,其他邮箱服务商暂时不支持,敬请期待.请输入含有信用卡账单度邮箱地址,如果由多个邮箱,请重复上述操作.</string>
+    <string name="info_operation_tip">运营商验证</string>
+    <string name="info_operation_tip2">运营商验证目前只支持浙江及广东用户，其他省市即将开放，敬请期待。验证过程中您有可能收到运营商发送的短信，请根据短信验证码提示的内容进行相关操作。</string>
+    <string name="info_ele_tip">电商说明</string>
+    <string name="info_ele_tip2">请输入您本人常用的电商网站账户，以便提升声誉。</string>
 </resources>

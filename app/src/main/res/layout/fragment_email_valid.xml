@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:background="@color/white"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            android:padding="@dimen/padding"
+            android:text="@string/info_yj"
+            android:textColor="@color/black"
+            android:textSize="@dimen/size_title" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/btn_submit_sel" />
+
+        <LinearLayout
+            android:background="@color/line"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <ImageButton
+                android:layout_width="0dp"
+                android:layout_height="@dimen/width_image"
+                android:layout_margin="@dimen/padding"
+                android:layout_weight="1"
+                android:background="@null"
+                android:scaleType="centerInside"
+                android:src="@mipmap/bg_email_qq" />
+
+            <ImageButton
+                android:layout_width="0dp"
+                android:layout_height="@dimen/width_image"
+                android:layout_margin="@dimen/padding"
+                android:layout_weight="1"
+                android:background="@null"
+                android:scaleType="centerInside"
+                android:src="@mipmap/bg_email_163" />
+
+            <ImageButton
+                android:layout_width="0dp"
+                android:layout_height="@dimen/width_image"
+                android:layout_margin="@dimen/padding"
+                android:layout_weight="1"
+                android:background="@null"
+                android:scaleType="centerInside"
+                android:src="@mipmap/bg_email_126" />
+
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/btn_submit_sel" />
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/info_email_tip"
+                android:textColor="@color/hint"
+                android:layout_marginTop="@dimen/padding_double"
+                android:layout_marginRight="@dimen/padding_double"
+                android:layout_marginLeft="@dimen/padding_double"
+                android:textSize="@dimen/size_title" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/padding"
+                android:layout_marginRight="@dimen/padding_double"
+                android:layout_marginLeft="@dimen/padding_double"
+                android:text="@string/info_email_tip2"
+                android:textColor="@color/hint"
+                android:textSize="@dimen/size_normal" />
+
+            <Button
+                android:id="@id/btn_submit"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/padding_double"
+                android:background="@drawable/btn_submit_white_selector"
+                android:enabled="false"
+                android:text="@string/next_step"
+                android:textColor="@color/btn_submit_txt_selector"
+                android:textSize="@dimen/size_title"
+                android:textStyle="bold" />
+    </LinearLayout>
+</ScrollView>

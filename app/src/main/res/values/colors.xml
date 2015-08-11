@@ -1,8 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="black">#000000</color>
+    <color name="black_txt">#333333</color>
     <color name="white">#ffffff</color>
     <color name="bg_header">#2b2d39</color>
     <color name="line">#eeeeee</color>
     <color name="info_text">#7a8a99</color>
+    <color name="yellow">#FFAE00</color>
+    <color name="blue">#57b3ff</color>
+    <color name="btn_submit_sel">#cecece</color>
+    <color name="hint">#999999</color>
+
+
 </resources>

@@ -1,11 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <dimen name="padding_double">20dp</dimen>
+    <dimen name="padding_big">13dp</dimen>
     <dimen name="padding">10dp</dimen>
     <dimen name="padding_half">5dp</dimen>
     <dimen name="header_btn_width">30dp</dimen>
     <dimen name="header_height">60dp</dimen>
+    <dimen name="width_image">90dp</dimen>
 
-    <dimen name="title_size">18sp</dimen>
-    <dimen name="normal_size">15sp</dimen>
+    <dimen name="size_big">20sp</dimen>
+    <dimen name="size_title">18sp</dimen>
+    <dimen name="size_normal">15sp</dimen>
+    <dimen name="size_small">12sp</dimen>
+
+    <dimen name="radius">5dp</dimen>
 </resources>

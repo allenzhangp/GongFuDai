@@ -42,4 +42,16 @@
     <string name="info_operation_tip2">运营商验证目前只支持浙江及广东用户，其他省市即将开放，敬请期待。验证过程中您有可能收到运营商发送的短信，请根据短信验证码提示的内容进行相关操作。</string>
     <string name="info_ele_tip">电商说明</string>
     <string name="info_ele_tip2">请输入您本人常用的电商网站账户，以便提升声誉。</string>
+
+    <!-- cheats-->
+    <string name="cheats_yhk">银行卡</string>
+    <string name="cheats_pj">票券</string>
+    <string name="cheats_his">历史交易</string>
+    <string name="cheats_news">消息</string>
+    <string name="cheats_tq">特权</string>
+    <string name="cheats_grxx">个人信息</string>
+    <string name="cheats_qdyl">签到有礼</string>
+    <string name="cheats_kf">客服</string>
+    <string name="cheats_more">更多</string>
+
 </resources>

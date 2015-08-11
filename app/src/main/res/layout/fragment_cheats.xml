@@ -1,0 +1,255 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/height_cheats"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@color/white"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:layout_width="@dimen/width_image_cheats"
+                    android:layout_height="@dimen/width_image_cheats"
+                    android:scaleType="centerInside"
+                    android:src="@mipmap/ico_yhk" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/padding"
+                    android:gravity="center"
+                    android:text="@string/cheats_yhk"
+                    android:textColor="@color/black_txt"
+                    android:textSize="@dimen/size_small" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="1dp"
+                android:layout_marginRight="1dp"
+                android:layout_weight="1"
+                android:background="@color/white"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:layout_width="@dimen/width_image_cheats"
+                    android:layout_height="@dimen/width_image_cheats"
+                    android:scaleType="centerInside"
+                    android:src="@mipmap/ico_qp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/padding"
+                    android:gravity="center"
+                    android:text="@string/cheats_pj"
+                    android:textColor="@color/black_txt"
+                    android:textSize="@dimen/size_small" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@color/white"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:layout_width="@dimen/width_image_cheats"
+                    android:layout_height="@dimen/width_image_cheats"
+                    android:scaleType="centerInside"
+                    android:src="@mipmap/ico_his" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/padding"
+                    android:gravity="center"
+                    android:text="@string/cheats_his"
+                    android:textColor="@color/black_txt"
+                    android:textSize="@dimen/size_small" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/height_cheats"
+            android:layout_marginBottom="1dp"
+            android:layout_marginTop="1dp"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@color/white"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:layout_width="@dimen/width_image_cheats"
+                    android:layout_height="@dimen/width_image_cheats"
+                    android:scaleType="centerInside"
+                    android:src="@mipmap/ico_news" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/padding"
+                    android:gravity="center"
+                    android:text="@string/cheats_news"
+                    android:textColor="@color/black_txt"
+                    android:textSize="@dimen/size_small" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="1dp"
+                android:layout_marginRight="1dp"
+                android:layout_weight="1"
+                android:background="@color/white"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:layout_width="@dimen/width_image_cheats"
+                    android:layout_height="@dimen/width_image_cheats"
+                    android:scaleType="centerInside"
+                    android:src="@mipmap/ico_tq" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/padding"
+                    android:gravity="center"
+                    android:text="@string/cheats_tq"
+                    android:textColor="@color/black_txt"
+                    android:textSize="@dimen/size_small" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@color/white"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:layout_width="@dimen/width_image_cheats"
+                    android:layout_height="@dimen/width_image_cheats"
+                    android:scaleType="centerInside"
+                    android:src="@mipmap/ico_user_info" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/padding"
+                    android:gravity="center"
+                    android:text="@string/cheats_grxx"
+                    android:textColor="@color/black_txt"
+                    android:textSize="@dimen/size_small" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/height_cheats"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@color/white"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:layout_width="@dimen/width_image_cheats"
+                    android:layout_height="@dimen/width_image_cheats"
+                    android:scaleType="centerInside"
+                    android:src="@mipmap/ico_qdyl" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/padding"
+                    android:gravity="center"
+                    android:text="@string/cheats_qdyl"
+                    android:textColor="@color/black_txt"
+                    android:textSize="@dimen/size_small" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="1dp"
+                android:layout_marginRight="1dp"
+                android:layout_weight="1"
+                android:background="@color/white"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:layout_width="@dimen/width_image_cheats"
+                    android:layout_height="@dimen/width_image_cheats"
+                    android:scaleType="centerInside"
+                    android:src="@mipmap/ico_kefu" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/padding"
+                    android:gravity="center"
+                    android:text="@string/cheats_kf"
+                    android:textColor="@color/black_txt"
+                    android:textSize="@dimen/size_small" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@color/white"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:layout_width="@dimen/width_image_cheats"
+                    android:layout_height="@dimen/width_image_cheats"
+                    android:scaleType="centerInside"
+                    android:src="@mipmap/ico_more" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/padding"
+                    android:gravity="center"
+                    android:text="@string/cheats_more"
+                    android:textColor="@color/black_txt"
+                    android:textSize="@dimen/size_small" />
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+
+</ScrollView>

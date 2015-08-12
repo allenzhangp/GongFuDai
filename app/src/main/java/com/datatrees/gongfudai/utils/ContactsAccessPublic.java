@@ -32,7 +32,6 @@ public class ContactsAccessPublic {
      * 得到手机通讯录联系人信息*
      */
     public static List<ContactData> getPhoneContacts(Context mContext) {
-        Log.d("TAG", "------------getPhoneContacts------------");
         ArrayList<ContactData> contactDatas = new ArrayList<>();
         ContentResolver resolver = mContext.getContentResolver();
         // 获取手机联系人
@@ -65,7 +64,6 @@ public class ContactsAccessPublic {
      * 得到手机SIM卡联系人人信息*
      */
     public static List<ContactData> getSIMContacts(Context mContext) {
-        Log.d("TAG", "------------getSIMContacts------------");
         ArrayList<ContactData> contactDatas = new ArrayList<>();
         ContentResolver resolver = mContext.getContentResolver();
         // 获取Sims卡联系人
@@ -98,8 +96,44 @@ public class ContactsAccessPublic {
         return contactDatas;
     }
 
+    /**
+     * 返回特定联系人的手机
+     *
+     * @param context
+     * @param contactData
+     * @return
+     */
+    public static List<ContactData> getPersonPhone(Context context, Uri contactData) {
+        List<ContactData> data = new ArrayList<>();
+
+        ContentResolver resolver = context.getContentResolver();
+        Cursor c = resolver.query(contactData, ContactsQuery.PROJECTION,null,null, null);
+        c.moveToFirst();
+
+        int phoneColumn = c.getColumnIndex(ContactsContract.Contacts.HAS_PHONE_NUMBER);
+        int phoneNum = c.getInt(phoneColumn);
+        if (phoneNum > 0) {
+            //取得联系人的名字索引
+            String contact = c.getString(ContactsQuery.DISPLAY_NAME);
+            //取得联系人的ID索引值
+            String contactId = c.getString(ContactsQuery.ID);
+            Cursor phone = resolver.query(Phone.CONTENT_URI, ContactsQuery.PHONES_NUMBER_PROJECTION, ContactsQuery.PHONES_NUMBER_SELECTION, new String[]{contactId}, null);
+            ContactData item = null;
+            //一个人可能有几个号码
+            while (phone.moveToNext()) {
+                item = new ContactData();
+                String strPhoneNumber = phone
+                        .getString(ContactsQuery.PHONE_NUMBER);
+                item.setContactName(contact);
+                item.setNumber(strPhoneNumber);
+                data.add(item);
+            }
+            phone.close();
+        }
+        return data;
+    }
+
     public static void getContacts(Context context) {
-        Log.d("TAG", "------------getContacts------------");
         ContentResolver resolver = context.getContentResolver();
         Cursor cursor = resolver.query(ContactsQuery.CONTENT_URI, ContactsQuery.PROJECTION,
                 ContactsQuery.SELECTION,
@@ -116,7 +150,6 @@ public class ContactsAccessPublic {
             while (phone.moveToNext()) {
                 String strPhoneNumber = phone
                         .getString(ContactsQuery.PHONE_NUMBER);
-                Log.i("TAG", "phoneNumber:" + strPhoneNumber + ",contact:" + contact);
             }
             phone.close();
         }
@@ -126,7 +159,7 @@ public class ContactsAccessPublic {
 
     public interface ContactsQuery {
 
-        String[] PHONES_NUMBER_PROJECTION = new String[]{Phone.NUMBER};
+        String[] PHONES_NUMBER_PROJECTION = new String[]{Phone.NUMBER, VersionUtils.hasHoneycomb() ? Phone.DISPLAY_NAME_PRIMARY : Phone.DISPLAY_NAME,};
         String PHONES_NUMBER_SELECTION = Phone.CONTACT_ID + "= ?";
 
         /**
@@ -197,11 +230,13 @@ public class ContactsAccessPublic {
 
                 // The sort order column for the returned Cursor, used by the AlphabetIndexer
                 SORT_ORDER,
+                ContactsContract.Contacts.HAS_PHONE_NUMBER,
         };
 
         // The query column numbers which map to each value in the projection
         int ID = 0;
         int DISPLAY_NAME = 2;
         int PHONE_NUMBER = 0;
+        int PHONE_NAME = 1;
     }
 }

@@ -8,6 +8,7 @@ import com.datatrees.gongfudai.R;
 import com.datatrees.gongfudai.net.RespListener;
 import com.datatrees.gongfudai.net.VolleyUtil;
 import com.datatrees.gongfudai.utils.BK;
+import com.datatrees.gongfudai.utils.StringUtils;
 import com.datatrees.gongfudai.utils.ToastUtils;
 import com.datatrees.gongfudai.volley.Request;
 import com.umeng.analytics.MobclickAgent;
@@ -81,7 +82,10 @@ public class BaseFragment extends Fragment implements RespListener.OnRespError, 
 
     @Override
     public void onError(String error) {
-        ToastUtils.showShort(error);
+        dismiss();
+        if (StringUtils.isNotTrimBlank(error)) {
+            ToastUtils.showShort(error);
+        }
     }
 
     @Override

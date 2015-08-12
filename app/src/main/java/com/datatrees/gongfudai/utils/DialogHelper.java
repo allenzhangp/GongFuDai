@@ -48,4 +48,13 @@ public class DialogHelper {
         return d;
     }
 
+    public static AlertDialog singleChoiceItems(Context context, String[] items,
+                                   DialogInterface.OnClickListener itemClicklistener) {
+        AlertDialog.Builder b = new Builder(context);
+        b.setSingleChoiceItems(items, 0, itemClicklistener);
+        b.setNegativeButton(R.string.dialog_cancle, null);
+        final AlertDialog d = b.create();
+        return d;
+    }
+
 }

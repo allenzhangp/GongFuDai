@@ -13,6 +13,9 @@
     <string name="uploading">上传中&#8230;</string>
     <string name="get_token_failed">获取FederationToken失败!</string>
 
+    <!--net error-->
+    <string name="server_case_error">系统忙,请稍后重试.</string>
+
     <!--dialog-->
     <string name="dialog_title">提示</string>
     <string name="dialog_cancle">取消</string>

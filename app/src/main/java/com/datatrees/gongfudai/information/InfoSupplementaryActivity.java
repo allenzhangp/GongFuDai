@@ -1,6 +1,5 @@
 package com.datatrees.gongfudai.information;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
@@ -82,18 +81,6 @@ public class InfoSupplementaryActivity extends BaseFragmentActivity {
         BK.bind(this);
         tvTitle.setText(R.string.info_sup);
         rlytIdcard.performClick();
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-//        List<Fragment> frags = getSupportFragmentManager().getFragments();
-//        if (frags != null) {
-//            for (Fragment f : frags) {
-//                if (f != null)
-//                    f.onActivityResult(requestCode, resultCode, data);
-//            }
-//        }
     }
 
     @OnClick({R.id.rlyt_ds, R.id.rlyt_yys, R.id.rlyt_yj, R.id.rlyt_xxyq, R.id.rlyt_lxr, R.id.rlyt_idcard})

@@ -10,7 +10,6 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.SystemClock;
 import android.provider.MediaStore;
 import android.text.Editable;
 import android.text.TextUtils;
@@ -54,6 +53,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -64,7 +64,7 @@ import butterknife.OnClick;
  * 身份证拍照验证
  * Created by zhangping on 15/8/11.
  */
-public class IDCardFragment extends BaseFragment {
+public class IDCardFragment extends BaseFragment implements View.OnClickListener {
     @Bind(R.id.iv_take_photo1)
     ImageView iv_take_photo1;
     @Bind(R.id.iv_take_photo2)
@@ -109,7 +109,8 @@ public class IDCardFragment extends BaseFragment {
     private ProgressDialog progressDialog;
     private TaskHandler tk;
 
-    public boolean isFinish = false;
+    public boolean isFinish = true;
+    private boolean isUploadPhotoFinish = false;//三张照片拍完上传成功之后为true
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -123,6 +124,10 @@ public class IDCardFragment extends BaseFragment {
         bucket = App.ossService.getOssBucket(App.BUCKETNAME);
         et_idcard.addTextChangedListener(textWatcher);
         et_real_name.addTextChangedListener(textWatcher);
+
+        llyt_take_tip1.setOnClickListener(this);
+        llyt_take_tip2.setOnClickListener(null);
+        llyt_take_tip3.setOnClickListener(null);
     }
 
     TextWatcher textWatcher = new TextWatcher() {
@@ -166,52 +171,6 @@ public class IDCardFragment extends BaseFragment {
         }
     }
 
-    @OnClick({R.id.llyt_take_tip1, R.id.llyt_take_tip2, R.id.llyt_take_tip3})
-    public void onTackePhonto(View view) {
-        if (view.getId() == R.id.llyt_take_tip1) {
-            step = 0;
-        } else if (view.getId() == R.id.llyt_take_tip2) {
-            step = 1;
-        } else {
-            step = 2;
-        }
-
-
-        App.ossService.setGlobalDefaultStsTokenGetter(new StsTokenGetter() {
-            @Override
-            public OSSFederationToken getFederationToken() {
-                //判断token是否过期,实效为一小时
-                long timeMillis = SystemClock.uptimeMillis();
-                long expiration = PreferenceUtils.getPrefLong(App.getContext(), App.EXPIRATION, 0);
-                FederationToken token = null;
-                if ((timeMillis - expiration) > 2700 * 100) {
-                    // 为指定的用户拿取服务其授权需求的FederationToken
-                    token = FederationTokenGetter.getToken(App.loginUserInfo.getUserId());
-                    if (token == null) {
-                        getActivity().runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                ToastUtils.showShort(R.string.get_token_failed);
-                            }
-                        });
-                        return null;
-                    }
-                } else {
-                    token = new FederationToken(PreferenceUtils.getPrefString(App.getContext(), App.AK, ""), PreferenceUtils.getPrefString(App.getContext(), App.SK, ""), PreferenceUtils.getPrefString(App.getContext(), App.SECURITYTOKEN, ""), PreferenceUtils.getPrefLong(App.getContext(), App.EXPIRATION, 0));
-                }
-                return new OSSFederationToken(token.getAccessKeyId(), token.getAccessKeySecret(), token.getSecurityToken(), token.getExpiration());
-                // 将FederationToken设置到OSSService中
-            }
-        });
-
-
-        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);//action is capture
-        intent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
-        startActivityForResult(intent, TACK_PICTURE_RC);
-
-
-    }
-
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -222,7 +181,10 @@ public class IDCardFragment extends BaseFragment {
                     .start(getActivity(), this);
         } else if (requestCode == Crop.REQUEST_CROP) {
             if (imageUri != null) {
-                uploadFile2OSS(imageUri.getPath());
+                Bitmap bitmap = BitmapFactory.decodeFile(imageUri.getPath());
+                File imageFile = bitmap2file(bitmap);
+
+                uploadFile2OSS(imageFile.getAbsolutePath());
 
                 if (progressDialog == null)
                     progressDialog = DialogHelper.progressDialog(getActivity(), uploadListener);
@@ -232,7 +194,14 @@ public class IDCardFragment extends BaseFragment {
     }
 
     private File bitmap2file(Bitmap bitmap) {
-        String stringDate = "image_" + SystemClock.uptimeMillis();
+        String stringDate = "front";
+        if (step == 1)
+            stringDate = "back";
+        else if (step == 2) {
+            stringDate = "withCard";
+        } else {
+            stringDate = "front";
+        }
         String folderPath = FileUtils.getExtImageFilesDir().getPath();
         String fileName = stringDate + ".jpg";
         File fileDir = new File(folderPath);
@@ -240,9 +209,12 @@ public class IDCardFragment extends BaseFragment {
             fileDir.mkdirs();
         }
         File file = new File(folderPath + File.separator + fileName);
+        if (file.exists()) {
+            file.delete();
+        }
         try {
             FileOutputStream out = new FileOutputStream(file);
-            if (bitmap.compress(Bitmap.CompressFormat.JPEG, 90, out)) {
+            if (bitmap.compress(Bitmap.CompressFormat.JPEG, 100, out)) {
                 out.flush();
                 out.close();
             }
@@ -257,7 +229,9 @@ public class IDCardFragment extends BaseFragment {
     }
 
     private void uploadFile2OSS(String filePath) {
-        OSSFile ossFile = App.ossService.getOssFile(bucket, "large.data");
+        String fileName = filePath.substring(filePath.lastIndexOf("/") + 1);
+        long expirationTime = PreferenceUtils.getPrefLong(App.getContext(), App.EXPIRATION, 0) / 1000;
+        OSSFile ossFile = App.ossService.getOssFile(bucket, App.loginUserInfo.getUserId() + File.separator + expirationTime + File.separator + fileName);
         try {
             ossFile.setUploadFilePath(filePath, "file");
 
@@ -267,8 +241,6 @@ public class IDCardFragment extends BaseFragment {
                     if (progressDialog != null && progressDialog.isShowing()) {
                         progressDialog.setMax(totalSize);
                         progressDialog.setProgress(byteCount);
-                        if (byteCount >= totalSize)
-                            progressDialog.dismiss();
                     }
                 }
 
@@ -288,25 +260,29 @@ public class IDCardFragment extends BaseFragment {
                     getActivity().runOnUiThread(new Runnable() {
                         public void run() {
                             Bitmap bitmap = BitmapFactory.decodeFile(imageUri.getPath());
-                            bitmap2file(bitmap);
                             Drawable drawable = new BitmapDrawable(null, bitmap);
                             if (step == 0) {
                                 iv_take_photo1.setImageDrawable(null);
                                 iv_take_photo1.setBackgroundDrawable(null);
                                 iv_take_photo1.setBackgroundDrawable(drawable);
 
-                                iv_take_photo2.setBackgroundResource(R.drawable.bg_take_photo_sel);
-                                tv_take_photo2.setText(getResources().getColor(R.color.black_txt));
-                                llyt_take_tip2.setClickable(true);
+                                if (!isUploadPhotoFinish) {
+                                    iv_take_photo2.setImageDrawable(null);
+                                    iv_take_photo2.setBackgroundResource(R.drawable.bg_take_photo_sel);
+                                    tv_take_photo2.setTextColor(getResources().getColor(R.color.black_txt));
+                                    llyt_take_tip2.setOnClickListener(IDCardFragment.this);
+                                }
 
                             } else if (step == 1) {
                                 iv_take_photo2.setBackgroundDrawable(null);
                                 iv_take_photo2.setImageDrawable(null);
                                 iv_take_photo2.setBackgroundDrawable(drawable);
-
-                                iv_take_photo3.setBackgroundResource(R.drawable.bg_take_photo_sel);
-                                tv_take_photo3.setText(getResources().getColor(R.color.black_txt));
-                                llyt_take_tip3.setClickable(true);
+                                if (!isUploadPhotoFinish) {
+                                    iv_take_photo3.setImageDrawable(null);
+                                    iv_take_photo3.setBackgroundResource(R.drawable.bg_take_photo_sel);
+                                    tv_take_photo3.setTextColor(getResources().getColor(R.color.black_txt));
+                                    llyt_take_tip3.setOnClickListener(IDCardFragment.this);
+                                }
 
                             } else {
                                 iv_take_photo3.setBackgroundDrawable(null);
@@ -321,11 +297,12 @@ public class IDCardFragment extends BaseFragment {
                             progressDialog.dismiss();
                             ToastUtils.showShort(R.string.upload_succeed);
 
-                            if (step > 1 || isFinish) {
-                                Map<String, Object> params = new HashMap<String, Object>();
-                                params.put("userId", App.loginUserInfo.getUserId());
-                                params.put("timestamp", App.timestamp);
-                                CustomStringRequest request = new CustomStringRequest(Request.Method.GET, DsApi.GETICR, getRespListener(), params);
+                            if (step > 1 || isUploadPhotoFinish) {
+                                isUploadPhotoFinish = true;
+                                Map<String, String> params = new HashMap<String, String>();
+                                params.put("userId", App.loginUserInfo.getUserId() + "");
+                                params.put("timestamp", App.timestamp + "");
+                                CustomStringRequest request = new CustomStringRequest(Request.Method.POST, DsApi.GETICR, getRespListener(), params);
                                 executeRequest(request);
                             }
 
@@ -359,8 +336,8 @@ public class IDCardFragment extends BaseFragment {
             }
         };
 
-        HashMap<String, Object> params = new HashMap<>();
-        params.put("userId", App.loginUserInfo.getUserId());
+        HashMap<String, String> params = new HashMap<>();
+        params.put("userId", App.loginUserInfo.getUserId() + "");
         params.put("name", et_real_name.getText().toString());
         params.put("idNumber", et_idcard.getText().toString());
         CustomStringRequest request = new CustomStringRequest(Request.Method.GET, DsApi.GETICR, respListener, params);
@@ -375,5 +352,49 @@ public class IDCardFragment extends BaseFragment {
         llyt_user_info.setVisibility(View.VISIBLE);
         et_real_name.setText(name);
         et_idcard.setText(idNumber);
+    }
+
+    @Override
+    public void onClick(View v) {
+        if (v.getId() == R.id.llyt_take_tip1) {
+            step = 0;
+        } else if (v.getId() == R.id.llyt_take_tip2) {
+            step = 1;
+        } else {
+            step = 2;
+        }
+
+        App.ossService.setGlobalDefaultStsTokenGetter(new StsTokenGetter() {
+            @Override
+            public OSSFederationToken getFederationToken() {
+                //判断token是否过期,实效为一小时
+                long timeMillis = new Date().getTime();
+                long expiration = PreferenceUtils.getPrefLong(App.getContext(), App.EXPIRATION, 0);
+                FederationToken token = null;
+                if ((timeMillis - expiration) > 2700 * 100) {
+                    // 为指定的用户拿取服务其授权需求的FederationToken
+                    token = FederationTokenGetter.getToken(App.loginUserInfo.getUserId());
+                    if (token == null) {
+                        getActivity().runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                ToastUtils.showShort(R.string.get_token_failed);
+                            }
+                        });
+                        return null;
+                    }
+                } else {
+                    long expirationTime = PreferenceUtils.getPrefLong(App.getContext(), App.EXPIRATION, 0) / 1000;
+                    token = new FederationToken(PreferenceUtils.getPrefString(App.getContext(), App.AK, ""), PreferenceUtils.getPrefString(App.getContext(), App.SK, ""), PreferenceUtils.getPrefString(App.getContext(), App.SECURITYTOKEN, ""), expirationTime);
+                }
+                return new OSSFederationToken(token.getAccessKeyId(), token.getAccessKeySecret(), token.getSecurityToken(), token.getExpiration());
+                // 将FederationToken设置到OSSService中
+            }
+        });
+
+        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);//action is capture
+        intent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
+        startActivityForResult(intent, TACK_PICTURE_RC);
+
     }
 }

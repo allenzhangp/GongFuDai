@@ -1,7 +1,9 @@
 package com.datatrees.gongfudai.net;
 
 import com.datatrees.gongfudai.App;
+import com.datatrees.gongfudai.R;
 import com.datatrees.gongfudai.utils.LogUtil;
+import com.datatrees.gongfudai.utils.StringUtils;
 import com.datatrees.gongfudai.volley.Response;
 import com.datatrees.gongfudai.volley.VolleyError;
 
@@ -26,20 +28,27 @@ public class RespListener implements Response.Listener<String>, Response.ErrorLi
             int code = obj.optInt("code");
             long timestamp = obj.optLong("timestamp");
             App.timestamp = timestamp;
-            if (code != 200 && onRespError != null) {
-                onRespError.onError(errorMsg);
-            } else {
-                if (onRespSuccess != null)
-                    onRespSuccess.onSuccess(obj.optJSONObject("data"));
-            }
+            if (onRespSuccess != null)
+                onRespSuccess.onSuccess(obj.optJSONObject("data"));
         } catch (JSONException e) {
         }
     }
 
     @Override
     public void onErrorResponse(VolleyError error) {
-        if (onRespError != null)
-            onRespError.onError(error.getMessage());
+        try {
+            if (onRespError != null && error.networkResponse != null) {
+                String errorResp = new String(error.networkResponse.data);
+                if (StringUtils.isNotTrimBlank(errorResp)) {
+                    JSONObject jsonObject = new JSONObject(errorResp);
+                    onRespError.onError(jsonObject.optString("errorMsg"));
+                } else
+                    onRespError.onError(App.getContext().getResources().getString(R.string.server_case_error));
+            }
+
+        } catch (Exception e) {
+            onRespError.onError(App.getContext().getResources().getString(R.string.server_case_error));
+        }
     }
 
 
@@ -48,6 +57,6 @@ public class RespListener implements Response.Listener<String>, Response.ErrorLi
     }
 
     public interface OnRespError {
-        public void onError(String error);
+        public void onError(String errorResp);
     }
 }

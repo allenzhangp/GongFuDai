@@ -38,21 +38,14 @@ public class FederationTokenGetter {
             HttpGet httpGet = new HttpGet(queryUrl);
             HttpResponse hr = client.execute(httpGet);
             responseStr = EntityUtils.toString(hr.getEntity());
-        } catch (ClientProtocolException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        if (responseStr == null) {
-            return null;
-        }
-        try {
+            if (responseStr == null) {
+                return null;
+            }
             LogUtil.i(responseStr);
+
             JSONObject jsonObject = new JSONObject(responseStr);
 
-            int code = jsonObject.optInt("code");
-            String errorMsg = jsonObject.optString("errorMsg");
-            if(code != 200){
+            if (hr.getStatusLine().getStatusCode() != 200) {
                 return null;
             }
             JSONObject dataObj = jsonObject.optJSONObject("data");
@@ -60,11 +53,15 @@ public class FederationTokenGetter {
             String sk = dataObj.getString("sk");
             String securityToken = dataObj.getString("tempToken");
             long expireTime = dataObj.getLong("expiration");
-            PreferenceUtils.setPrefString(App.getContext(),App.AK,ak);
-            PreferenceUtils.setPrefString(App.getContext(),App.SK,sk);
-            PreferenceUtils.setPrefString(App.getContext(),App.SECURITYTOKEN,securityToken);
-            PreferenceUtils.setPrefLong(App.getContext(),App.EXPIRATION,expireTime);
+            PreferenceUtils.setPrefString(App.getContext(), App.AK, ak);
+            PreferenceUtils.setPrefString(App.getContext(), App.SK, sk);
+            PreferenceUtils.setPrefString(App.getContext(), App.SECURITYTOKEN, securityToken);
+            PreferenceUtils.setPrefLong(App.getContext(), App.EXPIRATION, expireTime);
             return new FederationToken(ak, sk, securityToken, expireTime);
+        } catch (ClientProtocolException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
         } catch (JSONException e) {
             e.printStackTrace();
         }

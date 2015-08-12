@@ -6,7 +6,7 @@ package com.datatrees.gongfudai.utils;
 public class DsApi {
     private static final String HOST = "http://192.168.0.242:8080/service";
 
-    public static final String LIST = HOST + "/%1$s";
+    public static final String LIST = HOST + "%1$s";
 
     public static final String GETFEDERATIONTOKEN = "/oss/authorise";
 

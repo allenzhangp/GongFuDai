@@ -2,14 +2,14 @@ package com.datatrees.gongfudai.net;
 
 import android.app.ActivityManager;
 import android.content.Context;
-import android.util.Log;
 import android.widget.ImageView;
 
+import com.datatrees.gongfudai.net.cache.BitmapLruCache;
+import com.datatrees.gongfudai.utils.LogUtil;
 import com.datatrees.gongfudai.volley.Request;
 import com.datatrees.gongfudai.volley.RequestQueue;
 import com.datatrees.gongfudai.volley.toolbox.ImageLoader;
 import com.datatrees.gongfudai.volley.toolbox.Volley;
-import com.datatrees.gongfudai.net.cache.BitmapLruCache;
 
 
 /**
@@ -38,7 +38,7 @@ public class VolleyUtil {
 		mImageLoader = new ImageLoader(mRequestQueue, new BitmapLruCache(
 				1024 * 1024 * maxSize));
 
-		Log.i(TAG, "Volley初始化完成");
+		LogUtil.i(TAG, "Volley初始化完成");
 	}
 
 	/**

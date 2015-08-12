@@ -7,31 +7,38 @@
 
 package com.datatrees.gongfudai.net;
 
-import java.io.UnsupportedEncodingException;
-
+import com.datatrees.gongfudai.utils.DsApi;
+import com.datatrees.gongfudai.volley.AuthFailureError;
 import com.datatrees.gongfudai.volley.NetworkResponse;
 import com.datatrees.gongfudai.volley.Response;
-import com.datatrees.gongfudai.volley.Response.ErrorListener;
-import com.datatrees.gongfudai.volley.Response.Listener;
 import com.datatrees.gongfudai.volley.toolbox.HttpHeaderParser;
 import com.datatrees.gongfudai.volley.toolbox.StringRequest;
 
+import java.io.UnsupportedEncodingException;
+import java.util.Map;
+
 /**
- * com.hengtian.zdwpoaapp.net.StringRequest
- * 
  * @author Allen Zhang <br/>
  *         create at 2014-6-20 下午2:20:59
  */
 public class CustomStringRequest extends StringRequest {
 
-    /**
-     * @param method
-     * @param url
-     * @param listener
-     * @param errorListener
-     */
-    public CustomStringRequest(int method, String url, Listener<String> listener, ErrorListener errorListener) {
-        super(method, url, listener, errorListener);
+    private Map<String, String> mMap;
+    private RespListener listener = new RespListener();
+
+    public CustomStringRequest(int method, String url, RespListener listener) {
+        super(method, String.format(DsApi.LIST, url), listener, listener);
+    }
+
+
+    public CustomStringRequest(int method, String url, RespListener listener, Map params) {
+        super(method, String.format(DsApi.LIST, url), listener, listener);
+        this.mMap = params;
+    }
+
+    @Override
+    protected Map<String, String> getParams() throws AuthFailureError {
+        return mMap;
     }
 
     @Override

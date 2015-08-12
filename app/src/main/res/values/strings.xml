@@ -8,6 +8,16 @@
 
     <string name="submit_txt">提交</string>
     <string name="next_step">下一步</string>
+    <string name="upload_fail">上传失败!</string>
+    <string name="upload_succeed">上传成功!</string>
+    <string name="uploading">上传中&#8230;</string>
+    <string name="get_token_failed">获取FederationToken失败!</string>
+
+    <!--dialog-->
+    <string name="dialog_title">提示</string>
+    <string name="dialog_cancle">取消</string>
+    <string name="dialog_ok">确定</string>
+
     <!-- home-->
     <string name="home_sw">声望</string>
     <string name="home_qz">钱庄</string>

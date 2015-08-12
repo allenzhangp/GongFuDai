@@ -1,5 +1,6 @@
 package com.datatrees.gongfudai.information;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
@@ -56,8 +57,18 @@ public class InfoSupplementaryActivity extends BaseFragmentActivity {
 
     @Bind(R.id.rlyt_idcard)
     RelativeLayout rlytIdcard;
+    @Bind(R.id.rlyt_ds)
+    RelativeLayout rlytDs;
+    @Bind(R.id.rlyt_lxr)
+    RelativeLayout rlytLxr;
+    @Bind(R.id.rlyt_xxyq)
+    RelativeLayout rlytXxyq;
+    @Bind(R.id.rlyt_yj)
+    RelativeLayout rlytYj;
+    @Bind(R.id.rlyt_yys)
+    RelativeLayout rlytYys;
 
-    BaseFragment idCardFragment = null;
+    IDCardFragment idCardFragment = null;
     BaseFragment emeContactFragmfent = null;
     BaseFragment emailValidFragmfent = null;
     BaseFragment operatorValidFragmfent = null;
@@ -73,6 +84,18 @@ public class InfoSupplementaryActivity extends BaseFragmentActivity {
         rlytIdcard.performClick();
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+//        List<Fragment> frags = getSupportFragmentManager().getFragments();
+//        if (frags != null) {
+//            for (Fragment f : frags) {
+//                if (f != null)
+//                    f.onActivityResult(requestCode, resultCode, data);
+//            }
+//        }
+    }
+
     @OnClick({R.id.rlyt_ds, R.id.rlyt_yys, R.id.rlyt_yj, R.id.rlyt_xxyq, R.id.rlyt_lxr, R.id.rlyt_idcard})
     public void clickRlyt(View view) {
         switch (view.getId()) {
@@ -83,30 +106,40 @@ public class InfoSupplementaryActivity extends BaseFragmentActivity {
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, idCardFragment).commit();
                 break;
             case R.id.rlyt_lxr:
+                if (idCardFragment == null || !idCardFragment.isFinish)
+                    return;
                 changeBgColor(1);
                 if (emeContactFragmfent == null)
                     emeContactFragmfent = new EmeContactFragmfent();
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, emeContactFragmfent).commit();
                 break;
             case R.id.rlyt_yj:
+                if (idCardFragment == null || !idCardFragment.isFinish)
+                    return;
                 changeBgColor(2);
                 if (emailValidFragmfent == null)
                     emailValidFragmfent = new EmailValidFragmfent();
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, emailValidFragmfent).commit();
                 break;
             case R.id.rlyt_yys:
+                if (idCardFragment == null || !idCardFragment.isFinish)
+                    return;
                 changeBgColor(3);
                 if (operatorValidFragmfent == null)
                     operatorValidFragmfent = new OperatorValidFragmfent();
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, operatorValidFragmfent).commit();
                 break;
             case R.id.rlyt_ds:
+                if (idCardFragment == null || !idCardFragment.isFinish)
+                    return;
                 changeBgColor(4);
                 if (electricityValidFragmfent == null)
                     electricityValidFragmfent = new ElectricityValidFragmfent();
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, electricityValidFragmfent).commit();
                 break;
             case R.id.rlyt_xxyq:
+                if (idCardFragment == null || !idCardFragment.isFinish)
+                    return;
                 changeBgColor(5);
                 if (infoSecurityFragmfent == null)
                     infoSecurityFragmfent = new InfoSecurityFragmfent();

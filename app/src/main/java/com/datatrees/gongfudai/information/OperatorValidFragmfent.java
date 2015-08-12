@@ -9,10 +9,10 @@ import com.datatrees.gongfudai.R;
 import com.datatrees.gongfudai.base.BaseFragment;
 
 /**
- *  运营商验证
+ * 运营商验证
  * Created by zhangping on 15/8/11.
  */
-public class OperatorValidFragmfent extends BaseFragment{
+public class OperatorValidFragmfent extends BaseFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_operator_valid, container, false);

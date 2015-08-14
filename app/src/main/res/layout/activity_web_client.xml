@@ -4,6 +4,8 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
+    <include layout="@layout/layout_header" />
+
     <com.datatrees.gongfudai.widget.CustomWebView
         android:id="@+id/custom_webview"
         android:layout_width="match_parent"

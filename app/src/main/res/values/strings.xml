@@ -20,6 +20,13 @@
     <string name="dialog_title">提示</string>
     <string name="dialog_cancle">取消</string>
     <string name="dialog_ok">确定</string>
+    <string name="dialog_konw">我知道了</string>
+
+    <!--login-->
+    <string name="login">登陆</string>
+    <string name="login_logo">Logo</string>
+    <string name="login_name">GongFuDai</string>
+
 
     <!-- home-->
     <string name="home_sw">声望</string>

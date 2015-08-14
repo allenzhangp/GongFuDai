@@ -324,10 +324,11 @@ public class IDCardFragment extends BaseFragment implements View.OnClickListener
         respListener.onRespError = this;
         respListener.onRespSuccess = new RespListener.OnRespSuccess() {
             @Override
-            public void onSuccess(JSONObject response) {
+            public void onSuccess(JSONObject response, String extras) {
                 if (response == null)
                     return;
                 isFinish = true;
+                ToastUtils.showShort(R.string.upload_succeed);
                 //next step
                 if (getActivity() instanceof InfoSupplementaryActivity) {
                     InfoSupplementaryActivity supplementaryActivity = (InfoSupplementaryActivity) getActivity();
@@ -340,13 +341,13 @@ public class IDCardFragment extends BaseFragment implements View.OnClickListener
         params.put("userId", App.loginUserInfo.getUserId() + "");
         params.put("name", et_real_name.getText().toString());
         params.put("idNumber", et_idcard.getText().toString());
-        CustomStringRequest request = new CustomStringRequest(Request.Method.GET, DsApi.GETICR, respListener, params);
+        CustomStringRequest request = new CustomStringRequest(Request.Method.POST, DsApi.CHECKICR, respListener, params);
         executeRequest(request);
     }
 
     @Override
-    public void onSuccess(JSONObject response) {
-        super.onSuccess(response);
+    public void onSuccess(JSONObject response, String extras) {
+        super.onSuccess(response,extras);
         String name = response.optString("name");
         String idNumber = response.optString("idNumber");
         llyt_user_info.setVisibility(View.VISIBLE);
@@ -356,6 +357,10 @@ public class IDCardFragment extends BaseFragment implements View.OnClickListener
 
     @Override
     public void onClick(View v) {
+        JSONObject idCardlJSON = App.allstatusMap.get("idcard");
+        if(idCardlJSON != null && (idCardlJSON.optInt("status") == 1 || idCardlJSON.optInt("status") == 2))
+            return;
+
         if (v.getId() == R.id.llyt_take_tip1) {
             step = 0;
         } else if (v.getId() == R.id.llyt_take_tip2) {

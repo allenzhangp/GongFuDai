@@ -189,6 +189,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_margin="@dimen/padding_half"
+                    android:paddingLeft="@dimen/padding_half"
                     android:layout_weight="1"
                     android:textColor="@color/hint"
                     android:textSize="@dimen/size_normal" />

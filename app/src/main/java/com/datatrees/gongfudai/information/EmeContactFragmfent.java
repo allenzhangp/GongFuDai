@@ -5,6 +5,8 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.provider.ContactsContract;
 import android.text.Editable;
 import android.text.TextUtils;
@@ -18,14 +20,26 @@ import android.widget.ImageButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 
+import com.datatrees.gongfudai.App;
 import com.datatrees.gongfudai.R;
 import com.datatrees.gongfudai.base.BaseFragment;
 import com.datatrees.gongfudai.model.ContactData;
+import com.datatrees.gongfudai.net.CustomStringRequest;
+import com.datatrees.gongfudai.net.RespListener;
 import com.datatrees.gongfudai.utils.BK;
 import com.datatrees.gongfudai.utils.ContactsAccessPublic;
 import com.datatrees.gongfudai.utils.DialogHelper;
+import com.datatrees.gongfudai.utils.DsApi;
+import com.datatrees.gongfudai.utils.ToastUtils;
+import com.datatrees.gongfudai.volley.Request;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import butterknife.Bind;
 import butterknife.OnClick;
@@ -113,6 +127,7 @@ public class EmeContactFragmfent extends BaseFragment {
                         relation = 0;
                         break;
                 }
+                btn_submit.setEnabled(submitEnable());
             }
         });
         rg_gx2.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
@@ -120,21 +135,27 @@ public class EmeContactFragmfent extends BaseFragment {
             public void onCheckedChanged(RadioGroup group, int checkedId) {
                 switch (checkedId) {
                     case R.id.rbtn_ts2:
-                        relation = 1;
+                        relation2 = 1;
                         break;
                     case R.id.rbtn_py2:
-                        relation = 2;
+                        relation2 = 2;
                         break;
                     case R.id.rbtn_qs2:
-                        relation = 0;
+                        relation2 = 0;
                         break;
                 }
+                btn_submit.setEnabled(submitEnable());
             }
         });
     }
 
     @OnClick({R.id.btn_contact_add, R.id.btn_contact_add2})
     public void chooseContact(View v) {
+
+        JSONObject contactsJSON = App.allstatusMap.get("ice");
+        if(contactsJSON != null && (contactsJSON.optInt("status") == 1 || contactsJSON.optInt("status") == 2))
+            return;
+
         if (v.getId() == R.id.btn_contact_add) {
             Intent intent = new Intent(Intent.ACTION_PICK, ContactsContract.Contacts.CONTENT_URI);
             startActivityForResult(intent, CONTACT_ADD);
@@ -154,6 +175,8 @@ public class EmeContactFragmfent extends BaseFragment {
 
         Uri contactData = data.getData();
         datas = ContactsAccessPublic.getPersonPhone(getActivity(), contactData);
+        if (datas.size() <= 0)
+            return;
         if (requestCode == CONTACT_ADD) {
             if (datas.size() > 1) {
                 String items[] = new String[datas.size()];
@@ -195,4 +218,97 @@ public class EmeContactFragmfent extends BaseFragment {
             et_idcard2.setText(datas.get(which).getContactName());
         }
     };
+
+    boolean contactUPload = false;
+    JSONArray contactArray = null;
+
+    @OnClick(R.id.btn_submit)
+    public void onSubmit() {
+        showLoading();
+        if (contactUPload == true) {
+            Map<String, String> params = new HashMap<String, String>();
+            params.put("userId", App.loginUserInfo.getUserId() + "");
+            JSONArray jsonArray = new JSONArray();
+            try {
+                JSONObject obj1 = new JSONObject();
+                obj1.put("name", et_idcard.getText().toString());
+                obj1.put("phone", tv_phone.getText().toString());
+                obj1.put("relation", relation + "");
+                jsonArray.put(obj1);
+                JSONObject obj2 = new JSONObject();
+                obj2.put("name", et_idcard2.getText().toString());
+                obj2.put("phone", tv_phone2.getText().toString());
+                obj2.put("relation", relation2 + "");
+                jsonArray.put(obj2);
+            } catch (JSONException e) {
+            }
+            params.put("ice", jsonArray.toString());
+            CustomStringRequest request = new CustomStringRequest(Request.Method.POST, DsApi.ADDICE, getRespListener(), params);
+            executeRequest(request);
+        } else {
+            handler.post(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        contactArray = new JSONArray();
+                        List<ContactData> contactDatas = ContactsAccessPublic.getContactsAll(getActivity(), null);
+                        if (contactDatas.size() > 0) {
+                            for (ContactData itmeContact : contactDatas) {
+                                JSONObject jsonObject = new JSONObject();
+                                jsonObject.put("fn", itmeContact.getFn());
+                                jsonObject.put("mn", itmeContact.getMn());
+                                jsonObject.put("ln", itmeContact.getLn());
+                                jsonObject.put("ext", itmeContact.getExt());
+                                jsonObject.put("insDt", itmeContact.getInsDt());
+                                jsonObject.put("updDt", itmeContact.getUpdDt());
+                                jsonObject.put("cns", itmeContact.getPhoneArray().toString());
+                                contactArray.put(jsonObject);
+                            }
+                        }
+                        handler.sendEmptyMessage(1);
+                    } catch (JSONException e) {
+                    }
+                }
+            });
+        }
+    }
+
+    Handler handler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            if (contactArray != null && contactArray.length() > 0) {
+                HashMap<String, String> params = new HashMap<>();
+                params.put("userId", App.loginUserInfo.getUserId() + "");
+                params.put("contacts", contactArray.toString());
+                params.put("total", contactArray.length() + "");
+                params.put("device", App.DEVICE);
+                params.put("deviceKey", App.DEVICEKEY);
+
+                RespListener respListener = new RespListener();
+                respListener.onRespError = EmeContactFragmfent.this;
+                respListener.onRespSuccess = new RespListener.OnRespSuccess() {
+                    @Override
+                    public void onSuccess(JSONObject response, String extras) {
+                        contactUPload = true;
+                        btn_submit.performClick();
+                    }
+                };
+
+                CustomStringRequest request = new CustomStringRequest(Request.Method.POST, DsApi.UPLOADCOTACTS, respListener, params);
+                executeRequest(request);
+            }
+        }
+    };
+
+    @Override
+    public void onSuccess(JSONObject response, String extras) {
+        super.onSuccess(response,extras);
+        ToastUtils.showShort(R.string.upload_succeed);
+        //next step
+        if (getActivity() instanceof InfoSupplementaryActivity) {
+            InfoSupplementaryActivity supplementaryActivity = (InfoSupplementaryActivity) getActivity();
+            supplementaryActivity.rlytYj.performClick();
+        }
+    }
 }

@@ -45,7 +45,7 @@ public class BaseFragment extends Fragment implements RespListener.OnRespError, 
             if (loading == null) {
                 loading = ProgressDialog.show(getActivity(), null,
                         getString(R.string.loading_dialog_message), false, true);
-            } else {
+            } else if (!loading.isShowing()) {
                 loading.show();
             }
         } catch (Exception e) {
@@ -81,7 +81,7 @@ public class BaseFragment extends Fragment implements RespListener.OnRespError, 
     }
 
     @Override
-    public void onError(String error) {
+    public void onError(String error, String extras) {
         dismiss();
         if (StringUtils.isNotTrimBlank(error)) {
             ToastUtils.showShort(error);
@@ -89,7 +89,8 @@ public class BaseFragment extends Fragment implements RespListener.OnRespError, 
     }
 
     @Override
-    public void onSuccess(JSONObject response) {
+    public void onSuccess(JSONObject response, String extras) {
+        dismiss();
         if (response == null)
             return;
     }

@@ -19,6 +19,15 @@ public class RespListener implements Response.Listener<String>, Response.ErrorLi
     public OnRespSuccess onRespSuccess;
     public OnRespError onRespError;
 
+    private String extras = null;
+
+    public RespListener() {
+    }
+
+    public RespListener(String extras) {
+        this.extras = extras;
+    }
+
     @Override
     public void onResponse(String response) {
         try {
@@ -29,7 +38,7 @@ public class RespListener implements Response.Listener<String>, Response.ErrorLi
             long timestamp = obj.optLong("timestamp");
             App.timestamp = timestamp;
             if (onRespSuccess != null)
-                onRespSuccess.onSuccess(obj.optJSONObject("data"));
+                onRespSuccess.onSuccess(obj.optJSONObject("data"), extras);
         } catch (JSONException e) {
         }
     }
@@ -40,23 +49,24 @@ public class RespListener implements Response.Listener<String>, Response.ErrorLi
             if (onRespError != null && error.networkResponse != null) {
                 String errorResp = new String(error.networkResponse.data);
                 if (StringUtils.isNotTrimBlank(errorResp)) {
+                    LogUtil.e(errorResp);
                     JSONObject jsonObject = new JSONObject(errorResp);
-                    onRespError.onError(jsonObject.optString("errorMsg"));
+                    onRespError.onError(jsonObject.optString("errorMsg"), extras);
                 } else
-                    onRespError.onError(App.getContext().getResources().getString(R.string.server_case_error));
+                    onRespError.onError(App.getContext().getResources().getString(R.string.server_case_error), extras);
             }
 
         } catch (Exception e) {
-            onRespError.onError(App.getContext().getResources().getString(R.string.server_case_error));
+            onRespError.onError(App.getContext().getResources().getString(R.string.server_case_error), extras);
         }
     }
 
 
     public interface OnRespSuccess {
-        public void onSuccess(JSONObject response);
+        public void onSuccess(JSONObject response, String extras);
     }
 
     public interface OnRespError {
-        public void onError(String errorResp);
+        public void onError(String errorResp, String extras);
     }
 }

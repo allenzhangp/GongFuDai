@@ -8,6 +8,7 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AlertDialog.Builder;
 
 import com.datatrees.gongfudai.R;
+import com.datatrees.gongfudai.widget.VerifyDialog;
 
 /**
  * Created by zhangping on 15/8/12.
@@ -38,22 +39,37 @@ public class DialogHelper {
         return d;
     }
 
-    public static AlertDialog alert(Context context, String msg,
+    public static Dialog verifyDialog(Context context, String message, String imageBase64, VerifyDialog.OnVerifyOkClick onVerifyOkClick) {
+        VerifyDialog dialog = new VerifyDialog(context, message, imageBase64);
+        dialog.setCancelable(false);
+        dialog.setCanceledOnTouchOutside(false);
+        dialog.setOnVerifyOkClick(onVerifyOkClick);
+        return dialog;
+    }
+
+    public static AlertDialog alert(Context context, String msg, String buttonStr,
                                     DialogInterface.OnClickListener listener) {
         AlertDialog.Builder b = new Builder(context);
         b.setTitle(R.string.dialog_title);
         b.setMessage(msg);
-        b.setPositiveButton(R.string.dialog_ok, listener);
+        b.setPositiveButton(buttonStr, listener);
         final AlertDialog d = b.create();
         return d;
     }
 
+    public static AlertDialog alert(Context context, String msg,
+                                    DialogInterface.OnClickListener listener) {
+        return alert(context, msg, context.getResources().getString(R.string.dialog_ok), listener);
+    }
+
     public static AlertDialog singleChoiceItems(Context context, String[] items,
-                                   DialogInterface.OnClickListener itemClicklistener) {
+                                                DialogInterface.OnClickListener itemClicklistener) {
         AlertDialog.Builder b = new Builder(context);
         b.setSingleChoiceItems(items, 0, itemClicklistener);
         b.setNegativeButton(R.string.dialog_cancle, null);
         final AlertDialog d = b.create();
+        d.setCanceledOnTouchOutside(false);
+        d.setCancelable(false);
         return d;
     }
 

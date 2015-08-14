@@ -8,6 +8,7 @@
 package com.datatrees.gongfudai.net;
 
 import com.datatrees.gongfudai.utils.DsApi;
+import com.datatrees.gongfudai.utils.LogUtil;
 import com.datatrees.gongfudai.volley.AuthFailureError;
 import com.datatrees.gongfudai.volley.NetworkResponse;
 import com.datatrees.gongfudai.volley.Response;
@@ -27,13 +28,23 @@ public class CustomStringRequest extends StringRequest {
     private RespListener listener = new RespListener();
 
     public CustomStringRequest(int method, String url, RespListener listener) {
-        super(method, String.format(DsApi.LIST, url), listener, listener);
+        super(method, url, listener, listener);
+        LogUtil.i(url);
     }
 
 
-    public CustomStringRequest(int method, String url, RespListener listener, Map params) {
+    public CustomStringRequest(int method, String url, RespListener listener, Map<String,String> params) {
         super(method, String.format(DsApi.LIST, url), listener, listener);
         this.mMap = params;
+
+        LogUtil.i("url:"+url);
+        StringBuilder sb = new StringBuilder("{");
+        for (String key : params.keySet()) {
+            sb.append("\""+key + "\":\""+ params.get(key)+"\",");
+        }
+        sb.append("}");
+        LogUtil.i("params:"+sb.toString());
+
     }
 
     @Override

@@ -31,6 +31,7 @@
             android:orientation="horizontal">
 
             <ImageButton
+                android:id="@+id/ibtn_qq"
                 android:layout_width="0dp"
                 android:layout_height="@dimen/width_image"
                 android:layout_margin="@dimen/padding"
@@ -39,7 +40,7 @@
                 android:scaleType="centerInside"
                 android:src="@mipmap/bg_email_qq" />
 
-            <ImageButton
+            <ImageButton android:id="@+id/ibtn_163"
                 android:layout_width="0dp"
                 android:layout_height="@dimen/width_image"
                 android:layout_margin="@dimen/padding"
@@ -48,7 +49,7 @@
                 android:scaleType="centerInside"
                 android:src="@mipmap/bg_email_163" />
 
-            <ImageButton
+            <ImageButton android:id="@+id/ibtn_126"
                 android:layout_width="0dp"
                 android:layout_height="@dimen/width_image"
                 android:layout_margin="@dimen/padding"

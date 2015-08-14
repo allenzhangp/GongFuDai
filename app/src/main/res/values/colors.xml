@@ -10,6 +10,6 @@
     <color name="blue">#57b3ff</color>
     <color name="btn_submit_sel">#cecece</color>
     <color name="hint">#999999</color>
-
+    <color name="transparent">#00000000</color>
 
 </resources>

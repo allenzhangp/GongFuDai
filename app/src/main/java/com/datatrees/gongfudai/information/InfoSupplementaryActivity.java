@@ -1,15 +1,32 @@
 package com.datatrees.gongfudai.information;
 
+import android.app.Dialog;
+import android.content.DialogInterface;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.datatrees.gongfudai.App;
 import com.datatrees.gongfudai.R;
 import com.datatrees.gongfudai.base.BaseFragment;
 import com.datatrees.gongfudai.base.BaseFragmentActivity;
+import com.datatrees.gongfudai.net.CustomStringRequest;
+import com.datatrees.gongfudai.net.RespListener;
+import com.datatrees.gongfudai.service.VerifyReciver;
 import com.datatrees.gongfudai.utils.BK;
+import com.datatrees.gongfudai.utils.DialogHelper;
+import com.datatrees.gongfudai.utils.DsApi;
+import com.datatrees.gongfudai.utils.PreferenceUtils;
+import com.datatrees.gongfudai.volley.Request;
+import com.datatrees.gongfudai.widget.VerifyDialog;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.HashMap;
 
 import butterknife.Bind;
 import butterknife.OnClick;
@@ -74,6 +91,9 @@ public class InfoSupplementaryActivity extends BaseFragmentActivity {
     BaseFragment electricityValidFragmfent = null;
     BaseFragment infoSecurityFragmfent = null;
 
+
+    VerifyReciver verifyReciver;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -81,6 +101,77 @@ public class InfoSupplementaryActivity extends BaseFragmentActivity {
         BK.bind(this);
         tvTitle.setText(R.string.info_sup);
         rlytIdcard.performClick();
+
+        verifyReciver = new VerifyReciver();
+        IntentFilter intentFilter = new IntentFilter(VerifyReciver.VERFY_RECEIVED);
+        registerReceiver(verifyReciver, intentFilter);
+
+        request();
+
+    }
+
+
+    private void getStatus() {
+        for (String keyStr : App.allstatusMap.keySet()) {
+            JSONObject keyObj = App.allstatusMap.get(keyStr);
+            if (keyObj == null)
+                continue;
+            int status = keyObj.optInt("status");
+            if ("idcard".equals(keyStr)) {
+                if (status == 1 || status == 2) {
+                    changeBgColor(0);
+                }
+            } else if ("operator".equals(keyStr)) {
+                if (status == 1 || status == 2) {
+                    changeBgColor(3);
+                }
+
+            } else if ("ecommerce".equals(keyStr)) {
+                if (status == 1 || status == 2) {
+                    changeBgColor(4);
+                }
+            } else if ("email".equals(keyStr)) {
+                if (status == 1 || status == 2) {
+                    changeBgColor(2);
+                }
+
+            } else if ("ice".equals(keyStr)) {
+
+            } else if ("contacts".equals(keyStr)) {
+                if (status == 1 || status == 2) {
+                    changeBgColor(1);
+                }
+            }
+        }
+    }
+
+    private void request() {
+        String latitude = PreferenceUtils.getPrefString(this, "latitude", "");
+        String longitude = PreferenceUtils.getPrefString(this, "longitude", "");
+        String province = PreferenceUtils.getPrefString(this, "province", "");
+
+        StringBuilder urls = new StringBuilder();
+        urls.append(String.format(String.format(DsApi.LIST, DsApi.PRECHECK)));
+        urls.append("?userId=").append(App.loginUserInfo.getUserId()).append("&lng=" + longitude + "&lat=" + latitude + "&province=" + province);
+        CustomStringRequest request = new CustomStringRequest(Request.Method.GET, urls.toString(), getRespListener());
+        executeRequest(request);
+    }
+
+    @Override
+    public void onSuccess(JSONObject response, String extras) {
+        super.onSuccess(response, extras);
+        int allow = response.optInt("allow");
+        int certify = response.optInt("certify");
+        if (allow == 1 && certify == 1) {
+            this.finish();
+        }
+
+    }
+
+    @Override
+    public void onError(String error, String extras) {
+        super.onError(error, extras);
+        this.finish();
     }
 
     @OnClick({R.id.rlyt_ds, R.id.rlyt_yys, R.id.rlyt_yj, R.id.rlyt_xxyq, R.id.rlyt_lxr, R.id.rlyt_idcard})
@@ -137,90 +228,106 @@ public class InfoSupplementaryActivity extends BaseFragmentActivity {
     }
 
     private void changeBgColor(int position) {
+        changeBgColor(position, true);
+    }
+
+    private void changeBgColor(int position, boolean invisible) {
         if (position == 0) {
             ivIDcardBg.setVisibility(View.VISIBLE);
-            ivDsBg.setVisibility(View.INVISIBLE);
-            ivLxrBg.setVisibility(View.INVISIBLE);
-            ivXxyqBg.setVisibility(View.INVISIBLE);
-            ivYjBg.setVisibility(View.INVISIBLE);
-            ivYysBg.setVisibility(View.INVISIBLE);
-
             tvIDcard.setTextColor(getResources().getColor(R.color.white));
-            tvLxr.setTextColor(getResources().getColor(R.color.info_text));
-            tvYj.setTextColor(getResources().getColor(R.color.info_text));
-            tvYys.setTextColor(getResources().getColor(R.color.info_text));
-            txXxyq.setTextColor(getResources().getColor(R.color.info_text));
-            tvDs.setTextColor(getResources().getColor(R.color.info_text));
+            if (invisible) {
+                ivDsBg.setVisibility(View.INVISIBLE);
+                ivLxrBg.setVisibility(View.INVISIBLE);
+                ivXxyqBg.setVisibility(View.INVISIBLE);
+                ivYjBg.setVisibility(View.INVISIBLE);
+                ivYysBg.setVisibility(View.INVISIBLE);
+
+                tvLxr.setTextColor(getResources().getColor(R.color.info_text));
+                tvYj.setTextColor(getResources().getColor(R.color.info_text));
+                tvYys.setTextColor(getResources().getColor(R.color.info_text));
+                txXxyq.setTextColor(getResources().getColor(R.color.info_text));
+                tvDs.setTextColor(getResources().getColor(R.color.info_text));
+            }
         } else if (position == 1) {
-            ivIDcardBg.setVisibility(View.INVISIBLE);
-            ivDsBg.setVisibility(View.INVISIBLE);
             ivLxrBg.setVisibility(View.VISIBLE);
-            ivXxyqBg.setVisibility(View.INVISIBLE);
-            ivYjBg.setVisibility(View.INVISIBLE);
-            ivYysBg.setVisibility(View.INVISIBLE);
-
-            tvIDcard.setTextColor(getResources().getColor(R.color.info_text));
             tvLxr.setTextColor(getResources().getColor(R.color.white));
-            tvYj.setTextColor(getResources().getColor(R.color.info_text));
-            tvYys.setTextColor(getResources().getColor(R.color.info_text));
-            txXxyq.setTextColor(getResources().getColor(R.color.info_text));
-            tvDs.setTextColor(getResources().getColor(R.color.info_text));
+            if (invisible) {
+                ivIDcardBg.setVisibility(View.INVISIBLE);
+                ivDsBg.setVisibility(View.INVISIBLE);
+                ivXxyqBg.setVisibility(View.INVISIBLE);
+                ivYjBg.setVisibility(View.INVISIBLE);
+                ivYysBg.setVisibility(View.INVISIBLE);
+
+                tvIDcard.setTextColor(getResources().getColor(R.color.info_text));
+                tvYj.setTextColor(getResources().getColor(R.color.info_text));
+                tvYys.setTextColor(getResources().getColor(R.color.info_text));
+                txXxyq.setTextColor(getResources().getColor(R.color.info_text));
+                tvDs.setTextColor(getResources().getColor(R.color.info_text));
+            }
         } else if (position == 2) {
-            ivIDcardBg.setVisibility(View.INVISIBLE);
-            ivDsBg.setVisibility(View.INVISIBLE);
-            ivLxrBg.setVisibility(View.INVISIBLE);
-            ivXxyqBg.setVisibility(View.INVISIBLE);
             ivYjBg.setVisibility(View.VISIBLE);
-            ivYysBg.setVisibility(View.INVISIBLE);
-
-            tvIDcard.setTextColor(getResources().getColor(R.color.info_text));
-            tvLxr.setTextColor(getResources().getColor(R.color.info_text));
             tvYj.setTextColor(getResources().getColor(R.color.white));
-            tvYys.setTextColor(getResources().getColor(R.color.info_text));
-            txXxyq.setTextColor(getResources().getColor(R.color.info_text));
-            tvDs.setTextColor(getResources().getColor(R.color.info_text));
+            if (invisible) {
+                ivIDcardBg.setVisibility(View.INVISIBLE);
+                ivDsBg.setVisibility(View.INVISIBLE);
+                ivLxrBg.setVisibility(View.INVISIBLE);
+                ivXxyqBg.setVisibility(View.INVISIBLE);
+                ivYysBg.setVisibility(View.INVISIBLE);
+
+                tvIDcard.setTextColor(getResources().getColor(R.color.info_text));
+                tvLxr.setTextColor(getResources().getColor(R.color.info_text));
+                tvYys.setTextColor(getResources().getColor(R.color.info_text));
+                txXxyq.setTextColor(getResources().getColor(R.color.info_text));
+                tvDs.setTextColor(getResources().getColor(R.color.info_text));
+            }
         } else if (position == 3) {
-            ivIDcardBg.setVisibility(View.INVISIBLE);
-            ivDsBg.setVisibility(View.INVISIBLE);
-            ivLxrBg.setVisibility(View.INVISIBLE);
-            ivXxyqBg.setVisibility(View.INVISIBLE);
-            ivYjBg.setVisibility(View.INVISIBLE);
             ivYysBg.setVisibility(View.VISIBLE);
-
-            tvIDcard.setTextColor(getResources().getColor(R.color.info_text));
-            tvLxr.setTextColor(getResources().getColor(R.color.info_text));
-            tvYj.setTextColor(getResources().getColor(R.color.info_text));
             tvYys.setTextColor(getResources().getColor(R.color.white));
-            txXxyq.setTextColor(getResources().getColor(R.color.info_text));
-            tvDs.setTextColor(getResources().getColor(R.color.info_text));
+            if (invisible) {
+                ivIDcardBg.setVisibility(View.INVISIBLE);
+                ivDsBg.setVisibility(View.INVISIBLE);
+                ivLxrBg.setVisibility(View.INVISIBLE);
+                ivXxyqBg.setVisibility(View.INVISIBLE);
+                ivYjBg.setVisibility(View.INVISIBLE);
+
+                tvIDcard.setTextColor(getResources().getColor(R.color.info_text));
+                tvLxr.setTextColor(getResources().getColor(R.color.info_text));
+                tvYj.setTextColor(getResources().getColor(R.color.info_text));
+                txXxyq.setTextColor(getResources().getColor(R.color.info_text));
+                tvDs.setTextColor(getResources().getColor(R.color.info_text));
+            }
         } else if (position == 4) {
-            ivIDcardBg.setVisibility(View.INVISIBLE);
             ivDsBg.setVisibility(View.VISIBLE);
-            ivLxrBg.setVisibility(View.INVISIBLE);
-            ivXxyqBg.setVisibility(View.INVISIBLE);
-            ivYjBg.setVisibility(View.INVISIBLE);
-            ivYysBg.setVisibility(View.INVISIBLE);
-
-            tvIDcard.setTextColor(getResources().getColor(R.color.info_text));
-            tvLxr.setTextColor(getResources().getColor(R.color.info_text));
-            tvYj.setTextColor(getResources().getColor(R.color.info_text));
-            tvYys.setTextColor(getResources().getColor(R.color.info_text));
-            txXxyq.setTextColor(getResources().getColor(R.color.info_text));
             tvDs.setTextColor(getResources().getColor(R.color.white));
-        } else if (position == 5) {
-            ivIDcardBg.setVisibility(View.INVISIBLE);
-            ivDsBg.setVisibility(View.INVISIBLE);
-            ivLxrBg.setVisibility(View.INVISIBLE);
-            ivXxyqBg.setVisibility(View.VISIBLE);
-            ivYjBg.setVisibility(View.INVISIBLE);
-            ivYysBg.setVisibility(View.INVISIBLE);
+            if (invisible) {
+                ivIDcardBg.setVisibility(View.INVISIBLE);
+                ivLxrBg.setVisibility(View.INVISIBLE);
+                ivXxyqBg.setVisibility(View.INVISIBLE);
+                ivYjBg.setVisibility(View.INVISIBLE);
+                ivYysBg.setVisibility(View.INVISIBLE);
 
-            tvIDcard.setTextColor(getResources().getColor(R.color.info_text));
-            tvLxr.setTextColor(getResources().getColor(R.color.info_text));
-            tvYj.setTextColor(getResources().getColor(R.color.info_text));
-            tvYys.setTextColor(getResources().getColor(R.color.info_text));
+                tvIDcard.setTextColor(getResources().getColor(R.color.info_text));
+                tvLxr.setTextColor(getResources().getColor(R.color.info_text));
+                tvYj.setTextColor(getResources().getColor(R.color.info_text));
+                tvYys.setTextColor(getResources().getColor(R.color.info_text));
+                txXxyq.setTextColor(getResources().getColor(R.color.info_text));
+            }
+        } else if (position == 5) {
+            ivXxyqBg.setVisibility(View.VISIBLE);
             txXxyq.setTextColor(getResources().getColor(R.color.white));
-            tvDs.setTextColor(getResources().getColor(R.color.info_text));
+            if (invisible) {
+                ivIDcardBg.setVisibility(View.INVISIBLE);
+                ivDsBg.setVisibility(View.INVISIBLE);
+                ivLxrBg.setVisibility(View.INVISIBLE);
+                ivYjBg.setVisibility(View.INVISIBLE);
+                ivYysBg.setVisibility(View.INVISIBLE);
+
+                tvIDcard.setTextColor(getResources().getColor(R.color.info_text));
+                tvLxr.setTextColor(getResources().getColor(R.color.info_text));
+                tvYj.setTextColor(getResources().getColor(R.color.info_text));
+                tvYys.setTextColor(getResources().getColor(R.color.info_text));
+                tvDs.setTextColor(getResources().getColor(R.color.info_text));
+            }
         }
     }
 
@@ -228,4 +335,68 @@ public class InfoSupplementaryActivity extends BaseFragmentActivity {
     public void goBack() {
         this.finish();
     }
+
+    String key;
+
+    public void confirm(String msg, String key) {
+        this.key = key;
+        DialogHelper.alert(this, msg, getString(R.string.dialog_konw), listener).show();
+    }
+
+    DialogInterface.OnClickListener listener = new DialogInterface.OnClickListener() {
+        @Override
+        public void onClick(DialogInterface dialog, int which) {
+            dialog.dismiss();
+
+            HashMap<String, String> params = new HashMap<>();
+            params.put("userId", App.loginUserInfo.getUserId() + "");
+            params.put("key", key);
+            RespListener respListener = new RespListener(key);
+            respListener.onRespError = InfoSupplementaryActivity.this;
+            respListener.onRespSuccess = new RespListener.OnRespSuccess() {
+                @Override
+                public void onSuccess(JSONObject response, String extras) {
+                    App.isInHand = false;
+                    JSONObject json = App.allstatusMap.get(extras);
+                    if (json != null)
+                        try {
+                            json.putOpt("status", 0);
+                        } catch (JSONException e) {
+                        }
+                }
+            };
+            CustomStringRequest request = new CustomStringRequest(Request.Method.POST, DsApi.STATUSUPDATE, getRespListener(), params);
+            executeRequest(request);
+
+        }
+    };
+
+    public void inputDialog(String message, String imageBase64, String key) {
+        this.key = key;
+        DialogHelper.verifyDialog(this, message, imageBase64, onVerifyOkClick);
+    }
+
+    VerifyDialog.OnVerifyOkClick onVerifyOkClick = new VerifyDialog.OnVerifyOkClick() {
+        @Override
+        public void onVerifyOkClick(Dialog dialog, String editString) {
+            dialog.dismiss();
+
+            HashMap<String, String> params = new HashMap<>();
+            params.put("userId", App.loginUserInfo.getUserId() + "");
+            params.put("key", key);
+            params.put("code", editString);
+            RespListener respListener = new RespListener(key);
+            respListener.onRespError = InfoSupplementaryActivity.this;
+            respListener.onRespSuccess = new RespListener.OnRespSuccess() {
+                @Override
+                public void onSuccess(JSONObject response, String extras) {
+                    App.isInHand = false;
+                    App.verifyMap.remove(extras);
+                }
+            };
+            CustomStringRequest request = new CustomStringRequest(Request.Method.POST, DsApi.SUBMITVERFYCODE, getRespListener(), params);
+            executeRequest(request);
+        }
+    };
+
 }

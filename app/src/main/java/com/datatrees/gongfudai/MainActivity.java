@@ -175,7 +175,7 @@ public class MainActivity extends BaseActivity {
 
     @OnClick(R.id.btn_contacts_access)
     public void accessContacts() {
-      List<ContactData> contactDataList = ContactsAccessPublic.getContacts(this, null);
+      List<ContactData> contactDataList = ContactsAccessPublic.getContactsAll(this, null);
     }
 
     @OnClick(R.id.btn_cutsom_webview)

@@ -8,9 +8,11 @@ import android.net.Uri;
 import android.provider.ContactsContract;
 import android.provider.ContactsContract.CommonDataKinds.Phone;
 import android.text.TextUtils;
-import android.util.Log;
 
 import com.datatrees.gongfudai.model.ContactData;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,10 +22,10 @@ import java.util.List;
  */
 public class ContactsAccessPublic {
 
-    public static List<ContactData> getContacts(Context mContext, List<ContactData> content) {
+    public static List<ContactData> getContactsAll(Context mContext, List<ContactData> content) {
         if (content == null)
             content = new ArrayList<>();
-        content.addAll(getPhoneContacts(mContext));
+        content.addAll(getContacts(mContext));
         content.addAll(getSIMContacts(mContext));
         return content;
     }
@@ -47,16 +49,20 @@ public class ContactsAccessPublic {
                 //得到联系人名称
                 String contactName = phoneCursor.getString(ContactsQuery.PHONES_DISPLAY_NAME_INDEX);
                 String contactId = phoneCursor.getString(ContactsQuery.PHONES_CONTACT_ID);
+                String phoneTypeName = mContext.getResources().getString(ContactsContract.CommonDataKinds.Phone.getTypeLabelResource(phoneCursor.getInt(ContactsQuery.PHONES_TYPE)));
 
                 contactData = new ContactData();
+                contactData.setFn(contactName);
                 contactData.setNumber(phoneNumber);
                 contactData.setContactName(contactName);
                 contactData.setId(contactId);
-                Log.i("TAG", contactData.toString());
+                contactData.setType(phoneTypeName);
+                LogUtil.i("TAG", contactData.toString());
                 contactDatas.add(contactData);
             }
             phoneCursor.close();
         }
+
         return contactDatas;
     }
 
@@ -84,11 +90,21 @@ public class ContactsAccessPublic {
                         .getString(ContactsQuery.PHONES_DISPLAY_NAME_INDEX);
                 String contactId = phoneCursor.getString(ContactsQuery.PHONES_CONTACT_ID);
 
+
+                JSONObject phontObj = new JSONObject();
+
                 contactData = new ContactData();
-                contactData.setNumber(phoneNumber);
-                contactData.setContactName(contactName);
-                contactData.setId(contactId);
-                Log.i("TAG", contactData.toString());
+                try {
+                    contactData.setNumber(phoneNumber);
+                    contactData.setContactName(contactName);
+                    contactData.setId(contactId);
+                    phontObj.put("type", "");
+                    phontObj.put("phone", phoneNumber);
+                    contactData.getPhoneArray().put(phontObj);
+                } catch (JSONException e) {
+                }
+
+                LogUtil.i("TAG", contactData.toString());
                 contactDatas.add(contactData);
             }
             phoneCursor.close();
@@ -107,7 +123,7 @@ public class ContactsAccessPublic {
         List<ContactData> data = new ArrayList<>();
 
         ContentResolver resolver = context.getContentResolver();
-        Cursor c = resolver.query(contactData, ContactsQuery.PROJECTION,null,null, null);
+        Cursor c = resolver.query(contactData, ContactsQuery.PROJECTION, null, null, null);
         c.moveToFirst();
 
         int phoneColumn = c.getColumnIndex(ContactsContract.Contacts.HAS_PHONE_NUMBER);
@@ -133,40 +149,57 @@ public class ContactsAccessPublic {
         return data;
     }
 
-    public static void getContacts(Context context) {
+    public static List<ContactData> getContacts(Context context) {
+        List<ContactData> datas = new ArrayList<>();
         ContentResolver resolver = context.getContentResolver();
         Cursor cursor = resolver.query(ContactsQuery.CONTENT_URI, ContactsQuery.PROJECTION,
                 ContactsQuery.SELECTION,
                 null,
                 ContactsQuery.SORT_ORDER);
         while (cursor.moveToNext()) {
+            ContactData contactData = new ContactData();
+
             //取得联系人的名字索引
             String contact = cursor.getString(ContactsQuery.DISPLAY_NAME);
             //取得联系人的ID索引值
             String contactId = cursor.getString(ContactsQuery.ID);
             Cursor phone = resolver.query(Phone.CONTENT_URI, ContactsQuery.PHONES_NUMBER_PROJECTION, ContactsQuery.PHONES_NUMBER_SELECTION, new String[]{contactId}, null);
 
+            contactData.setId(contactId);
+            contactData.setContactName(contact);
+            contactData.setFn(contact);
             //一个人可能有几个号码
             while (phone.moveToNext()) {
-                String strPhoneNumber = phone
-                        .getString(ContactsQuery.PHONE_NUMBER);
+                try {
+                    JSONObject jsonObject = new JSONObject();
+                    String strPhoneNumber = phone
+                            .getString(ContactsQuery.PHONE_NUMBER);
+                    int type = phone.getInt(2);
+                    String phoneLabel = context.getResources().getString(ContactsContract.CommonDataKinds.Phone.getTypeLabelResource(type));
+                    jsonObject.put("phone", strPhoneNumber);
+                    jsonObject.put("type", phoneLabel);
+                    contactData.getPhoneArray().put(jsonObject);
+                } catch (JSONException e) {
+                }
             }
             phone.close();
+            datas.add(contactData);
         }
         cursor.close();
-
+        return datas;
     }
+
 
     public interface ContactsQuery {
 
-        String[] PHONES_NUMBER_PROJECTION = new String[]{Phone.NUMBER, VersionUtils.hasHoneycomb() ? Phone.DISPLAY_NAME_PRIMARY : Phone.DISPLAY_NAME,};
+        String[] PHONES_NUMBER_PROJECTION = new String[]{Phone.NUMBER, VersionUtils.hasHoneycomb() ? Phone.DISPLAY_NAME_PRIMARY : Phone.DISPLAY_NAME, Phone.TYPE};
         String PHONES_NUMBER_SELECTION = Phone.CONTACT_ID + "= ?";
 
         /**
          * 获取库Phon表字段*
          */
         String[] PHONES_PROJECTION = new String[]{
-                VersionUtils.hasHoneycomb() ? Phone.DISPLAY_NAME_PRIMARY : Phone.DISPLAY_NAME, Phone.NUMBER, Phone.PHOTO_ID, Phone.CONTACT_ID};
+                VersionUtils.hasHoneycomb() ? Phone.DISPLAY_NAME_PRIMARY : Phone.DISPLAY_NAME, Phone.NUMBER, Phone.PHOTO_ID, Phone.CONTACT_ID, Phone.TYPE, Phone.TIMES_CONTACTED, Phone.LAST_TIME_CONTACTED};
 
         /**
          * 联系人显示名称*
@@ -182,6 +215,13 @@ public class ContactsAccessPublic {
          * contact id
          */
         int PHONES_CONTACT_ID = 3;
+
+
+        int PHONES_TYPE = 4;
+
+        int PHONES_TIMES_CONTACTED = 5;
+
+        int PHOENS_LAST_TIME_CONTACTED = 6;
 
         // A content URI for the Contacts table
         Uri CONTENT_URI = ContactsContract.Contacts.CONTENT_URI;
@@ -231,6 +271,8 @@ public class ContactsAccessPublic {
                 // The sort order column for the returned Cursor, used by the AlphabetIndexer
                 SORT_ORDER,
                 ContactsContract.Contacts.HAS_PHONE_NUMBER,
+                ContactsContract.Contacts.TIMES_CONTACTED,
+                ContactsContract.Contacts.LAST_TIME_CONTACTED,
         };
 
         // The query column numbers which map to each value in the projection

@@ -2,22 +2,21 @@ package com.datatrees.gongfudai.ui;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.PersistableBundle;
-import android.util.Log;
 import android.view.KeyEvent;
-import android.webkit.WebView;
-import android.webkit.WebViewClient;
+import android.webkit.CookieManager;
+import android.webkit.CookieSyncManager;
 import android.widget.TextView;
 
 import com.datatrees.gongfudai.R;
 import com.datatrees.gongfudai.base.BaseActivity;
 import com.datatrees.gongfudai.utils.BK;
+import com.datatrees.gongfudai.utils.LogUtil;
 import com.datatrees.gongfudai.widget.CustomWebView;
 
 import java.util.Arrays;
-import java.util.Collections;
 
 import butterknife.Bind;
+import butterknife.OnClick;
 
 /**
  * Created by ucmed on 2015/7/31.
@@ -25,27 +24,57 @@ import butterknife.Bind;
 public class WebClientActivity extends BaseActivity implements CustomWebView.OnVisitEndUrl {
     @Bind(R.id.custom_webview)
     CustomWebView mWebView;
+    @Bind(R.id.tv_title)
+    TextView tv_title;
 
     String url;
     String[] endUrls;
+    String title;
+    String cssStr;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_web_client);
         BK.bind(this);
+        clearCookieHis();
+
         Intent extras = getIntent();
+        cssStr = extras.getStringExtra("insert_css");
+        title = extras.getStringExtra("visit_title");
         url = extras.getStringExtra("visit_url");
+        tv_title.setText(title);
         endUrls = extras.getStringArrayExtra("end_urls");
         mWebView.setOnVisitEndUrl(this);
-        mWebView.customLoadUrl(url, endUrls);
+
+        StringBuilder sb = new StringBuilder("<style type=\"text/css\">");
+        sb.append(cssStr);
+        sb.append("</style>");
+        mWebView.customLoadUrl(url, endUrls, sb.toString());
+    }
+
+    private void clearCookieHis() {
+        CookieSyncManager.createInstance(this);
+        CookieSyncManager.getInstance().startSync();
+        CookieManager.getInstance().removeSessionCookie();
+        mWebView.clearCache(true);
+        mWebView.clearHistory();
     }
 
     @Override
-    public void onVisitEndUrl(String endUrl, String[] cookies) {
-        Log.i("TAG", "end cookies size-->" + cookies.length);
-        Log.i("TAG", "end cookies-->" + Arrays.toString(cookies));
-        Log.i("TAG", "end url-->" + endUrl);
+    public void onVisitEndUrl(String endUrl, String[] cookies, String headerStr) {
+        LogUtil.i("TAG", "end cookies size-->" + cookies.length);
+        LogUtil.i("TAG", "end cookies-->" + Arrays.toString(cookies));
+        LogUtil.i("TAG", "end url-->" + endUrl);
+        LogUtil.i("TAG", "end header-->" + headerStr);
+
+        clearCookieHis();
+
+        Intent data = new Intent();
+        data.putExtra("end_cookies", cookies);
+        data.putExtra("end_url", endUrl);
+        data.putExtra("end_header", headerStr);
+        setResult(RESULT_OK);
         this.finish();
     }
 
@@ -58,4 +87,10 @@ public class WebClientActivity extends BaseActivity implements CustomWebView.OnV
         }
         return super.onKeyDown(keyCode, event);
     }
+
+    @OnClick(R.id.ibtn_back)
+    public void goBack() {
+        this.finish();
+    }
+
 }

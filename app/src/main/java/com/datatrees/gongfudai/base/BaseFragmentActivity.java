@@ -15,6 +15,7 @@ import com.umeng.analytics.MobclickAgent;
 import org.json.JSONObject;
 
 /**
+ * basefragmentactivity
  * Created by ucmed on 2015/8/5.
  */
 public class BaseFragmentActivity extends FragmentActivity implements RespListener.OnRespError, RespListener.OnRespSuccess {

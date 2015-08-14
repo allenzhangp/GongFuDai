@@ -24,8 +24,15 @@
 
     <!--login-->
     <string name="login">登陆</string>
+    <string name="login_register">注册</string>
     <string name="login_logo">Logo</string>
     <string name="login_name">GongFuDai</string>
+    <string name="login_forget_password">忘记密码?</string>
+    <string name="login_register_agere">同意</string>
+    <string name="login_register_protocol">《功夫贷用户注册协议》</string>
+    <string name="login_send_verify">发送验证码</string>
+    <string name="login_count_down">(%d)秒后重发</string>
+    <string name="login_verify_tip">我们已将验证码发送到您的手机</string>
 
 
     <!-- home-->

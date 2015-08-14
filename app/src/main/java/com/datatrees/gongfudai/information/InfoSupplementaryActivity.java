@@ -110,41 +110,6 @@ public class InfoSupplementaryActivity extends BaseFragmentActivity {
 
     }
 
-
-    private void getStatus() {
-        for (String keyStr : App.allstatusMap.keySet()) {
-            JSONObject keyObj = App.allstatusMap.get(keyStr);
-            if (keyObj == null)
-                continue;
-            int status = keyObj.optInt("status");
-            if ("idcard".equals(keyStr)) {
-                if (status == 1 || status == 2) {
-                    changeBgColor(0);
-                }
-            } else if ("operator".equals(keyStr)) {
-                if (status == 1 || status == 2) {
-                    changeBgColor(3);
-                }
-
-            } else if ("ecommerce".equals(keyStr)) {
-                if (status == 1 || status == 2) {
-                    changeBgColor(4);
-                }
-            } else if ("email".equals(keyStr)) {
-                if (status == 1 || status == 2) {
-                    changeBgColor(2);
-                }
-
-            } else if ("ice".equals(keyStr)) {
-
-            } else if ("contacts".equals(keyStr)) {
-                if (status == 1 || status == 2) {
-                    changeBgColor(1);
-                }
-            }
-        }
-    }
-
     private void request() {
         String latitude = PreferenceUtils.getPrefString(this, "latitude", "");
         String longitude = PreferenceUtils.getPrefString(this, "longitude", "");

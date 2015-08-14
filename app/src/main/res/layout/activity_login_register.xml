@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/login_bg_color"
+    android:orientation="vertical">
+
+    <TextView
+        android:layout_width="@dimen/height_cheats"
+        android:layout_height="@dimen/height_cheats"
+        android:layout_gravity="center"
+        android:layout_marginTop="@dimen/header_height"
+        android:background="@drawable/shape_circle_logo"
+        android:gravity="center"
+        android:text="@string/login_logo"
+        android:textColor="@color/white"
+        android:textSize="@dimen/size_big"
+        android:textStyle="bold" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="@dimen/padding_half"
+        android:text="@string/login_name"
+        android:textColor="@color/login_word_color" />
+
+
+    <Button
+        android:id="@+id/btn_register"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/padding_double"
+        android:layout_marginRight="@dimen/padding_double"
+        android:layout_marginTop="@dimen/height_cheats"
+        android:background="@drawable/btn_submit_selector"
+        android:text="@string/login_register"
+        android:textColor="@color/yellow"
+        android:textSize="@dimen/size_title" />
+
+    <Button
+        android:id="@+id/btn_submit"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/padding_double"
+        android:layout_marginRight="@dimen/padding_double"
+        android:layout_marginTop="@dimen/padding"
+        android:background="@drawable/btn_submit_selector"
+        android:text="@string/login"
+        android:textColor="@color/login_word_color"
+        android:textSize="@dimen/size_title" />
+</LinearLayout>

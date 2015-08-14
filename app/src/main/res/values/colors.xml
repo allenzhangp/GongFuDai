@@ -12,4 +12,8 @@
     <color name="hint">#999999</color>
     <color name="transparent">#00000000</color>
 
+    <!--login-->
+    <color name="login_bg_color">#57b3ff</color>
+    <color name="login_word_color">#eeeeee</color>
+
 </resources>

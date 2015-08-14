@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/login_bg_color"
+    android:orientation="vertical">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="@string/login_register"
+        android:textColor="@color/login_word_color"
+        android:textSize="@dimen/size_big" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="@string/login_verify_tip"
+        android:textColor="@color/login_word_color"
+        android:textSize="@dimen/size_normal" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="151 4894 8349"
+        android:textColor="@color/login_word_color"
+        android:textSize="@dimen/size_big" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/padding_half"
+        android:layout_marginRight="@dimen/padding_half"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <EditText
+            android:id="@+id/et_password"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@drawable/bg_edittext_selector"
+            android:singleLine="true" />
+
+        <Button
+            android:id="@+id/ibtn_clear"
+            android:layout_width="130dp"
+            android:layout_height="wrap_content"
+            android:text="@string/login_send_verify" />
+
+    </LinearLayout>
+
+
+    <Button
+        android:id="@+id/btn_next"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/padding_double"
+        android:layout_marginRight="@dimen/padding_double"
+        android:layout_marginTop="@dimen/padding"
+        android:background="@drawable/btn_submit_selector"
+        android:enabled="false"
+        android:text="@string/next_step"
+        android:textColor="@color/btn_submit_txt_selector"
+        android:textSize="@dimen/size_title" />
+
+</LinearLayout>

@@ -5,17 +5,20 @@ import android.app.Dialog;
 import android.app.ProgressDialog;
 
 import com.datatrees.gongfudai.R;
+import com.datatrees.gongfudai.net.RespListener;
 import com.datatrees.gongfudai.net.VolleyUtil;
+import com.datatrees.gongfudai.utils.StringUtils;
 import com.datatrees.gongfudai.utils.ToastUtils;
 import com.datatrees.gongfudai.volley.Request;
-import com.datatrees.gongfudai.volley.Response;
-import com.datatrees.gongfudai.volley.VolleyError;
 import com.umeng.analytics.MobclickAgent;
 
+import org.json.JSONObject;
+
 /**
+ * baseactivity
  * Created by zhangping on 15/7/25.
  */
-public class BaseActivity extends Activity {
+public class BaseActivity extends Activity implements RespListener.OnRespError, RespListener.OnRespSuccess {
     Dialog loading;
 
     @Override
@@ -47,7 +50,8 @@ public class BaseActivity extends Activity {
                 loading = ProgressDialog.show(this, null,
                         getString(R.string.loading_dialog_message), false, true);
             } else {
-                loading.show();
+                if (!loading.isShowing())
+                    loading.show();
             }
         } catch (Exception e) {
         }
@@ -75,13 +79,26 @@ public class BaseActivity extends Activity {
         VolleyUtil.addRequest(request);
     }
 
-    protected Response.ErrorListener errorListener() {
-        return new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                dismiss();
-                ToastUtils.showShort(error.getMessage());
-            }
-        };
+
+    @Override
+    public void onError(String error, String extras) {
+        dismiss();
+        if (StringUtils.isNotTrimBlank(error)) {
+            ToastUtils.showShort(error);
+        }
+    }
+
+    @Override
+    public void onSuccess(JSONObject response, String extras) {
+        dismiss();
+        if (response == null)
+            return;
+    }
+
+    public RespListener getRespListener() {
+        RespListener respListener = new RespListener();
+        respListener.onRespError = this;
+        respListener.onRespSuccess = this;
+        return respListener;
     }
 }

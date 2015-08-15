@@ -92,7 +92,7 @@ public class EmailValidFragmfent extends BaseFragment {
     public void onResume() {
         super.onResume();
         if (!getConfigSuccess) {
-            CustomStringRequest request = new CustomStringRequest(Request.Method.GET, String.format(DsApi.LIST, DsApi.GETCONFIG), getRespListener());
+            CustomStringRequest request = new CustomStringRequest(Request.Method.GET,DsApi.getTokenUserId(String.format(DsApi.LIST, DsApi.GETCONFIG)), getRespListener());
             executeRequest(request);
         }
     }

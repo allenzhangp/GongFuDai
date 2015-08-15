@@ -113,6 +113,8 @@ public class IDCardFragment extends BaseFragment implements View.OnClickListener
     public boolean isFinish = true;
     private boolean isUploadPhotoFinish = false;//三张照片拍完上传成功之后为true
 
+    private long timestamp = 0;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_idcard, container, false);
@@ -125,6 +127,8 @@ public class IDCardFragment extends BaseFragment implements View.OnClickListener
         bucket = App.ossService.getOssBucket(App.BUCKETNAME);
         et_idcard.addTextChangedListener(textWatcher);
         et_real_name.addTextChangedListener(textWatcher);
+
+        timestamp = System.currentTimeMillis();
 
         llyt_take_tip1.setOnClickListener(this);
         llyt_take_tip2.setOnClickListener(null);
@@ -229,9 +233,10 @@ public class IDCardFragment extends BaseFragment implements View.OnClickListener
         return file;
     }
 
+
     private void uploadFile2OSS(String filePath) {
         String fileName = filePath.substring(filePath.lastIndexOf("/") + 1);
-        long expirationTime = PreferenceUtils.getPrefLong(App.getContext(), App.EXPIRATION, 0) / 1000;
+        long expirationTime = timestamp;
         OSSFile ossFile = App.ossService.getOssFile(bucket, App.loginUserInfo.getUserId() + File.separator + expirationTime + File.separator + fileName);
         try {
             ossFile.setUploadFilePath(filePath, "file");
@@ -302,7 +307,7 @@ public class IDCardFragment extends BaseFragment implements View.OnClickListener
                                 isUploadPhotoFinish = true;
                                 Map<String, String> params = new HashMap<String, String>();
                                 params.put("userId", App.loginUserInfo.getUserId() + "");
-                                params.put("timestamp", App.timestamp + "");
+                                params.put("timestamp", timestamp + "");
                                 CustomStringRequest request = new CustomStringRequest(Request.Method.POST, String.format(DsApi.LIST, DsApi.GETICR), getRespListener(), params);
                                 executeRequest(request);
                             }

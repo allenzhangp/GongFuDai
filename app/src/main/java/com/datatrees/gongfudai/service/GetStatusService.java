@@ -10,15 +10,12 @@ import com.datatrees.gongfudai.net.RespListener;
 import com.datatrees.gongfudai.net.VolleyUtil;
 import com.datatrees.gongfudai.utils.DsApi;
 import com.datatrees.gongfudai.utils.LogUtil;
-import com.datatrees.gongfudai.utils.PreferenceUtils;
 import com.datatrees.gongfudai.utils.StringUtils;
 import com.datatrees.gongfudai.utils.ToastUtils;
 import com.datatrees.gongfudai.volley.Request;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
-
-import java.util.HashMap;
 
 
 /**
@@ -34,11 +31,7 @@ public class GetStatusService extends Service implements RespListener.OnRespSucc
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
 
-        boolean isStart = PreferenceUtils.getPrefBoolean(App.getContext(), "GetStatusThread_IS_START", false);
-        if (!isStart) {
-            PreferenceUtils.setPrefBoolean(App.getContext(), "GetStatusThread_IS_START", true);
-            new GetStatusThread().start();
-        }
+        new GetStatusThread().start();
 
         return super.onStartCommand(intent, START_STICKY, startId);
     }
@@ -70,7 +63,7 @@ public class GetStatusService extends Service implements RespListener.OnRespSucc
             App.allstatusMap.put("email", allstatusJSON.optJSONObject("email"));
             App.allstatusMap.put("ice", allstatusJSON.optJSONObject("ice"));
             App.allstatusMap.put("contacts", allstatusJSON.optJSONObject("contacts"));
-            JSONArray verifyArray = jsonResp.optJSONArray("operator");
+            JSONArray verifyArray = jsonResp.optJSONArray("operate");
             for (int i = 0; i < verifyArray.length(); i++) {
                 JSONObject obj = verifyArray.optJSONObject(i);
                 App.verifyMap.put(obj.optString("key"), obj);
@@ -88,14 +81,11 @@ public class GetStatusService extends Service implements RespListener.OnRespSucc
         @Override
         public void run() {
             while (true) {
-                LogUtil.i("GetStatusThread time --->" + System.currentTimeMillis());
                 if (!App.isInHand) {
                     RespListener respListener = new RespListener();
                     respListener.onRespError = GetStatusService.this;
                     respListener.onRespSuccess = GetStatusService.this;
-                    HashMap<String, String> params = new HashMap<>();
-                    params.put("userId", App.loginUserInfo.getUserId() + "");
-                    CustomStringRequest request = new CustomStringRequest(Request.Method.GET, String.format(DsApi.LIST, DsApi.GETPRESTATUS), respListener, params);
+                    CustomStringRequest request = new CustomStringRequest(Request.Method.GET, DsApi.getTokenUserId(String.format(DsApi.LIST, DsApi.GETPRESTATUS)), respListener);
                     VolleyUtil.addRequest(request);
                     LogUtil.i("GetStatusThread send Request ");
                 }
@@ -105,7 +95,6 @@ public class GetStatusService extends Service implements RespListener.OnRespSucc
                     e.printStackTrace();
                 }
             }
-
         }
     }
 }

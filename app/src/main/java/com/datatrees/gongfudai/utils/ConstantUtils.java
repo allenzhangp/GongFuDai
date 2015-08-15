@@ -11,4 +11,5 @@ public class ConstantUtils {
     public static final String LOGIN_TOKEN = "login_token";
 
     public final static long EXIT_TIME = 3 * 1000;
+    public static final String GETSTATUSTHREAD_IS_START = "GetStatusThread_IS_START";
 }

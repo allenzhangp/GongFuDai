@@ -1,6 +1,5 @@
 package com.datatrees.gongfudai.net;
 
-import com.datatrees.gongfudai.App;
 import com.datatrees.gongfudai.utils.LogUtil;
 import com.datatrees.gongfudai.utils.StringUtils;
 import com.datatrees.gongfudai.volley.Response;
@@ -45,8 +44,6 @@ public class RespListener implements Response.Listener<String>, Response.ErrorLi
                 if (onRespSuccess != null)
                     onRespSuccess.onSuccess(obj.optString("data"), extras);
             }
-            long timestamp = obj.has("timestamp") ? obj.optLong("timestamp") : obj.optLong("time");
-            App.timestamp = timestamp;
         } catch (JSONException e) {
             if (onRespError != null)
                 onRespError.onError(e.getMessage(), extras);

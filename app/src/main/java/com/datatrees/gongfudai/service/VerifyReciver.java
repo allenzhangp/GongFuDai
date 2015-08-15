@@ -41,7 +41,11 @@ public class VerifyReciver extends BroadcastReceiver {
                         JSONObject valueObj = App.verifyMap.get(keyStr);
                         if (valueObj != null) {
                             App.isInHand = true;
-                            homeActivity.inputDialog(valueObj.optString("tip"), valueObj.optString("codeContent"), valueObj.optString("key"));
+                            if (valueObj.optString("codeType").equals("image"))
+                                homeActivity.inputDialog(valueObj.optString("tip"), valueObj.optString("codeContent"), valueObj.optString("key"));
+                            else
+                                homeActivity.inputDialog(valueObj.optString("tip"), null, valueObj.optString("key"));
+
                             break;
                         }
                     }
@@ -67,7 +71,11 @@ public class VerifyReciver extends BroadcastReceiver {
                     JSONObject valueObj = App.verifyMap.get(keyStr);
                     if (valueObj != null) {
                         App.isInHand = true;
-                        infoSupplementaryActivity.inputDialog(valueObj.optString("tip"), valueObj.optString("codeContent"), valueObj.optString("key"));
+                        if (valueObj.optString("codeType").equals("image"))
+                            infoSupplementaryActivity.inputDialog(valueObj.optString("tip"), valueObj.optString("codeContent"), valueObj.optString("key"));
+                        else {
+                            infoSupplementaryActivity.inputDialog(valueObj.optString("tip"), null, valueObj.optString("key"));
+                        }
                         break;
                     }
                 }

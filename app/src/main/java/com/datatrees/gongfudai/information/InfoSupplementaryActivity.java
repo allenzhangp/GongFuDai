@@ -123,7 +123,7 @@ public class InfoSupplementaryActivity extends BaseFragmentActivity {
 
         StringBuilder urls = new StringBuilder();
         urls.append(String.format(String.format(DsApi.LIST, DsApi.PRECHECK)));
-        urls.append("?userId=").append(App.loginUserInfo.getUserId()).append("&lng=" + longitude + "&lat=" + latitude + "&province=" + province);
+        urls.append("?userId=").append(App.loginUserInfo.getUserId()).append("&token=").append(App.loginUserInfo.getToken()).append("&lng=" + longitude + "&lat=" + latitude + "&province=" + province);
         CustomStringRequest request = new CustomStringRequest(Request.Method.GET, urls.toString(), getRespListener());
         executeRequest(request);
     }

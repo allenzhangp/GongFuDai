@@ -44,8 +44,6 @@ public class App extends Application {
 
     public static LoginUserInfo loginUserInfo;
 
-    public static long timestamp = 0;
-
     public static HashMap<String, JSONObject> allstatusMap;
 
     public static HashMap<String, JSONObject> verifyMap;

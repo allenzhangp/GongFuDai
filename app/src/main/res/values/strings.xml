@@ -6,6 +6,7 @@
     <string name="pick_no_sdcard">没有sd卡</string>
     <string name="pick_video">选择视频</string>
 
+    <string name="exit_tip">请再按一次退出</string>
     <string name="submit_txt">提交</string>
     <string name="next_step">下一步</string>
     <string name="upload_fail">上传失败!</string>
@@ -24,6 +25,7 @@
 
     <!--login-->
     <string name="login">登陆</string>
+    <string name="login_register_fast">快速注册</string>
     <string name="login_register">注册</string>
     <string name="login_logo">Logo</string>
     <string name="login_name">GongFuDai</string>
@@ -32,8 +34,13 @@
     <string name="login_register_protocol">《功夫贷用户注册协议》</string>
     <string name="login_send_verify">发送验证码</string>
     <string name="login_count_down">(%d)秒后重发</string>
-    <string name="login_verify_tip">我们已将验证码发送到您的手机</string>
-
+    <string name="login_verify_send">我们已将验证码发送到您的手机</string>
+    <string name="login_verify_tip">我们将验证码发送到您的手机</string>
+    <string name="login_register_pass_hint">6-12位密码</string>
+    <string name="login_register_phone">输入11位手机号码</string>
+    <string name="login_username_hint">输入用户名</string>
+    <string name="login_pass_hint">输入密码</string>
+    <string name="login_verify_hint">请输入短信中的验证码</string>
 
     <!-- home-->
     <string name="home_sw">声望</string>

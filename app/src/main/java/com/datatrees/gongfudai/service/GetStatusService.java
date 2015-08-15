@@ -58,18 +58,19 @@ public class GetStatusService extends Service implements RespListener.OnRespSucc
     }
 
     @Override
-    public void onSuccess(JSONObject response, String extras) {
+    public void onSuccess(String response, String extras) {
         if (response == null || StringUtils.isTrimBlank(response.toString()))
             return;
         try {
-            JSONObject allstatusJSON = response.optJSONObject("allstatus");
+            JSONObject jsonResp = new JSONObject(response);
+            JSONObject allstatusJSON = jsonResp.optJSONObject("allstatus");
             App.allstatusMap.put("idcard", allstatusJSON.optJSONObject("idcard"));
             App.allstatusMap.put("operator", allstatusJSON.optJSONObject("operator"));
             App.allstatusMap.put("ecommerce", allstatusJSON.optJSONObject("ecommerce"));
             App.allstatusMap.put("email", allstatusJSON.optJSONObject("email"));
             App.allstatusMap.put("ice", allstatusJSON.optJSONObject("ice"));
             App.allstatusMap.put("contacts", allstatusJSON.optJSONObject("contacts"));
-            JSONArray verifyArray = response.optJSONArray("operator");
+            JSONArray verifyArray = jsonResp.optJSONArray("operator");
             for (int i = 0; i < verifyArray.length(); i++) {
                 JSONObject obj = verifyArray.optJSONObject(i);
                 App.verifyMap.put(obj.optString("key"), obj);
@@ -94,13 +95,14 @@ public class GetStatusService extends Service implements RespListener.OnRespSucc
                     respListener.onRespSuccess = GetStatusService.this;
                     HashMap<String, String> params = new HashMap<>();
                     params.put("userId", App.loginUserInfo.getUserId() + "");
-                    CustomStringRequest request = new CustomStringRequest(Request.Method.GET, DsApi.GETPRESTATUS, respListener, params);
+                    CustomStringRequest request = new CustomStringRequest(Request.Method.GET, String.format(DsApi.LIST, DsApi.GETPRESTATUS), respListener, params);
                     VolleyUtil.addRequest(request);
                     LogUtil.i("GetStatusThread send Request ");
                 }
                 try {
                     sleep(TIME_INTERVAL);
                 } catch (InterruptedException e) {
+                    e.printStackTrace();
                 }
             }
 

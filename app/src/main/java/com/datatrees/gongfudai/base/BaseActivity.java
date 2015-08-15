@@ -12,8 +12,6 @@ import com.datatrees.gongfudai.utils.ToastUtils;
 import com.datatrees.gongfudai.volley.Request;
 import com.umeng.analytics.MobclickAgent;
 
-import org.json.JSONObject;
-
 /**
  * baseactivity
  * Created by zhangping on 15/7/25.
@@ -89,7 +87,7 @@ public class BaseActivity extends Activity implements RespListener.OnRespError, 
     }
 
     @Override
-    public void onSuccess(JSONObject response, String extras) {
+    public void onSuccess(String response, String extras) {
         dismiss();
         if (response == null)
             return;

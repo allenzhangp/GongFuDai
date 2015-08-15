@@ -6,12 +6,20 @@ package com.datatrees.gongfudai.model;
 public class LoginUserInfo {
     private long userId;
     private String userName;
-    private String phone;
+    private String token;
 
     public LoginUserInfo() {
         userId = 10;
         userName = "";
-        phone = "";
+        token = "";
+    }
+
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
     }
 
     public String getUserName() {
@@ -30,11 +38,4 @@ public class LoginUserInfo {
         this.userId = userId;
     }
 
-    public String getPhone() {
-        return phone;
-    }
-
-    public void setPhone(String phone) {
-        this.phone = phone;
-    }
 }

@@ -21,6 +21,7 @@ import com.datatrees.gongfudai.utils.ToastUtils;
 import com.datatrees.gongfudai.volley.Request;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.Arrays;
@@ -42,7 +43,7 @@ public class EmailValidFragmfent extends BaseFragment {
     boolean isEmailValid = false;
     private static final int WEBCLINET_CODE = 8;
 
-    private String key;
+    private String website;
 
     boolean isQQvalid = false;
     boolean is126Valid = false;
@@ -60,23 +61,30 @@ public class EmailValidFragmfent extends BaseFragment {
     }
 
     @Override
-    public void onSuccess(JSONObject response, String extras) {
+    public void onSuccess(String response, String extras) {
         super.onSuccess(response, extras);
-        getConfigSuccess = true;
-        urlDatas = new HashMap<>();
-        JSONArray jsonArray = response.optJSONArray("mail");
-        int lengh = jsonArray.length();
-        for (int i = 0; i < lengh; i++) {
-            JSONObject obj = jsonArray.optJSONObject(i);
-            EmailValidModel model = new EmailValidModel();
-            String key = obj.optString("key");
-            model.key = key;
-            model.endUrl = obj.optString("endUrl");
-            model.css = obj.optString("css");
-            model.image = obj.optString("image");
-            model.startUrl = obj.optString("startUrl");
-            model.title = obj.optString("title");
-            urlDatas.put(key, model);
+        JSONObject jsonResp = null;
+        try {
+            jsonResp = new JSONObject(response);
+            getConfigSuccess = true;
+            urlDatas = new HashMap<>();
+            JSONArray jsonArray = jsonResp.optJSONArray("mail");
+            int lengh = jsonArray.length();
+            for (int i = 0; i < lengh; i++) {
+                JSONObject obj = jsonArray.optJSONObject(i);
+                EmailValidModel model = new EmailValidModel();
+                String key = obj.optString("key");
+                model.key = key;
+                model.endUrl = obj.optString("endUrl");
+                model.css = obj.optString("css");
+                model.image = obj.optString("image");
+                model.startUrl = obj.optString("startUrl");
+                model.title = obj.optString("title");
+                model.website = obj.optString("website");
+                urlDatas.put(key, model);
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
         }
     }
 
@@ -94,7 +102,7 @@ public class EmailValidFragmfent extends BaseFragment {
         if (!getConfigSuccess || urlDatas == null)
             return;
         JSONObject emailJSON = App.allstatusMap.get("email");
-        if(emailJSON != null && (emailJSON.optInt("status") == 1 || emailJSON.optInt("status") == 2))
+        if (emailJSON != null && (emailJSON.optInt("status") == 1 || emailJSON.optInt("status") == 2))
             return;
         EmailValidModel model = null;
         if (view.getId() == R.id.ibtn_126) {
@@ -105,7 +113,7 @@ public class EmailValidFragmfent extends BaseFragment {
             model = urlDatas.get("qq");
         }
         if (model != null) {
-            key = model.key;
+            website = model.website;
             String[] endUrls = {model.endUrl};
             if (model != null) {
                 startActivityForResult(new Intent(getActivity(), WebClientActivity.class).putExtra("insert_css", model.css).putExtra("visit_title", model.title).putExtra("visit_url", model.startUrl).putExtra("end_urls", endUrls), WEBCLINET_CODE);
@@ -128,15 +136,16 @@ public class EmailValidFragmfent extends BaseFragment {
         String end_header = data.getStringExtra("end_header");
         HashMap<String, String> params = new HashMap<>();
         params.put("userId", App.loginUserInfo.getUserId() + "");
-        params.put("key", key);
+        params.put("key", website);
         params.put("header", end_header);
         params.put("cookie", Arrays.toString(endCookies));
         params.put("url", end_url);
-        RespListener respListener = new RespListener(key);
+        RespListener respListener = new RespListener(website);
         respListener.onRespError = this;
         respListener.onRespSuccess = new RespListener.OnRespSuccess() {
             @Override
-            public void onSuccess(JSONObject response, String extras) {
+            public void onSuccess(String response, String extras) {
+                dismiss();
                 if ("qq".equals(extras))
                     isQQvalid = true;
                 else if ("126".equals(extras))
@@ -147,7 +156,7 @@ public class EmailValidFragmfent extends BaseFragment {
                 btn_submit.setEnabled(isSubmitEnable());
             }
         };
-        CustomStringRequest request = new CustomStringRequest(Request.Method.POST, DsApi.COLLECTPRE, respListener,params);
+        CustomStringRequest request = new CustomStringRequest(Request.Method.POST, String.format(DsApi.LIST, DsApi.COLLECTPRE), respListener, params);
         executeRequest(request);
     }
 

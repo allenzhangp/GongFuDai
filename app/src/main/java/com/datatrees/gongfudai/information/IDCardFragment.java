@@ -47,6 +47,7 @@ import com.datatrees.gongfudai.utils.PreferenceUtils;
 import com.datatrees.gongfudai.utils.ToastUtils;
 import com.datatrees.gongfudai.volley.Request;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.File;
@@ -302,7 +303,7 @@ public class IDCardFragment extends BaseFragment implements View.OnClickListener
                                 Map<String, String> params = new HashMap<String, String>();
                                 params.put("userId", App.loginUserInfo.getUserId() + "");
                                 params.put("timestamp", App.timestamp + "");
-                                CustomStringRequest request = new CustomStringRequest(Request.Method.POST, DsApi.GETICR, getRespListener(), params);
+                                CustomStringRequest request = new CustomStringRequest(Request.Method.POST, String.format(DsApi.LIST, DsApi.GETICR), getRespListener(), params);
                                 executeRequest(request);
                             }
 
@@ -324,7 +325,7 @@ public class IDCardFragment extends BaseFragment implements View.OnClickListener
         respListener.onRespError = this;
         respListener.onRespSuccess = new RespListener.OnRespSuccess() {
             @Override
-            public void onSuccess(JSONObject response, String extras) {
+            public void onSuccess(String response, String extras) {
                 if (response == null)
                     return;
                 isFinish = true;
@@ -341,24 +342,30 @@ public class IDCardFragment extends BaseFragment implements View.OnClickListener
         params.put("userId", App.loginUserInfo.getUserId() + "");
         params.put("name", et_real_name.getText().toString());
         params.put("idNumber", et_idcard.getText().toString());
-        CustomStringRequest request = new CustomStringRequest(Request.Method.POST, DsApi.CHECKICR, respListener, params);
+        CustomStringRequest request = new CustomStringRequest(Request.Method.POST, String.format(DsApi.LIST, DsApi.CHECKICR), respListener, params);
         executeRequest(request);
     }
 
     @Override
-    public void onSuccess(JSONObject response, String extras) {
-        super.onSuccess(response,extras);
-        String name = response.optString("name");
-        String idNumber = response.optString("idNumber");
-        llyt_user_info.setVisibility(View.VISIBLE);
-        et_real_name.setText(name);
-        et_idcard.setText(idNumber);
+    public void onSuccess(String response, String extras) {
+        super.onSuccess(response, extras);
+        JSONObject jsonResp = null;
+        try {
+            jsonResp = new JSONObject(response);
+            String name = jsonResp.optString("name");
+            String idNumber = jsonResp.optString("idNumber");
+            llyt_user_info.setVisibility(View.VISIBLE);
+            et_real_name.setText(name);
+            et_idcard.setText(idNumber);
+        } catch (JSONException e) {
+        }
+
     }
 
     @Override
     public void onClick(View v) {
         JSONObject idCardlJSON = App.allstatusMap.get("idcard");
-        if(idCardlJSON != null && (idCardlJSON.optInt("status") == 1 || idCardlJSON.optInt("status") == 2))
+        if (idCardlJSON != null && (idCardlJSON.optInt("status") == 1 || idCardlJSON.optInt("status") == 2))
             return;
 
         if (v.getId() == R.id.llyt_take_tip1) {

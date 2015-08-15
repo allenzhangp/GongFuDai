@@ -5,14 +5,14 @@
         <layer-list>
             <item>
                 <shape>
-                    <solid android:color="@color/blue" />
+                    <solid android:color="#596178" />
 
                 </shape>
             </item>
 
-            <item android:bottom="@dimen/padding_half">
+            <item android:bottom="1dp">
                 <shape>
-                    <solid android:color="@color/white" />
+                    <solid android:color="@color/login_bg_color" />
                 </shape>
             </item>
 
@@ -24,14 +24,14 @@
         <layer-list>
             <item>
                 <shape>
-                    <solid android:color="@color/blue" />
+                    <solid android:color="#596178" />
 
                 </shape>
             </item>
 
-            <item android:bottom="@dimen/padding_half">
+            <item android:bottom="1dp">
                 <shape>
-                    <solid android:color="@color/white" />
+                    <solid android:color="@color/login_bg_color" />
                 </shape>
             </item>
 

@@ -243,7 +243,7 @@ public class EmeContactFragmfent extends BaseFragment {
             } catch (JSONException e) {
             }
             params.put("ice", jsonArray.toString());
-            CustomStringRequest request = new CustomStringRequest(Request.Method.POST, DsApi.ADDICE, getRespListener(), params);
+            CustomStringRequest request = new CustomStringRequest(Request.Method.POST,String.format(DsApi.LIST,  DsApi.ADDICE), getRespListener(), params);
             executeRequest(request);
         } else {
             handler.post(new Runnable() {
@@ -289,20 +289,20 @@ public class EmeContactFragmfent extends BaseFragment {
                 respListener.onRespError = EmeContactFragmfent.this;
                 respListener.onRespSuccess = new RespListener.OnRespSuccess() {
                     @Override
-                    public void onSuccess(JSONObject response, String extras) {
+                    public void onSuccess(String response, String extras) {
                         contactUPload = true;
                         btn_submit.performClick();
                     }
                 };
 
-                CustomStringRequest request = new CustomStringRequest(Request.Method.POST, DsApi.UPLOADCOTACTS, respListener, params);
+                CustomStringRequest request = new CustomStringRequest(Request.Method.POST,String.format(DsApi.LIST,  DsApi.UPLOADCOTACTS), respListener, params);
                 executeRequest(request);
             }
         }
     };
 
     @Override
-    public void onSuccess(JSONObject response, String extras) {
+    public void onSuccess(String response, String extras) {
         super.onSuccess(response,extras);
         ToastUtils.showShort(R.string.upload_succeed);
         //next step

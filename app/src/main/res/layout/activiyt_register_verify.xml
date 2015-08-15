@@ -8,6 +8,7 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/padding"
         android:gravity="center"
         android:text="@string/login_register"
         android:textColor="@color/login_word_color"
@@ -16,43 +17,74 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/width_image_info"
         android:gravity="center"
         android:text="@string/login_verify_tip"
         android:textColor="@color/login_word_color"
-        android:textSize="@dimen/size_normal" />
+        android:textSize="@dimen/size_small" />
 
     <TextView
+        android:id="@+id/tv_phone"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/padding_double"
         android:gravity="center"
-        android:text="151 4894 8349"
         android:textColor="@color/login_word_color"
         android:textSize="@dimen/size_big" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/padding_half"
-        android:layout_marginRight="@dimen/padding_half"
-        android:gravity="center"
+        android:layout_marginLeft="@dimen/padding_double"
+        android:layout_marginRight="@dimen/padding_double"
+        android:layout_marginTop="@dimen/width_image"
+        android:gravity="center_vertical"
         android:orientation="horizontal">
 
-        <EditText
-            android:id="@+id/et_password"
-            android:layout_width="match_parent"
+
+        <LinearLayout
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginRight="@dimen/padding"
             android:layout_weight="1"
             android:background="@drawable/bg_edittext_selector"
-            android:singleLine="true" />
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="20dp"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:scaleType="centerInside"
+                android:src="@mipmap/ico_verify" />
+
+            <EditText
+                android:id="@+id/et_verify"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="1"
+                android:background="@null"
+                android:layout_marginLeft="@dimen/padding"
+                android:hint="@string/login_verify_hint"
+                android:singleLine="true"
+                android:textColor="@color/login_word_color"
+                android:textColorHint="@color/login_word_color"
+                android:textSize="@dimen/size_normal" />
+
+
+        </LinearLayout>
 
         <Button
-            android:id="@+id/ibtn_clear"
-            android:layout_width="130dp"
+            android:id="@+id/ibtn_send_verify"
+            android:layout_width="100dp"
             android:layout_height="wrap_content"
-            android:text="@string/login_send_verify" />
+            android:background="@drawable/btn_send_verify_selector"
+            android:text="@string/login_send_verify"
+            android:textSize="@dimen/size_normal"
+            android:textColor="@color/btn_verify_txt_selector" />
 
     </LinearLayout>
-
 
     <Button
         android:id="@+id/btn_next"
@@ -60,10 +92,10 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/padding_double"
         android:layout_marginRight="@dimen/padding_double"
-        android:layout_marginTop="@dimen/padding"
+        android:layout_marginTop="@dimen/width_image_info"
         android:background="@drawable/btn_submit_selector"
         android:enabled="false"
-        android:text="@string/next_step"
+        android:text="@string/login_register"
         android:textColor="@color/btn_submit_txt_selector"
         android:textSize="@dimen/size_title" />
 

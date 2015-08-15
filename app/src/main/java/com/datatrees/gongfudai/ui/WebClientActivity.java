@@ -74,7 +74,7 @@ public class WebClientActivity extends BaseActivity implements CustomWebView.OnV
         data.putExtra("end_cookies", cookies);
         data.putExtra("end_url", endUrl);
         data.putExtra("end_header", headerStr);
-        setResult(RESULT_OK);
+        setResult(RESULT_OK,data);
         this.finish();
     }
 

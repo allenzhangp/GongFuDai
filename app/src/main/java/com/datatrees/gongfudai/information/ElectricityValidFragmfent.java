@@ -21,6 +21,7 @@ import com.datatrees.gongfudai.utils.ToastUtils;
 import com.datatrees.gongfudai.volley.Request;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.Arrays;
@@ -51,7 +52,7 @@ public class ElectricityValidFragmfent extends BaseFragment {
         if (!getConfigSuccess && urlDatas != null)
             return;
         JSONObject ecommerceJSON = App.allstatusMap.get("ecommerce");
-        if(ecommerceJSON != null && (ecommerceJSON.optInt("status") == 1 || ecommerceJSON.optInt("status") == 2))
+        if (ecommerceJSON != null && (ecommerceJSON.optInt("status") == 1 || ecommerceJSON.optInt("status") == 2))
             return;
         EmailValidModel model = null;
         if (v.getId() == R.id.ibtn_taobao) {
@@ -89,14 +90,14 @@ public class ElectricityValidFragmfent extends BaseFragment {
         respListener.onRespError = this;
         respListener.onRespSuccess = new RespListener.OnRespSuccess() {
             @Override
-            public void onSuccess(JSONObject response, String extras) {
+            public void onSuccess(String response, String extras) {
                 if ("taobao".equals(extras))
                     isTaobaoValid = true;
                 ToastUtils.showShort(R.string.upload_succeed);
                 btn_submit.setEnabled(isSubmitEnable());
             }
         };
-        CustomStringRequest request = new CustomStringRequest(Request.Method.POST, DsApi.COLLECTPRE, respListener, params);
+        CustomStringRequest request = new CustomStringRequest(Request.Method.POST, String.format(DsApi.LIST, DsApi.COLLECTPRE), respListener, params);
         executeRequest(request);
     }
 
@@ -117,23 +118,29 @@ public class ElectricityValidFragmfent extends BaseFragment {
     HashMap<String, EmailValidModel> urlDatas;
 
     @Override
-    public void onSuccess(JSONObject response, String extras) {
+    public void onSuccess(String response, String extras) {
         super.onSuccess(response, extras);
-        getConfigSuccess = true;
-        urlDatas = new HashMap<>();
-        JSONArray jsonArray = response.optJSONArray("ecommerce");
-        int lengh = jsonArray.length();
-        for (int i = 0; i < lengh; i++) {
-            JSONObject obj = jsonArray.optJSONObject(i);
-            EmailValidModel model = new EmailValidModel();
-            String key = obj.optString("key");
-            model.key = key;
-            model.endUrl = obj.optString("endUrl");
-            model.css = obj.optString("css");
-            model.image = obj.optString("image");
-            model.startUrl = obj.optString("startUrl");
-            model.title = obj.optString("title");
-            urlDatas.put(key, model);
+        JSONObject jsonResp = null;
+        try {
+            jsonResp = new JSONObject(response);
+            getConfigSuccess = true;
+            urlDatas = new HashMap<>();
+            JSONArray jsonArray = jsonResp.optJSONArray("ecommerce");
+            int lengh = jsonArray.length();
+            for (int i = 0; i < lengh; i++) {
+                JSONObject obj = jsonArray.optJSONObject(i);
+                EmailValidModel model = new EmailValidModel();
+                String key = obj.optString("key");
+                model.key = key;
+                model.endUrl = obj.optString("endUrl");
+                model.css = obj.optString("css");
+                model.image = obj.optString("image");
+                model.startUrl = obj.optString("startUrl");
+                model.title = obj.optString("title");
+                urlDatas.put(key, model);
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
         }
     }
 

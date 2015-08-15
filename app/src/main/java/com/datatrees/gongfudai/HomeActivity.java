@@ -5,6 +5,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
+import android.view.KeyEvent;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 
@@ -16,8 +17,10 @@ import com.datatrees.gongfudai.net.RespListener;
 import com.datatrees.gongfudai.service.GetStatusService;
 import com.datatrees.gongfudai.service.VerifyReciver;
 import com.datatrees.gongfudai.utils.BK;
+import com.datatrees.gongfudai.utils.ConstantUtils;
 import com.datatrees.gongfudai.utils.DialogHelper;
 import com.datatrees.gongfudai.utils.DsApi;
+import com.datatrees.gongfudai.utils.ToastUtils;
 import com.datatrees.gongfudai.volley.Request;
 import com.datatrees.gongfudai.widget.VerifyDialog;
 
@@ -82,7 +85,7 @@ public class HomeActivity extends BaseFragmentActivity {
 
 
     @Override
-    public void onSuccess(JSONObject response, String extras) {
+    public void onSuccess(String response, String extras) {
         super.onSuccess(response, extras);
         dismiss();
     }
@@ -91,6 +94,7 @@ public class HomeActivity extends BaseFragmentActivity {
     public void onDestroy() {
         super.onDestroy();
         App.mLocationClient.stop();
+        unregisterReceiver(verifyReciver);
     }
 
     @OnClick(R.id.ibtn_news)
@@ -129,12 +133,12 @@ public class HomeActivity extends BaseFragmentActivity {
             respListener.onRespError = HomeActivity.this;
             respListener.onRespSuccess = new RespListener.OnRespSuccess() {
                 @Override
-                public void onSuccess(JSONObject response, String extras) {
+                public void onSuccess(String response, String extras) {
                     App.isInHand = false;
                     App.verifyMap.remove(extras);
                 }
             };
-            CustomStringRequest request = new CustomStringRequest(Request.Method.POST, DsApi.SUBMITVERFYCODE, getRespListener(), params);
+            CustomStringRequest request = new CustomStringRequest(Request.Method.POST, String.format(DsApi.LIST, DsApi.SUBMITVERFYCODE), respListener, params);
             executeRequest(request);
         }
     };
@@ -151,7 +155,7 @@ public class HomeActivity extends BaseFragmentActivity {
             respListener.onRespError = HomeActivity.this;
             respListener.onRespSuccess = new RespListener.OnRespSuccess() {
                 @Override
-                public void onSuccess(JSONObject response, String extras) {
+                public void onSuccess(String response, String extras) {
                     App.isInHand = false;
                     JSONObject json = App.allstatusMap.get(extras);
                     if (json != null)
@@ -161,9 +165,25 @@ public class HomeActivity extends BaseFragmentActivity {
                         }
                 }
             };
-            CustomStringRequest request = new CustomStringRequest(Request.Method.POST, DsApi.STATUSUPDATE, getRespListener(), params);
+            CustomStringRequest request = new CustomStringRequest(Request.Method.POST, String.format(DsApi.LIST, DsApi.STATUSUPDATE), respListener, params);
             executeRequest(request);
 
         }
     };
+
+    private long currentTime;
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            if (System.currentTimeMillis() - currentTime < ConstantUtils.EXIT_TIME) {
+                finish();
+            } else {
+                currentTime = System.currentTimeMillis();
+                ToastUtils.showShort(R.string.exit_tip);
+                return true;
+            }
+        }
+        return false;
+    }
 }

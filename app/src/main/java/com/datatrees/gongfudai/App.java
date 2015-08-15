@@ -1,5 +1,6 @@
 package com.datatrees.gongfudai;
 
+import android.app.Activity;
 import android.app.Application;
 import android.content.Context;
 
@@ -19,6 +20,7 @@ import com.datatrees.gongfudai.utils.PreferenceUtils;
 
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 /**
@@ -44,20 +46,23 @@ public class App extends Application {
 
     public static long timestamp = 0;
 
-    public static HashMap<String ,JSONObject>  allstatusMap;
+    public static HashMap<String, JSONObject> allstatusMap;
 
-    public static HashMap<String ,JSONObject> verifyMap;
+    public static HashMap<String, JSONObject> verifyMap;
 
     public static boolean isInHand = false;
 
     public static LocationClient mLocationClient;
     public MyLocationListener mMyLocationListener;
 
+    public static ArrayList<Activity> openActivityList;
+
     @Override
     public void onCreate() {
         super.onCreate();
         VolleyUtil.init(this);
 
+        openActivityList = new ArrayList<>();
         allstatusMap = new HashMap<>();
         verifyMap = new HashMap<>();
 
@@ -67,6 +72,21 @@ public class App extends Application {
         initOSS();
         initBaidu();
 
+    }
+
+    public static void addActivity(Activity activity) {
+        openActivityList.add(activity);
+    }
+
+    public static void clearOpenActivity() {
+        for (Activity activity : openActivityList) {
+            try {
+                if (activity != null && !activity.isFinishing())
+                    activity.finish();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     private void initBaidu() {

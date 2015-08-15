@@ -13,7 +13,10 @@
     <color name="transparent">#00000000</color>
 
     <!--login-->
-    <color name="login_bg_color">#57b3ff</color>
-    <color name="login_word_color">#eeeeee</color>
+    <color name="login_logo_color">#596178</color>
+    <color name="login_bg_color">#2b2d39</color>
+    <color name="login_word_color">#828dad</color>
+    <color name="login_btn_send">#54a1e5</color>
+    <color name="login_btn_send_unenable">#5c5f64</color>
 
 </resources>

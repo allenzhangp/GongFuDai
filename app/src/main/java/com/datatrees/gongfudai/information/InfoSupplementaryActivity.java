@@ -110,6 +110,12 @@ public class InfoSupplementaryActivity extends BaseFragmentActivity {
 
     }
 
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        unregisterReceiver(verifyReciver);
+    }
+
     private void request() {
         String latitude = PreferenceUtils.getPrefString(this, "latitude", "");
         String longitude = PreferenceUtils.getPrefString(this, "longitude", "");
@@ -123,14 +129,19 @@ public class InfoSupplementaryActivity extends BaseFragmentActivity {
     }
 
     @Override
-    public void onSuccess(JSONObject response, String extras) {
+    public void onSuccess(String response, String extras) {
         super.onSuccess(response, extras);
-        int allow = response.optInt("allow");
-        int certify = response.optInt("certify");
-        if (allow == 1 && certify == 1) {
-            this.finish();
+        JSONObject jsonResp = null;
+        try {
+            jsonResp = new JSONObject(response);
+            int allow = jsonResp.optInt("allow");
+            int certify = jsonResp.optInt("certify");
+            if (allow == 1 && certify == 1) {
+                this.finish();
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
         }
-
     }
 
     @Override
@@ -320,7 +331,7 @@ public class InfoSupplementaryActivity extends BaseFragmentActivity {
             respListener.onRespError = InfoSupplementaryActivity.this;
             respListener.onRespSuccess = new RespListener.OnRespSuccess() {
                 @Override
-                public void onSuccess(JSONObject response, String extras) {
+                public void onSuccess(String response, String extras) {
                     App.isInHand = false;
                     JSONObject json = App.allstatusMap.get(extras);
                     if (json != null)
@@ -330,7 +341,7 @@ public class InfoSupplementaryActivity extends BaseFragmentActivity {
                         }
                 }
             };
-            CustomStringRequest request = new CustomStringRequest(Request.Method.POST, DsApi.STATUSUPDATE, getRespListener(), params);
+            CustomStringRequest request = new CustomStringRequest(Request.Method.POST, String.format(DsApi.LIST, DsApi.STATUSUPDATE), respListener, params);
             executeRequest(request);
 
         }
@@ -354,12 +365,12 @@ public class InfoSupplementaryActivity extends BaseFragmentActivity {
             respListener.onRespError = InfoSupplementaryActivity.this;
             respListener.onRespSuccess = new RespListener.OnRespSuccess() {
                 @Override
-                public void onSuccess(JSONObject response, String extras) {
+                public void onSuccess(String response, String extras) {
                     App.isInHand = false;
                     App.verifyMap.remove(extras);
                 }
             };
-            CustomStringRequest request = new CustomStringRequest(Request.Method.POST, DsApi.SUBMITVERFYCODE, getRespListener(), params);
+            CustomStringRequest request = new CustomStringRequest(Request.Method.POST, String.format(DsApi.LIST, DsApi.SUBMITVERFYCODE), respListener, params);
             executeRequest(request);
         }
     };

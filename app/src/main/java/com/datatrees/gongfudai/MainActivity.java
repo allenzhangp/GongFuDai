@@ -18,13 +18,10 @@ import com.android.camera.Crop;
 import com.datatrees.gongfudai.adapter.TestFoodListAdapter;
 import com.datatrees.gongfudai.base.BaseActivity;
 import com.datatrees.gongfudai.model.ContactData;
-import com.datatrees.gongfudai.model.TestModel;
-import com.datatrees.gongfudai.net.GsonRequest;
 import com.datatrees.gongfudai.ui.WebClientActivity;
 import com.datatrees.gongfudai.utils.ContactsAccessPublic;
 import com.datatrees.gongfudai.utils.FileUtils;
 import com.datatrees.gongfudai.utils.PickUtils;
-import com.datatrees.gongfudai.volley.Response;
 import com.umeng.analytics.MobclickAgent;
 
 import java.io.File;
@@ -157,14 +154,14 @@ public class MainActivity extends BaseActivity {
     }
 
     private void getData() {
-        executeRequest(new GsonRequest<TestModel>("http://www.google.com", TestModel.class,
-                new Response.Listener<TestModel>() {
-
-                    @Override
-                    public void onResponse(TestModel response) {
-
-                    }
-                }, errorListener()));
+//        executeRequest(new GsonRequest<TestModel>("http://www.google.com", TestModel.class,
+//                new Response.Listener<TestModel>() {
+//
+//                    @Override
+//                    public void onResponse(TestModel response) {
+//
+//                    }
+//                }, errorListener()));
     }
 
     private void setData() {

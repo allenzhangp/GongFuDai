@@ -10,5 +10,6 @@ public class EmailValidModel {
     public String startUrl;
     public String endUrl;
     public String css;
+    public String website;
 
 }

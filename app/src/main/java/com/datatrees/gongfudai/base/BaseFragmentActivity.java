@@ -12,8 +12,6 @@ import com.datatrees.gongfudai.utils.ToastUtils;
 import com.datatrees.gongfudai.volley.Request;
 import com.umeng.analytics.MobclickAgent;
 
-import org.json.JSONObject;
-
 /**
  * basefragmentactivity
  * Created by ucmed on 2015/8/5.
@@ -84,7 +82,7 @@ public class BaseFragmentActivity extends FragmentActivity implements RespListen
     }
 
     @Override
-    public void onSuccess(JSONObject response, String extras) {
+    public void onSuccess(String response, String extras) {
         dismiss();
         if (response == null)
             return;

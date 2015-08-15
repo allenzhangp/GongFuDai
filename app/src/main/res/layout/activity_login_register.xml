@@ -21,7 +21,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:layout_marginTop="@dimen/padding_half"
+        android:layout_marginTop="@dimen/padding_double"
         android:text="@string/login_name"
         android:textColor="@color/login_word_color" />
 
@@ -34,7 +34,7 @@
         android:layout_marginRight="@dimen/padding_double"
         android:layout_marginTop="@dimen/height_cheats"
         android:background="@drawable/btn_submit_selector"
-        android:text="@string/login_register"
+        android:text="@string/login_register_fast"
         android:textColor="@color/yellow"
         android:textSize="@dimen/size_title" />
 
@@ -44,8 +44,8 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/padding_double"
         android:layout_marginRight="@dimen/padding_double"
-        android:layout_marginTop="@dimen/padding"
-        android:background="@drawable/btn_submit_selector"
+        android:layout_marginTop="@dimen/padding_double"
+        android:background="@drawable/shape_rect_login"
         android:text="@string/login"
         android:textColor="@color/login_word_color"
         android:textSize="@dimen/size_title" />

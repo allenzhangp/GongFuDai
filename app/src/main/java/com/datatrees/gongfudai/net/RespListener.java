@@ -1,7 +1,6 @@
 package com.datatrees.gongfudai.net;
 
 import com.datatrees.gongfudai.App;
-import com.datatrees.gongfudai.R;
 import com.datatrees.gongfudai.utils.LogUtil;
 import com.datatrees.gongfudai.utils.StringUtils;
 import com.datatrees.gongfudai.volley.Response;
@@ -33,13 +32,24 @@ public class RespListener implements Response.Listener<String>, Response.ErrorLi
         try {
             LogUtil.i(response);
             JSONObject obj = new JSONObject(response);
-            String errorMsg = obj.optString("errorMsg");
-            int code = obj.optInt("code");
-            long timestamp = obj.optLong("timestamp");
+            if (obj.has("msg") || obj.has("object")) {
+                int code = obj.optInt("code");
+                if (code == 0) {
+                    if (onRespSuccess != null)
+                        onRespSuccess.onSuccess(obj.optString("object"), extras);
+                } else {
+                    if (onRespError != null)
+                        onRespError.onError(obj.optString("msg"), extras);
+                }
+            } else {
+                if (onRespSuccess != null)
+                    onRespSuccess.onSuccess(obj.optString("data"), extras);
+            }
+            long timestamp = obj.has("timestamp") ? obj.optLong("timestamp") : obj.optLong("time");
             App.timestamp = timestamp;
-            if (onRespSuccess != null)
-                onRespSuccess.onSuccess(obj.optJSONObject("data"), extras);
         } catch (JSONException e) {
+            if (onRespError != null)
+                onRespError.onError(e.getMessage(), extras);
         }
     }
 
@@ -51,19 +61,23 @@ public class RespListener implements Response.Listener<String>, Response.ErrorLi
                 if (StringUtils.isNotTrimBlank(errorResp)) {
                     LogUtil.e(errorResp);
                     JSONObject jsonObject = new JSONObject(errorResp);
-                    onRespError.onError(jsonObject.optString("errorMsg"), extras);
+                    if (jsonObject.has("errorMsg")) {
+                        onRespError.onError(jsonObject.optString("errorMsg"), extras);
+                    } else {
+                        onRespError.onError(error.getMessage(), extras);
+                    }
                 } else
-                    onRespError.onError(App.getContext().getResources().getString(R.string.server_case_error), extras);
+                    onRespError.onError(error.getMessage(), extras);
             }
 
         } catch (Exception e) {
-            onRespError.onError(App.getContext().getResources().getString(R.string.server_case_error), extras);
+            onRespError.onError(e.getMessage(), extras);
         }
     }
 
 
     public interface OnRespSuccess {
-        public void onSuccess(JSONObject response, String extras);
+        public void onSuccess(String response, String extras);
     }
 
     public interface OnRespError {

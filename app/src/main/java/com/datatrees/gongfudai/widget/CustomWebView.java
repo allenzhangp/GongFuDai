@@ -65,6 +65,7 @@ public class CustomWebView extends WebView {
     private String headerJSONObj;
     private String cssStr;
     private StringBuilder jsCssStr;
+    private boolean usePCUA;
 
     public CustomWebView(Context context) {
         super(context);
@@ -85,13 +86,14 @@ public class CustomWebView extends WebView {
      * @param url     visit url
      * @param endUrls end urls
      */
-    public void customLoadUrl(String url, String[] endUrls, String cssStr) {
+    public void customLoadUrl(String url, String[] endUrls, String cssStr, boolean usePCUA) {
         if (cookies != null)
             cookies.clear();
         else
             cookies = new ArrayList<>();
         this.endUrls = endUrls;
         this.cssStr = cssStr;
+        this.usePCUA = usePCUA;
 
         if (StringUtils.isNotTrimBlank(cssStr)) {
             jsCssStr = new StringBuilder();
@@ -103,6 +105,10 @@ public class CustomWebView extends WebView {
             jsCssStr.append(cssStr);
             jsCssStr.append("))");
             jsCssStr.append("};");
+        }
+
+        if (usePCUA) {
+            getSettings().setUserAgentString("Mozilla/5.0 (Macintosh; Intel Mac OS X 10.10; rv:40.0) Gecko/20100101 Firefox/40.0");
         }
 
         loadUrl(url);

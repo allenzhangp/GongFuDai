@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:background="@color/white"
     android:layout_height="match_parent"
+    android:background="@color/white"
     android:orientation="vertical">
 
     <LinearLayout
@@ -25,12 +25,13 @@
             android:background="@color/btn_submit_sel" />
 
         <LinearLayout
-            android:background="@color/line"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@color/line"
             android:orientation="horizontal">
 
             <ImageButton
+                android:id="@+id/ibtn_lt"
                 android:layout_width="0dp"
                 android:layout_height="@dimen/width_image"
                 android:layout_margin="@dimen/padding"
@@ -40,6 +41,7 @@
                 android:src="@mipmap/bg_yys_lt" />
 
             <ImageButton
+                android:id="@+id/ibtn_yd"
                 android:layout_width="0dp"
                 android:layout_height="@dimen/width_image"
                 android:layout_margin="@dimen/padding"
@@ -49,6 +51,7 @@
                 android:src="@mipmap/bg_yys_yd" />
 
             <ImageButton
+                android:id="@+id/ibtn_dx"
                 android:layout_width="0dp"
                 android:layout_height="@dimen/width_image"
                 android:layout_margin="@dimen/padding"
@@ -68,19 +71,19 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/padding_double"
+            android:layout_marginRight="@dimen/padding_double"
+            android:layout_marginTop="@dimen/padding_double"
             android:text="@string/info_operation_tip"
             android:textColor="@color/hint"
-            android:layout_marginTop="@dimen/padding_double"
-            android:layout_marginRight="@dimen/padding_double"
-            android:layout_marginLeft="@dimen/padding_double"
             android:textSize="@dimen/size_title" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/padding"
-            android:layout_marginRight="@dimen/padding_double"
             android:layout_marginLeft="@dimen/padding_double"
+            android:layout_marginRight="@dimen/padding_double"
+            android:layout_marginTop="@dimen/padding"
             android:text="@string/info_operation_tip2"
             android:textColor="@color/hint"
             android:textSize="@dimen/size_normal" />

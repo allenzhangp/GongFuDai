@@ -16,6 +16,7 @@ import com.datatrees.gongfudai.net.CustomStringRequest;
 import com.datatrees.gongfudai.net.RespListener;
 import com.datatrees.gongfudai.ui.WebClientActivity;
 import com.datatrees.gongfudai.utils.BK;
+import com.datatrees.gongfudai.utils.ConstantUtils;
 import com.datatrees.gongfudai.utils.DsApi;
 import com.datatrees.gongfudai.utils.ToastUtils;
 import com.datatrees.gongfudai.volley.Request;
@@ -81,6 +82,7 @@ public class EmailValidFragmfent extends BaseFragment {
                 model.startUrl = obj.optString("startUrl");
                 model.title = obj.optString("title");
                 model.website = obj.optString("website");
+                model.usePCUA = obj.optString("usePCUA");
                 urlDatas.put(key, model);
             }
         } catch (JSONException e) {
@@ -92,7 +94,7 @@ public class EmailValidFragmfent extends BaseFragment {
     public void onResume() {
         super.onResume();
         if (!getConfigSuccess) {
-            CustomStringRequest request = new CustomStringRequest(Request.Method.GET,DsApi.getTokenUserId(String.format(DsApi.LIST, DsApi.GETCONFIG)), getRespListener());
+            CustomStringRequest request = new CustomStringRequest(Request.Method.GET, DsApi.getTokenUserId(String.format(DsApi.LIST, DsApi.GETCONFIG)), getRespListener());
             executeRequest(request);
         }
     }
@@ -106,17 +108,17 @@ public class EmailValidFragmfent extends BaseFragment {
             return;
         EmailValidModel model = null;
         if (view.getId() == R.id.ibtn_126) {
-            model = urlDatas.get("126");
+            model = urlDatas.get(ConstantUtils.KEY_126);
         } else if (view.getId() == R.id.ibtn_163) {
-            model = urlDatas.get("163");
+            model = urlDatas.get(ConstantUtils.KEY_163);
         } else if (view.getId() == R.id.ibtn_qq) {
-            model = urlDatas.get("qq");
+            model = urlDatas.get(ConstantUtils.KEY_QQ);
         }
         if (model != null) {
             website = model.website;
             String[] endUrls = {model.endUrl};
             if (model != null) {
-                startActivityForResult(new Intent(getActivity(), WebClientActivity.class).putExtra("insert_css", model.css).putExtra("visit_title", model.title).putExtra("visit_url", model.startUrl).putExtra("end_urls", endUrls), WEBCLINET_CODE);
+                startActivityForResult(new Intent(getActivity(), WebClientActivity.class).putExtra("usePCUA", model.usePCUA).putExtra("insert_css", model.css).putExtra("visit_title", model.title).putExtra("visit_url", model.startUrl).putExtra("end_urls", endUrls), WEBCLINET_CODE);
             }
         }
 
@@ -146,11 +148,11 @@ public class EmailValidFragmfent extends BaseFragment {
             @Override
             public void onSuccess(String response, String extras) {
                 dismiss();
-                if ("qq".equals(extras))
+                if (extras.contains(ConstantUtils.KEY_QQ))
                     isQQvalid = true;
-                else if ("126".equals(extras))
+                else if (equals(extras.contains(ConstantUtils.KEY_126)))
                     is126Valid = true;
-                else if ("163".equals(extras))
+                else if (extras.contains(ConstantUtils.KEY_163))
                     is163valid = true;
                 ToastUtils.showShort(R.string.upload_succeed);
                 btn_submit.setEnabled(isSubmitEnable());
@@ -158,6 +160,14 @@ public class EmailValidFragmfent extends BaseFragment {
         };
         CustomStringRequest request = new CustomStringRequest(Request.Method.POST, String.format(DsApi.LIST, DsApi.COLLECTPRE), respListener, params);
         executeRequest(request);
+    }
+
+    @OnClick(R.id.btn_submit)
+    public void toNestStep() {
+        if (getActivity() instanceof InfoSupplementaryActivity) {
+            InfoSupplementaryActivity supplementaryActivity = (InfoSupplementaryActivity) getActivity();
+            supplementaryActivity.rlytYys.performClick();
+        }
     }
 
 }

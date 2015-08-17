@@ -50,6 +50,7 @@
     <!--info-->
     <string name="info_sup">信息补充</string>
     <string name="info_tip">功夫贷将确保您的信息安全,请放心使用</string>
+    <string name="info_not_allow">您所在的城市尚未开放功夫贷，请耐心等待，感谢您对功夫贷的支持。</string>
     <string name="info_ds">电商验证</string>
     <string name="info_lxr">紧急联系人</string>
     <string name="info_sfyz">身份验证</string>

@@ -20,6 +20,7 @@ import com.datatrees.gongfudai.utils.BK;
 import com.datatrees.gongfudai.utils.DialogHelper;
 import com.datatrees.gongfudai.utils.DsApi;
 import com.datatrees.gongfudai.utils.PreferenceUtils;
+import com.datatrees.gongfudai.utils.ToastUtils;
 import com.datatrees.gongfudai.volley.Request;
 import com.datatrees.gongfudai.widget.VerifyDialog;
 
@@ -121,10 +122,13 @@ public class InfoSupplementaryActivity extends BaseFragmentActivity {
         String longitude = PreferenceUtils.getPrefString(this, "longitude", "");
         String province = PreferenceUtils.getPrefString(this, "province", "");
 
-        StringBuilder urls = new StringBuilder();
-        urls.append(String.format(String.format(DsApi.LIST, DsApi.PRECHECK)));
-        urls.append("?userId=").append(App.loginUserInfo.getUserId()).append("&token=").append(App.loginUserInfo.getToken()).append("&lng=" + longitude + "&lat=" + latitude + "&province=" + province);
-        CustomStringRequest request = new CustomStringRequest(Request.Method.GET, urls.toString(), getRespListener());
+        HashMap<String, String> params = new HashMap<>();
+        params.put("lng", longitude);
+        params.put("lat", latitude);
+        params.put("province", province);
+        params.put("userId", App.loginUserInfo.getUserId() + "");
+
+        CustomStringRequest request = new CustomStringRequest(Request.Method.POST, String.format(DsApi.LIST, DsApi.PRECHECK), getRespListener(), params);
         executeRequest(request);
     }
 
@@ -136,7 +140,8 @@ public class InfoSupplementaryActivity extends BaseFragmentActivity {
             jsonResp = new JSONObject(response);
             int allow = jsonResp.optInt("allow");
             int certify = jsonResp.optInt("certify");
-            if (allow == 1 && certify == 1) {
+            if (allow == 0) {
+                ToastUtils.showShort(R.string.info_not_allow);
                 this.finish();
             }
         } catch (JSONException e) {

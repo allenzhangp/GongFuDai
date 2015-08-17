@@ -31,6 +31,7 @@ public class WebClientActivity extends BaseActivity implements CustomWebView.OnV
     String[] endUrls;
     String title;
     String cssStr;
+    boolean usePCUA;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -43,6 +44,8 @@ public class WebClientActivity extends BaseActivity implements CustomWebView.OnV
         cssStr = extras.getStringExtra("insert_css");
         title = extras.getStringExtra("visit_title");
         url = extras.getStringExtra("visit_url");
+        usePCUA = extras.getBooleanExtra("usePCUA",false);
+
         tv_title.setText(title);
         endUrls = extras.getStringArrayExtra("end_urls");
         mWebView.setOnVisitEndUrl(this);
@@ -50,7 +53,7 @@ public class WebClientActivity extends BaseActivity implements CustomWebView.OnV
         StringBuilder sb = new StringBuilder("<style type=\"text/css\">");
         sb.append(cssStr);
         sb.append("</style>");
-        mWebView.customLoadUrl(url, endUrls, sb.toString());
+        mWebView.customLoadUrl(url, endUrls, sb.toString(),usePCUA);
     }
 
     private void clearCookieHis() {

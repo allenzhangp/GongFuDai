@@ -1,9 +1,11 @@
 package com.datatrees.gongfudai.model;
 
+import java.util.ArrayList;
+
 /**
  * Created by zhangping on 15/8/13.
  */
-public class EmailValidModel {
+public class EmailValidModelFather {
     public String key;
     public String title;
     public String image;
@@ -12,5 +14,7 @@ public class EmailValidModel {
     public String css;
     public String website;
     public String usePCUA;
+    //运营商专用
+    public ArrayList<EmailValidModel> operatorlist = new ArrayList<>();
 
 }

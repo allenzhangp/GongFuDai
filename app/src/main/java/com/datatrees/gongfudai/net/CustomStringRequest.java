@@ -10,6 +10,7 @@ package com.datatrees.gongfudai.net;
 import com.datatrees.gongfudai.App;
 import com.datatrees.gongfudai.utils.LogUtil;
 import com.datatrees.gongfudai.volley.AuthFailureError;
+import com.datatrees.gongfudai.volley.DefaultRetryPolicy;
 import com.datatrees.gongfudai.volley.NetworkResponse;
 import com.datatrees.gongfudai.volley.Response;
 import com.datatrees.gongfudai.volley.toolbox.HttpHeaderParser;
@@ -29,15 +30,17 @@ public class CustomStringRequest extends StringRequest {
 
     public CustomStringRequest(int method, String url, RespListener listener) {
         super(method, url, listener, listener);
+        initRequest();
         LogUtil.i(url);
     }
 
 
     public CustomStringRequest(int method, String url, RespListener listener, Map<String, String> params) {
         super(method, url, listener, listener);
+        initRequest();
         this.mMap = params;
-        if(App.loginUserInfo != null){
-            this.mMap.put("token",App.loginUserInfo.getToken());
+        if (App.loginUserInfo != null) {
+            this.mMap.put("token", App.loginUserInfo.getToken());
         }
         LogUtil.i("url:" + url);
         StringBuilder sb = new StringBuilder("{");
@@ -47,6 +50,10 @@ public class CustomStringRequest extends StringRequest {
         sb.append("}");
         LogUtil.i("params:" + sb.toString());
 
+    }
+
+    private void initRequest() {
+        setRetryPolicy(new DefaultRetryPolicy(5 * 1000, 1, 1.0f));
     }
 
     @Override

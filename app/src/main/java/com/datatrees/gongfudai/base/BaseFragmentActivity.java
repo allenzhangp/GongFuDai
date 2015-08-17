@@ -9,6 +9,7 @@ import com.datatrees.gongfudai.net.RespListener;
 import com.datatrees.gongfudai.net.VolleyUtil;
 import com.datatrees.gongfudai.utils.StringUtils;
 import com.datatrees.gongfudai.utils.ToastUtils;
+import com.datatrees.gongfudai.volley.DefaultRetryPolicy;
 import com.datatrees.gongfudai.volley.Request;
 import com.umeng.analytics.MobclickAgent;
 

@@ -153,7 +153,7 @@ public class EmeContactFragmfent extends BaseFragment {
     public void chooseContact(View v) {
 
         JSONObject contactsJSON = App.allstatusMap.get("ice");
-        if(contactsJSON != null && (contactsJSON.optInt("status") == 1 || contactsJSON.optInt("status") == 2))
+        if (contactsJSON != null && (contactsJSON.optInt("status") == 1 || contactsJSON.optInt("status") == 2))
             return;
 
         if (v.getId() == R.id.btn_contact_add) {
@@ -243,7 +243,7 @@ public class EmeContactFragmfent extends BaseFragment {
             } catch (JSONException e) {
             }
             params.put("ice", jsonArray.toString());
-            CustomStringRequest request = new CustomStringRequest(Request.Method.POST,String.format(DsApi.LIST,  DsApi.ADDICE), getRespListener(), params);
+            CustomStringRequest request = new CustomStringRequest(Request.Method.POST, String.format(DsApi.LIST, DsApi.ADDICE), getRespListener(), params);
             executeRequest(request);
         } else {
             handler.post(new Runnable() {
@@ -295,7 +295,7 @@ public class EmeContactFragmfent extends BaseFragment {
                     }
                 };
 
-                CustomStringRequest request = new CustomStringRequest(Request.Method.POST,String.format(DsApi.LIST,  DsApi.UPLOADCOTACTS), respListener, params);
+                CustomStringRequest request = new CustomStringRequest(Request.Method.POST, String.format(DsApi.LIST, DsApi.UPLOADCOTACTS), respListener, params);
                 executeRequest(request);
             }
         }
@@ -303,7 +303,7 @@ public class EmeContactFragmfent extends BaseFragment {
 
     @Override
     public void onSuccess(String response, String extras) {
-        super.onSuccess(response,extras);
+        super.onSuccess(response, extras);
         ToastUtils.showShort(R.string.upload_succeed);
         //next step
         if (getActivity() instanceof InfoSupplementaryActivity) {

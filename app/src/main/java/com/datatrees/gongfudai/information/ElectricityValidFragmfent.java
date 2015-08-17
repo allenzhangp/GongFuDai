@@ -16,6 +16,7 @@ import com.datatrees.gongfudai.net.CustomStringRequest;
 import com.datatrees.gongfudai.net.RespListener;
 import com.datatrees.gongfudai.ui.WebClientActivity;
 import com.datatrees.gongfudai.utils.BK;
+import com.datatrees.gongfudai.utils.ConstantUtils;
 import com.datatrees.gongfudai.utils.DsApi;
 import com.datatrees.gongfudai.utils.ToastUtils;
 import com.datatrees.gongfudai.volley.Request;
@@ -39,7 +40,7 @@ public class ElectricityValidFragmfent extends BaseFragment {
     boolean getConfigSuccess = false;
     @Bind(R.id.btn_submit)
     Button btn_submit;
-    private String key;
+    private String website;
     private static final int WEBCLINET_CODE = 8;
 
     @Override
@@ -56,13 +57,13 @@ public class ElectricityValidFragmfent extends BaseFragment {
             return;
         EmailValidModel model = null;
         if (v.getId() == R.id.ibtn_taobao) {
-            model = urlDatas.get("taobo");
+            model = urlDatas.get(ConstantUtils.KEY_TAOBAO);
         }
         if (model != null) {
-            key = model.key;
+            website = model.website;
             String[] endUrls = {model.endUrl};
             if (model != null) {
-                startActivityForResult(new Intent(getActivity(), WebClientActivity.class).putExtra("insert_css", model.css).putExtra("visit_title", model.title).putExtra("visit_url", model.startUrl).putExtra("end_urls", endUrls), WEBCLINET_CODE);
+                startActivityForResult(new Intent(getActivity(), WebClientActivity.class).putExtra("usePCUA", model.usePCUA).putExtra("insert_css", model.css).putExtra("visit_title", model.title).putExtra("visit_url", model.startUrl).putExtra("end_urls", endUrls), WEBCLINET_CODE);
             }
         }
     }
@@ -82,16 +83,16 @@ public class ElectricityValidFragmfent extends BaseFragment {
         String end_header = data.getStringExtra("end_header");
         HashMap<String, String> params = new HashMap<>();
         params.put("userId", App.loginUserInfo.getUserId() + "");
-        params.put("key", key);
+        params.put("key", website);
         params.put("header", end_header);
         params.put("cookie", Arrays.toString(endCookies));
         params.put("url", end_url);
-        RespListener respListener = new RespListener(key);
+        RespListener respListener = new RespListener(website);
         respListener.onRespError = this;
         respListener.onRespSuccess = new RespListener.OnRespSuccess() {
             @Override
             public void onSuccess(String response, String extras) {
-                if ("taobao".equals(extras))
+                if (extras.contains(ConstantUtils.KEY_TAOBAO))
                     isTaobaoValid = true;
                 ToastUtils.showShort(R.string.upload_succeed);
                 btn_submit.setEnabled(isSubmitEnable());
@@ -137,10 +138,20 @@ public class ElectricityValidFragmfent extends BaseFragment {
                 model.image = obj.optString("image");
                 model.startUrl = obj.optString("startUrl");
                 model.title = obj.optString("title");
+                model.website = obj.optString("website");
+                model.usePCUA = obj.optString("usePCUA");
                 urlDatas.put(key, model);
             }
         } catch (JSONException e) {
             e.printStackTrace();
+        }
+    }
+
+    @OnClick(R.id.btn_submit)
+    public void toNestStep() {
+        if (getActivity() instanceof InfoSupplementaryActivity) {
+            InfoSupplementaryActivity supplementaryActivity = (InfoSupplementaryActivity) getActivity();
+            supplementaryActivity.rlytXxyq.performClick();
         }
     }
 

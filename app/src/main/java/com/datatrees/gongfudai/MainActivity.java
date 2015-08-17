@@ -1,6 +1,7 @@
 package com.datatrees.gongfudai;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -16,7 +17,6 @@ import android.widget.ListView;
 
 import com.android.camera.Crop;
 import com.datatrees.gongfudai.adapter.TestFoodListAdapter;
-import com.datatrees.gongfudai.base.BaseActivity;
 import com.datatrees.gongfudai.model.ContactData;
 import com.datatrees.gongfudai.ui.WebClientActivity;
 import com.datatrees.gongfudai.utils.ContactsAccessPublic;
@@ -24,12 +24,19 @@ import com.datatrees.gongfudai.utils.FileUtils;
 import com.datatrees.gongfudai.utils.PickUtils;
 import com.umeng.analytics.MobclickAgent;
 
+import org.apache.cordova.Config;
+import org.apache.cordova.CordovaInterface;
+import org.apache.cordova.CordovaPlugin;
+import org.apache.cordova.CordovaWebView;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -39,7 +46,7 @@ import butterknife.OnClick;
  * main activity
  * Created by zhangping on 15/7/25.
  */
-public class MainActivity extends BaseActivity {
+public class MainActivity extends Activity implements CordovaInterface {
 
     public final static String[] imageThumbUrls = new String[]{
             "http://img.my.csdn.net/uploads/201407/26/1406383299_1976.jpg",
@@ -136,6 +143,9 @@ public class MainActivity extends BaseActivity {
     ImageView image_view;
     private Uri imageUri;
 
+
+    private CordovaWebView cordova_webview;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -151,6 +161,14 @@ public class MainActivity extends BaseActivity {
 
         String macAddress = AndroidUtil.getWifiMacAddress(this);
         Log.e("TAG", "macAddress:" + macAddress);
+
+
+        cordova_webview = (CordovaWebView) findViewById(R.id.tutorialView);
+         Config.init(this);
+        String url = "http://192.168.0.241:1818/tos";
+        Config.addWhiteListEntry(url,true);
+        cordova_webview.loadUrl(url);
+
     }
 
     private void getData() {
@@ -244,5 +262,34 @@ public class MainActivity extends BaseActivity {
         }
         return file;
     }
+
+    @Override
+    public void startActivityForResult(CordovaPlugin cordovaPlugin, Intent intent, int i) {
+
+    }
+
+    @Override
+    public void setActivityResultCallback(CordovaPlugin cordovaPlugin) {
+
+    }
+
+    @Override
+    public Activity getActivity() {
+        return this;
+    }
+
+    @Override
+    public Object onMessage(String s, Object o) {
+        if (s.equalsIgnoreCase("exit")) {
+            super.finish();
+        }
+        return null;
+    }
+
+    @Override
+    public ExecutorService getThreadPool() {
+        return threadPool;
+    }
+    private final ExecutorService threadPool = Executors.newCachedThreadPool();
 
 }

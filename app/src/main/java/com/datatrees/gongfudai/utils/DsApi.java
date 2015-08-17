@@ -6,6 +6,10 @@ import com.datatrees.gongfudai.App;
  * Created by zhangping on 15/8/11.
  */
 public class DsApi {
+    //cordova
+    public static final String HOME_RUL = "http://192.168.0.241:1818/home";
+    public static final String TOS_RUL = "http://192.168.0.241:1818/tos";
+
 
     /**
      * 用户中心接口模块

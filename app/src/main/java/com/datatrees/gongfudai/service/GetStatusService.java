@@ -30,7 +30,7 @@ public class GetStatusService extends Service implements RespListener.OnRespSucc
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-
+        isFinish = false;
         new GetStatusThread().start();
 
         return super.onStartCommand(intent, START_STICKY, startId);
@@ -42,6 +42,7 @@ public class GetStatusService extends Service implements RespListener.OnRespSucc
     }
 
     private static int TIME_INTERVAL = 30 * 1000;
+    public static boolean isFinish = false;
 
     @Override
     public void onError(String errorResp, String extras) {
@@ -80,7 +81,7 @@ public class GetStatusService extends Service implements RespListener.OnRespSucc
     private class GetStatusThread extends Thread implements Runnable {
         @Override
         public void run() {
-            while (true) {
+            while (!isFinish) {
                 if (!App.isInHand) {
                     RespListener respListener = new RespListener();
                     respListener.onRespError = GetStatusService.this;

@@ -4,6 +4,9 @@ package com.datatrees.gongfudai.utils;
  * Created by zhangping on 15/8/15.
  */
 public class ConstantUtils {
+    //net
+    public static final int CUSTOM_TIMEOUT_MS = 45000;
+
     //Preference
     public static final String LOGIN_NAME = "login_name";
     public static final String LOGIN_PASSWORD = "login_password";
@@ -27,7 +30,6 @@ public class ConstantUtils {
     public static final String KEY_10086_NUMBER = "10086";
     public static final String KEY_10010_NUMBER = "10010";
     public static final String KEY_189_NUMBER = "189";
-
 
     public static final String WEBSITE_QQ = "qq.com";
     public static final String WEBSITE_126 = "126.com";

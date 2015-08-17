@@ -8,11 +8,13 @@
 package com.datatrees.gongfudai.net;
 
 import com.datatrees.gongfudai.App;
+import com.datatrees.gongfudai.utils.ConstantUtils;
 import com.datatrees.gongfudai.utils.LogUtil;
 import com.datatrees.gongfudai.volley.AuthFailureError;
 import com.datatrees.gongfudai.volley.DefaultRetryPolicy;
 import com.datatrees.gongfudai.volley.NetworkResponse;
 import com.datatrees.gongfudai.volley.Response;
+import com.datatrees.gongfudai.volley.RetryPolicy;
 import com.datatrees.gongfudai.volley.toolbox.HttpHeaderParser;
 import com.datatrees.gongfudai.volley.toolbox.StringRequest;
 
@@ -30,14 +32,12 @@ public class CustomStringRequest extends StringRequest {
 
     public CustomStringRequest(int method, String url, RespListener listener) {
         super(method, url, listener, listener);
-        initRequest();
         LogUtil.i(url);
     }
 
 
     public CustomStringRequest(int method, String url, RespListener listener, Map<String, String> params) {
         super(method, url, listener, listener);
-        initRequest();
         this.mMap = params;
         if (App.loginUserInfo != null) {
             this.mMap.put("token", App.loginUserInfo.getToken());
@@ -52,8 +52,10 @@ public class CustomStringRequest extends StringRequest {
 
     }
 
-    private void initRequest() {
-        setRetryPolicy(new DefaultRetryPolicy(5 * 1000, 1, 1.0f));
+    @Override
+    public RetryPolicy getRetryPolicy() {
+        RetryPolicy retryPolicy = new DefaultRetryPolicy(ConstantUtils.CUSTOM_TIMEOUT_MS, 0, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
+        return retryPolicy;
     }
 
     @Override

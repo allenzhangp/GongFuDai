@@ -1,5 +1,6 @@
 package com.datatrees.gongfudai.net;
 
+import com.datatrees.gongfudai.App;
 import com.datatrees.gongfudai.utils.LogUtil;
 import com.datatrees.gongfudai.utils.StringUtils;
 import com.datatrees.gongfudai.volley.Response;
@@ -53,7 +54,11 @@ public class RespListener implements Response.Listener<String>, Response.ErrorLi
     @Override
     public void onErrorResponse(VolleyError error) {
         try {
-            if (onRespError != null && error.networkResponse != null) {
+            if (onRespError != null) {
+                if (error.networkResponse == null) {
+                    onRespError.onError(VolleyErrorHelper.getMessage(error, App.getContext()), extras);
+                    return;
+                }
                 String errorResp = new String(error.networkResponse.data);
                 if (StringUtils.isNotTrimBlank(errorResp)) {
                     LogUtil.e(errorResp);
@@ -61,14 +66,15 @@ public class RespListener implements Response.Listener<String>, Response.ErrorLi
                     if (jsonObject.has("errorMsg")) {
                         onRespError.onError(jsonObject.optString("errorMsg"), extras);
                     } else {
-                        onRespError.onError(error.getMessage(), extras);
+                        onRespError.onError(VolleyErrorHelper.getMessage(error, App.getContext()), extras);
                     }
                 } else
-                    onRespError.onError(error.getMessage(), extras);
+                    onRespError.onError(VolleyErrorHelper.getMessage(error, App.getContext()), extras);
             }
 
         } catch (Exception e) {
-            onRespError.onError(e.getMessage(), extras);
+            if (onRespError != null)
+                onRespError.onError(VolleyErrorHelper.getMessage(e, App.getContext()), extras);
         }
     }
 

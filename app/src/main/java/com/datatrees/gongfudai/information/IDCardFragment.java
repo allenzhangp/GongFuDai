@@ -417,9 +417,9 @@ public class IDCardFragment extends BaseFragment implements View.OnClickListener
 
     @Override
     public void onClick(View v) {
-//        JSONObject idCardlJSON = App.allstatusMap.get("idcard");
-//        if (idCardlJSON != null && (idCardlJSON.optInt("status") == 1 || idCardlJSON.optInt("status") == 2 || idCardlJSON.optInt("status") == 3))
-//            return;
+        JSONObject idCardlJSON = App.allstatusMap.get("idcard");
+        if (idCardlJSON != null && (idCardlJSON.optInt("status") == 1 || idCardlJSON.optInt("status") == 2 || idCardlJSON.optInt("status") == 3))
+            return;
 
         if (v.getId() == R.id.llyt_take_tip1) {
             step = 0;

@@ -40,7 +40,7 @@
                 android:layout_centerHorizontal="true"
                 android:background="@drawable/bg_circle" />
 
-            <Button
+            <ImageView
                 android:id="@+id/iv_idcard"
                 android:layout_width="@dimen/width_image_info"
                 android:layout_height="@dimen/width_image_info"
@@ -76,7 +76,7 @@
                 android:background="@drawable/bg_circle"
                 android:visibility="invisible" />
 
-            <Button
+            <ImageView
                 android:id="@+id/iv_lxr"
                 android:layout_width="@dimen/width_image_info"
                 android:layout_height="@dimen/width_image_info"
@@ -112,7 +112,7 @@
                 android:background="@drawable/bg_circle"
                 android:visibility="invisible" />
 
-            <Button
+            <ImageView
                 android:id="@+id/iv_yj"
                 android:layout_width="@dimen/width_image_info"
                 android:layout_height="@dimen/width_image_info"
@@ -156,7 +156,7 @@
                 android:background="@drawable/bg_circle"
                 android:visibility="invisible" />
 
-            <Button
+            <ImageView
                 android:id="@+id/iv_yys"
                 android:layout_width="@dimen/width_image_info"
                 android:layout_height="@dimen/width_image_info"
@@ -190,7 +190,7 @@
                 android:background="@drawable/bg_circle"
                 android:visibility="invisible" />
 
-            <Button
+            <ImageView
                 android:id="@+id/iv_ds"
                 android:layout_width="@dimen/width_image_info"
                 android:layout_height="@dimen/width_image_info"
@@ -227,7 +227,7 @@
                 android:background="@drawable/bg_circle"
                 android:visibility="invisible" />
 
-            <Button
+            <ImageView
                 android:id="@+id/iv_xxyq"
                 android:layout_width="@dimen/width_image_info"
                 android:layout_height="@dimen/width_image_info"

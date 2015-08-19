@@ -8,6 +8,7 @@ import android.content.IntentFilter;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.widget.FrameLayout;
+import android.widget.ImageButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 
@@ -55,6 +56,13 @@ public class HomeActivity extends BaseFragmentActivity implements CordovaInterfa
     @Bind(R.id.tutorialView)
     CordovaWebView cordovaWebViewv;
 
+    @Bind(R.id.ibtn_news)
+    ImageButton ibtn_news;
+    @Bind(R.id.ibtn_operation)
+    ImageButton ibtn_operation;
+    @Bind(R.id.ibtn_setting)
+    ImageButton ibtn_setting;
+
     VerifyReciver verifyReciver;
 
     CordovaPlugin activityResultCallback;
@@ -90,16 +98,25 @@ public class HomeActivity extends BaseFragmentActivity implements CordovaInterfa
                         mTvTitle.setText(R.string.home_sw);
                         ViewUtils.setGone(fragment_container, true);
                         ViewUtils.setGone(cordovaWebViewv, false);
+                        ViewUtils.setInvisible(ibtn_news, false);
+                        ViewUtils.setInvisible(ibtn_operation, false);
+                        ViewUtils.setInvisible(ibtn_setting, true);
                         break;
                     case R.id.rbtn_qz:
                         mTvTitle.setText(R.string.home_qz);
                         ViewUtils.setGone(fragment_container, true);
                         ViewUtils.setGone(cordovaWebViewv, false);
+                        ViewUtils.setInvisible(ibtn_news, true);
+                        ViewUtils.setInvisible(ibtn_operation, false);
+                        ViewUtils.setInvisible(ibtn_setting, true);
                         break;
                     case R.id.rbtn_mj:
                         mTvTitle.setText(R.string.home_mj);
                         ViewUtils.setGone(fragment_container, false);
                         ViewUtils.setGone(cordovaWebViewv, true);
+                        ViewUtils.setInvisible(ibtn_news, true);
+                        ViewUtils.setInvisible(ibtn_operation, true);
+                        ViewUtils.setInvisible(ibtn_setting, false);
                         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new CheatsFragment()).commit();
                         break;
                 }

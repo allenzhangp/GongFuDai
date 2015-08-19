@@ -32,6 +32,7 @@ import java.util.HashMap;
 
 import butterknife.Bind;
 import butterknife.OnClick;
+import cn.com.datatrees.gesture_lock.GestureEditActivity;
 
 /**
  * 验证码输入
@@ -145,15 +146,16 @@ public class RegisterVerifyActivity extends BaseActivity {
 
 
                     PreferenceUtils.setPrefString(RegisterVerifyActivity.this, ConstantUtils.LOGIN_NAME, userInfo.getUserName());
-                    PreferenceUtils.setPrefString(RegisterVerifyActivity.this, ConstantUtils.LOGIN_PASSWORD, password);
+//                    PreferenceUtils.setPrefString(RegisterVerifyActivity.this, ConstantUtils.LOGIN_PASSWORD, password);
                     PreferenceUtils.setPrefString(RegisterVerifyActivity.this, ConstantUtils.LOGIN_TOKEN, userInfo.getToken());
                     PreferenceUtils.setPrefLong(RegisterVerifyActivity.this, ConstantUtils.LOGIN_USERID, userInfo.getUserId());
 
 
                     App.loginUserInfo = userInfo;
                     App.clearOpenActivity();
-                    startActivity(new Intent(RegisterVerifyActivity.this, HomeActivity.class));
-                    RegisterVerifyActivity.this.finish();
+
+                    startActivityForResult(new Intent(RegisterVerifyActivity.this, GestureEditActivity.class), ConstantUtils.SET_GESTURE_CODE);
+
                 } catch (JSONException e) {
                 }
             }
@@ -161,6 +163,22 @@ public class RegisterVerifyActivity extends BaseActivity {
         CustomStringRequest request = new CustomStringRequest(Request.Method.POST, String.format(DsApi.LISTUSERCENTER, DsApi.LOGIN), respListener, params);
         executeRequest(request);
     }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode != RESULT_OK)
+            return;
+        if (requestCode == ConstantUtils.SET_GESTURE_CODE) {
+            String inputCode = data.getStringExtra(GestureEditActivity.GESTURE_LOCKE_CODE);
+            if (App.loginUserInfo != null && StringUtils.isNotTrimBlank(App.loginUserInfo.getToken())) {
+                PreferenceUtils.setPrefString(RegisterVerifyActivity.this, ConstantUtils.GESTURE_CODE + App.loginUserInfo.getUserName(), inputCode);
+                startActivity(new Intent(RegisterVerifyActivity.this, HomeActivity.class));
+                RegisterVerifyActivity.this.finish();
+            }
+        }
+    }
+
 
     boolean registerSucc = false;
 

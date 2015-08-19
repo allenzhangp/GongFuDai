@@ -248,7 +248,10 @@ public class CameraActivity extends Activity implements OnClickListener {
             progressLayout.setVisibility(View.GONE);
             exitButton.setClickable(true);
 
-            startActivityForResult(new Intent(CameraActivity.this, PhotoPreActivity.class).putExtra(IDCARD_TYPE, type).putExtra(PhotoPreActivity.IMAGE_PATH, filePath), PHOTO_PRE);
+            startActivityForResult(new Intent(CameraActivity.this, PhotoPreActivity.class).
+                    putExtra(PhotoPreActivity.CAMER_APOSITION, cameraPosition).
+                    putExtra(IDCARD_TYPE, type).putExtra(PhotoPreActivity.IMAGE_PATH, filePath)
+                    , PHOTO_PRE);
 
         }
     };
@@ -257,6 +260,7 @@ public class CameraActivity extends Activity implements OnClickListener {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         String filePath = null;
+        cameraPosition = 1;
         if (data != null)
             filePath = data.getStringExtra(PhotoPreActivity.IMAGE_PATH);
         if (resultCode == RESULT_OK && requestCode == PHOTO_PRE) {
@@ -289,6 +293,59 @@ public class CameraActivity extends Activity implements OnClickListener {
 
     int openLight = 1;//0关闭1开闪光灯
 
+    private void changeCamera() {
+        //切换前后摄像头
+        int cameraCount = 0;
+        try {
+            CameraInfo cameraInfo = new CameraInfo();
+            cameraCount = Camera.getNumberOfCameras();//得到摄像头的个数
+
+            for (int i = 0; i < cameraCount; i++) {
+                Camera.getCameraInfo(i, cameraInfo);//得到每一个摄像头的信息
+                if (cameraPosition == 1) {
+                    //现在是后置，变更为前置
+                    if (cameraInfo.facing == Camera.CameraInfo.CAMERA_FACING_FRONT) {//代表摄像头的方位，CAMERA_FACING_FRONT前置      CAMERA_FACING_BACK后置
+                        camera.stopPreview();//停掉原来摄像头的预览
+                        camera.release();//释放资源
+                        camera = null;//取消原来摄像头
+                        camera = Camera.open(i);//打开当前选中的摄像头
+                        camera.startPreview();//开始预览
+                        preview.setCamera(camera);
+                        cameraPosition = 0;
+                        break;
+                    }
+                } else {
+                    //现在是前置， 变更为后置
+                    if (cameraInfo.facing == Camera.CameraInfo.CAMERA_FACING_BACK) {//代表摄像头的方位，CAMERA_FACING_FRONT前置      CAMERA_FACING_BACK后置
+                        camera.stopPreview();//停掉原来摄像头的预览
+                        camera.release();//释放资源
+                        camera = null;//取消原来摄像头
+                        camera = Camera.open(i);//打开当前选中的摄像头
+
+                        camera.startPreview();//开始预览
+                        cameraPosition = 1;
+                        break;
+                    }
+                }
+
+            }
+            if (camera != null) {
+                camera.setErrorCallback(new ErrorCallback() {
+                    public void onError(int error, Camera mcamera) {
+                        camera.release();
+                        camera = Camera.open();
+                    }
+                });
+                if (Build.VERSION.SDK_INT >= 14)
+                    setCameraDisplayOrientation(context,
+                            CameraInfo.CAMERA_FACING_BACK, camera);
+                camera.setPreviewDisplay(preview.mHolder);//通过surfaceview;
+                preview.setCamera(camera);
+            }
+        } catch (Exception e) {
+        }
+    }
+
     @Override
     public void onClick(View v) {
         if (camera == null)
@@ -312,56 +369,7 @@ public class CameraActivity extends Activity implements OnClickListener {
             }
 
         } else if (id == R.id.btn_swicamera) {
-            //切换前后摄像头
-            int cameraCount = 0;
-            try {
-                CameraInfo cameraInfo = new CameraInfo();
-                cameraCount = Camera.getNumberOfCameras();//得到摄像头的个数
-
-                for (int i = 0; i < cameraCount; i++) {
-                    Camera.getCameraInfo(i, cameraInfo);//得到每一个摄像头的信息
-                    if (cameraPosition == 1) {
-                        //现在是后置，变更为前置
-                        if (cameraInfo.facing == Camera.CameraInfo.CAMERA_FACING_FRONT) {//代表摄像头的方位，CAMERA_FACING_FRONT前置      CAMERA_FACING_BACK后置
-                            camera.stopPreview();//停掉原来摄像头的预览
-                            camera.release();//释放资源
-                            camera = null;//取消原来摄像头
-                            camera = Camera.open(i);//打开当前选中的摄像头
-                            camera.startPreview();//开始预览
-                            preview.setCamera(camera);
-                            cameraPosition = 0;
-                            break;
-                        }
-                    } else {
-                        //现在是前置， 变更为后置
-                        if (cameraInfo.facing == Camera.CameraInfo.CAMERA_FACING_BACK) {//代表摄像头的方位，CAMERA_FACING_FRONT前置      CAMERA_FACING_BACK后置
-                            camera.stopPreview();//停掉原来摄像头的预览
-                            camera.release();//释放资源
-                            camera = null;//取消原来摄像头
-                            camera = Camera.open(i);//打开当前选中的摄像头
-
-                            camera.startPreview();//开始预览
-                            cameraPosition = 1;
-                            break;
-                        }
-                    }
-
-                }
-                if (camera != null) {
-                    camera.setErrorCallback(new ErrorCallback() {
-                        public void onError(int error, Camera mcamera) {
-                            camera.release();
-                            camera = Camera.open();
-                        }
-                    });
-                    if (Build.VERSION.SDK_INT >= 14)
-                        setCameraDisplayOrientation(context,
-                                CameraInfo.CAMERA_FACING_BACK, camera);
-                    camera.setPreviewDisplay(preview.mHolder);//通过surfaceview;
-                    preview.setCamera(camera);
-                }
-            } catch (Exception e) {
-            }
+            changeCamera();
         } else if (id == R.id.ibtn_camera_take) {
             try {
                 takeFocusedPicture();

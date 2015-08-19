@@ -35,7 +35,7 @@ android {
 }
 
 dependencies {
-    compile fileTree(include: ['*.jar'], dir: 'libs')
+    compile fileTree(dir: 'libs', include: ['*.jar'])
     compile 'com.android.support:appcompat-v7:22.2.1'
     compile files('libs/butterknife-7.0.1.jar')
     compile project(':cropper')
@@ -48,4 +48,5 @@ dependencies {
     compile files('libs/locSDK_6.05.jar')
     compile files('libs/cordova-3.7.0-dev.jar')
     compile project(':camera')
+    compile project(':gesture_lock')
 }

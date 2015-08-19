@@ -100,6 +100,7 @@
     <orderEntry type="library" exported="" name="appcompat-v7-22.2.1" level="project" />
     <orderEntry type="library" exported="" name="httpmime-4.2.6" level="project" />
     <orderEntry type="module" module-name="cropper" exported="" />
+    <orderEntry type="module" module-name="gesture_lock" exported="" />
     <orderEntry type="module" module-name="camera" exported="" />
   </component>
 </module>

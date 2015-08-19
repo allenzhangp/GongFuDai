@@ -36,6 +36,8 @@ import java.util.HashMap;
 
 import butterknife.Bind;
 import butterknife.OnClick;
+import cn.com.datatrees.gesture_lock.GestureEditActivity;
+import cn.com.datatrees.gesture_lock.GestureVerifyActivity;
 
 /**
  * 登陆
@@ -87,8 +89,61 @@ public class LoginActivity extends BaseActivity {
         if (StringUtils.isNotTrimBlank(password)) {
             etpassword.setText(password);
         }
-
+        checkGesture();
     }
+
+    public void checkGesture() {
+        String userName = PreferenceUtils.getPrefString(this, ConstantUtils.LOGIN_NAME, "");
+        String gestureCode = PreferenceUtils.getPrefString(this, ConstantUtils.GESTURE_CODE + userName, "");
+        if (StringUtils.isNotTrimBlank(gestureCode)) {
+            startActivityForResult(new Intent(this,
+                            GestureVerifyActivity.class)
+                            .putExtra(GestureVerifyActivity.PARAM_PHONE_NUMBER, userName)
+                            .putExtra(GestureVerifyActivity.PARAM_INTENT_CODE, gestureCode),
+                    ConstantUtils.VERIFY_GESTURE_CODE);
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode != RESULT_OK) {
+            return;
+        }
+        if (requestCode == ConstantUtils.SET_GESTURE_CODE) {
+            String gesture_code = data.getStringExtra(GestureEditActivity.GESTURE_LOCKE_CODE);
+            PreferenceUtils.setPrefString(this, ConstantUtils.GESTURE_CODE + App.loginUserInfo.getUserName(), gesture_code);
+
+            startHomeActivity();
+            this.finish();
+
+        } else if (requestCode == ConstantUtils.VERIFY_GESTURE_CODE) {
+            RespListener respListener = new RespListener();
+            respListener.onRespError = this;
+            respListener.onRespSuccess = new RespListener.OnRespSuccess() {
+                @Override
+                public void onSuccess(String response, String extras) {
+                    dismiss();
+                    LoginUserInfo userInfo = new LoginUserInfo();
+                    userInfo.setUserName(PreferenceUtils.getPrefString(App.getContext(), ConstantUtils.LOGIN_NAME, ""));
+                    userInfo.setUserId(PreferenceUtils.getPrefLong(App.getContext(), ConstantUtils.LOGIN_USERID, 0));
+                    userInfo.setToken(response);
+                    App.loginUserInfo = userInfo;
+
+                    PreferenceUtils.setPrefString(App.getContext(), ConstantUtils.LOGIN_TOKEN, response);
+
+                    startHomeActivity();
+                    LoginActivity.this.finish();
+                }
+            };
+            String userName = PreferenceUtils.getPrefString(this, ConstantUtils.LOGIN_NAME, "");
+            String token = PreferenceUtils.getPrefString(this, ConstantUtils.LOGIN_TOKEN, "");
+
+            CustomStringRequest request = new CustomStringRequest(Request.Method.GET, String.format(DsApi.TOKENRESET, token, userName), respListener);
+            executeRequest(request);
+        }
+    }
+
 
     TextWatcher textNotNullWatcher = new TextWatcher() {
         @Override
@@ -167,18 +222,31 @@ public class LoginActivity extends BaseActivity {
             userInfo.setToken(jsonResp.optString("token"));
 
             PreferenceUtils.setPrefString(this, ConstantUtils.LOGIN_NAME, userInfo.getUserName());
-            PreferenceUtils.setPrefString(this, ConstantUtils.LOGIN_PASSWORD, etpassword.getText().toString());
+//            PreferenceUtils.setPrefString(this, ConstantUtils.LOGIN_PASSWORD, etpassword.getText().toString());
             PreferenceUtils.setPrefString(this, ConstantUtils.LOGIN_TOKEN, userInfo.getToken());
             PreferenceUtils.setPrefLong(this, ConstantUtils.LOGIN_USERID, userInfo.getUserId());
 
 
             App.loginUserInfo = userInfo;
             App.clearOpenActivity();
-            startActivity(new Intent(this, HomeActivity.class));
-            this.finish();
+
+            String gestureCode = PreferenceUtils.getPrefString(this, ConstantUtils.GESTURE_CODE + userInfo.getUserName(), "");
+            if (StringUtils.isTrimBlank(gestureCode)) {
+                startActivityForResult(new Intent(this, GestureEditActivity.class), ConstantUtils.SET_GESTURE_CODE);
+            } else {
+                startHomeActivity();
+                LoginActivity.this.finish();
+            }
         } catch (JSONException e) {
             e.printStackTrace();
         }
+    }
+
+    private void startHomeActivity() {
+        Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP
+                | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        startActivity(intent);
     }
 
     @OnClick(R.id.tv_forget_pass)
@@ -197,7 +265,7 @@ public class LoginActivity extends BaseActivity {
             respListener.onRespSuccess = new RespListener.OnRespSuccess() {
                 @Override
                 public void onSuccess(String response, String extras) {
-
+                    dismiss();
                 }
             };
             CustomStringRequest request = new CustomStringRequest(Request.Method.POST, String.format(DsApi.LISTUSERCENTER, DsApi.PWDRESET), respListener, params);

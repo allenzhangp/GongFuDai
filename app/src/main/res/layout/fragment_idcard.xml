@@ -145,7 +145,13 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="@dimen/padding_half"
                     android:layout_weight="1"
-                    android:imeOptions="actionDone" />
+                    android:background="@drawable/bg_edittext_white_selector"
+                    android:enabled="false"
+                    android:gravity="center_vertical"
+                    android:imeOptions="actionDone"
+                    android:singleLine="true"
+                    android:textColor="@color/blue"
+                    android:textSize="@dimen/size_normal" />
 
                 <TextView
                     android:id="@+id/tv_realname_update"
@@ -174,10 +180,16 @@
                 <EditText
                     android:id="@+id/et_idcard"
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:layout_margin="@dimen/padding_half"
                     android:layout_weight="1"
-                    android:imeOptions="actionDone" />
+                    android:background="@drawable/bg_edittext_white_selector"
+                    android:enabled="false"
+                    android:gravity="center_vertical"
+                    android:imeOptions="actionDone"
+                    android:singleLine="true"
+                    android:textColor="@color/blue"
+                    android:textSize="@dimen/size_normal" />
 
                 <TextView
                     android:id="@+id/tv_idcard_update"

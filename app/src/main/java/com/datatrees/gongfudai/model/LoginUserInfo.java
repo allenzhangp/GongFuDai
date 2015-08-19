@@ -9,7 +9,7 @@ public class LoginUserInfo {
     private String token;
 
     public LoginUserInfo() {
-        userId = 10;
+        userId = 0;
         userName = "";
         token = "";
     }

@@ -45,9 +45,13 @@ public class DsApi {
 
     public static final String CHECKICR = "/certification/check_ic";
 
+    public static final String GETICR2 = "/certification/get_ic";
+
     public static final String UPLOADCOTACTS = "/contacts/upload";
 
     public static final String ADDICE = "/contacts/ice/add";
+
+    public static final String GETICE = "/contacts/ice/get";
 
     public static final String GETCONFIG = "/preconditions/config";
 

@@ -1,1 +1,1 @@
-include ':app', ':cropper', ':camera'
+include ':app', ':cropper', ':camera', ':gesture_lock'

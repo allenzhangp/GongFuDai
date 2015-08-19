@@ -26,8 +26,10 @@ public class PhotoPreActivity extends Activity implements View.OnClickListener {
     String imagePath;
 
     public static final String IMAGE_PATH = "image_path";
+    public static final String CAMER_APOSITION = "camera_position";
 
     int type;
+    int cameraPosition;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,6 +39,7 @@ public class PhotoPreActivity extends Activity implements View.OnClickListener {
         findViewById(R.id.btn_camera_cancle).setOnClickListener(this);
         findViewById(R.id.btn_camera_ok).setOnClickListener(this);
         imagePath = getIntent().getStringExtra(IMAGE_PATH);
+        cameraPosition = getIntent().getIntExtra(CAMER_APOSITION, 0);
         type = getIntent().getIntExtra(CameraActivity.IDCARD_TYPE, 0);
         if (imagePath == null || imagePath.trim().equals(""))
             this.finish();
@@ -57,11 +60,14 @@ public class PhotoPreActivity extends Activity implements View.OnClickListener {
         options.inPurgeable = true;                   //Tell to gc that whether it needs free memory, the Bitmap can be cleared
         options.inInputShareable = true;              //Which kind of reference will be used to recover the Bitmap data after being clear, when it will be used in the future
         realImage = BitmapFactory.decodeFile(imagePath, options);
-
         try {
             if (exif.getAttribute(ExifInterface.TAG_ORIENTATION)
                     .equalsIgnoreCase("1")) {
-                realImage = rotate(realImage, 90);
+                if (cameraPosition == 1) {
+                    realImage = rotate(realImage, 90);
+                } else {
+                    realImage = rotate(realImage, -90);
+                }
             } else if (exif.getAttribute(ExifInterface.TAG_ORIENTATION)
                     .equalsIgnoreCase("8")) {
                 realImage = rotate(realImage, 90);

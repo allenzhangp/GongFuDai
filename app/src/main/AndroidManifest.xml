@@ -73,18 +73,25 @@
         <activity android:name=".MainActivity">
 
         </activity>
+
         <activity
-            android:name=".login.LoginRegisterActivity"
+            android:name=".WelcomeActivity"
             android:configChanges="keyboardHidden|screenLayout"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan|stateAlwaysHidden">
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"></action>
                 <category android:name="android.intent.category.LAUNCHER"></category>
             </intent-filter>
 
-
         </activity>
+
+        <activity
+            android:name=".login.LoginRegisterActivity"
+            android:configChanges="keyboardHidden|screenLayout"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan|stateAlwaysHidden" />
 
         <activity
             android:name=".cordova.CordovaActivity"
@@ -125,6 +132,18 @@
 
         <activity
             android:name="com.datatrees.camera.PhotoPreActivity"
+            android:configChanges="keyboardHidden|screenLayout"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan|stateAlwaysHidden" />
+
+        <activity
+            android:name="cn.com.datatrees.gesture_lock.GestureEditActivity"
+            android:configChanges="keyboardHidden|screenLayout"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan|stateAlwaysHidden" />
+
+        <activity
+            android:name="cn.com.datatrees.gesture_lock.GestureVerifyActivity"
             android:configChanges="keyboardHidden|screenLayout"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan|stateAlwaysHidden" />

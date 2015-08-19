@@ -12,9 +12,11 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -45,6 +47,7 @@ import com.datatrees.gongfudai.utils.LogUtil;
 import com.datatrees.gongfudai.utils.PreferenceUtils;
 import com.datatrees.gongfudai.utils.StringUtils;
 import com.datatrees.gongfudai.utils.ToastUtils;
+import com.datatrees.gongfudai.utils.ViewUtils;
 import com.datatrees.gongfudai.volley.Request;
 
 import org.json.JSONException;
@@ -113,6 +116,8 @@ public class IDCardFragment extends BaseFragment implements View.OnClickListener
 
     String imagePath;
 
+    boolean hasGetInfo = false;//已经上传成功的
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_idcard, container, false);
@@ -123,7 +128,30 @@ public class IDCardFragment extends BaseFragment implements View.OnClickListener
         BK.bind(this, view);
         bucket = App.ossService.getOssBucket(App.BUCKETNAME);
         et_idcard.addTextChangedListener(textWatcher);
+        et_idcard.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if (actionId == EditorInfo.IME_ACTION_DONE) {
+                    ViewUtils.hideInputPanel(getActivity());
+                    et_idcard.setEnabled(false);
+                    return true;
+                }
+                return false;
+            }
+        });
+
         et_real_name.addTextChangedListener(textWatcher);
+        et_real_name.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if (actionId == EditorInfo.IME_ACTION_DONE) {
+                    ViewUtils.hideInputPanel(getActivity());
+                    et_real_name.setEnabled(false);
+                    return true;
+                }
+                return false;
+            }
+        });
 
         timestamp = System.currentTimeMillis();
 
@@ -150,7 +178,55 @@ public class IDCardFragment extends BaseFragment implements View.OnClickListener
     };
 
     private boolean submitEnable() {
-        return !TextUtils.isEmpty(et_idcard.getText()) && !TextUtils.isEmpty(et_real_name.getText());
+        int status = App.checkStatus("idcard");
+        return status != 1 && status != 2 && status != 3 && !TextUtils.isEmpty(et_idcard.getText()) && !TextUtils.isEmpty(et_real_name.getText());
+    }
+
+    JSONObject idJSON = null;
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        int status = App.checkStatus("idcard");
+
+        if (status == 1 || status == 2 || status == 3) {
+            isFinish = true;
+            isUploadPhotoFinish = true;
+            if (hasGetInfo && idJSON != null) {
+                String name = idJSON.optString("name");
+                String idNumber = idJSON.optString("idNumber");
+                llyt_user_info.setVisibility(View.VISIBLE);
+                et_real_name.setText(name);
+                et_idcard.setText(idNumber);
+            } else {
+                RespListener respListener = new RespListener();
+                respListener.onRespError = this;
+                respListener.onRespSuccess = new RespListener.OnRespSuccess() {
+                    @Override
+                    public void onSuccess(String response, String extras) {
+                        dismiss();
+                        if (response == null)
+                            return;
+                        hasGetInfo = true;
+                        idJSON = null;
+                        try {
+                            idJSON = new JSONObject(response);
+                            String name = idJSON.optString("name");
+                            String idNumber = idJSON.optString("idNumber");
+                            llyt_user_info.setVisibility(View.VISIBLE);
+                            et_real_name.setText(name);
+                            et_idcard.setText(idNumber);
+                        } catch (JSONException e) {
+                        }
+
+
+                    }
+                };
+
+                CustomStringRequest request = new CustomStringRequest(Request.Method.GET, DsApi.getTokenUserId(String.format(DsApi.LIST, DsApi.GETICR2)), respListener);
+                executeRequest(request);
+            }
+        }
     }
 
     DialogInterface.OnClickListener uploadListener = new DialogInterface.OnClickListener() {
@@ -166,10 +242,17 @@ public class IDCardFragment extends BaseFragment implements View.OnClickListener
 
     @OnClick({R.id.tv_idcard_update, R.id.tv_realname_update})
     public void onUpdateClick(View view) {
+        int status = App.checkStatus("idcard");
+        if (status == 2 || status == 3 || status == 1)
+            return;
         if (view.getId() == R.id.tv_realname_update) {
             et_real_name.setFocusable(true);
+            et_real_name.setEnabled(true);
+            ViewUtils.showInputPanel(getActivity());
         } else {
             et_idcard.setFocusable(true);
+            et_idcard.setEnabled(true);
+            ViewUtils.showInputPanel(getActivity());
         }
     }
 
@@ -180,7 +263,6 @@ public class IDCardFragment extends BaseFragment implements View.OnClickListener
             return;
         if (requestCode == ConstantUtils.TAKE_PHOTO_CODE) {
             imagePath = data.getStringExtra(PhotoPreActivity.IMAGE_PATH);
-            ToastUtils.showShort(imagePath);
             if (StringUtils.isNotBlank(imagePath)) {
                 uploadFile2OSS(imagePath);
                 if (progressDialog == null)
@@ -291,7 +373,6 @@ public class IDCardFragment extends BaseFragment implements View.OnClickListener
 
     @OnClick(R.id.btn_submit)
     public void submitClick() {
-
         RespListener respListener = new RespListener();
         respListener.onRespError = this;
         respListener.onRespSuccess = new RespListener.OnRespSuccess() {
@@ -336,9 +417,9 @@ public class IDCardFragment extends BaseFragment implements View.OnClickListener
 
     @Override
     public void onClick(View v) {
-        JSONObject idCardlJSON = App.allstatusMap.get("idcard");
-        if (idCardlJSON != null && (idCardlJSON.optInt("status") == 1 || idCardlJSON.optInt("status") == 2 || idCardlJSON.optInt("status") == 2))
-            return;
+//        JSONObject idCardlJSON = App.allstatusMap.get("idcard");
+//        if (idCardlJSON != null && (idCardlJSON.optInt("status") == 1 || idCardlJSON.optInt("status") == 2 || idCardlJSON.optInt("status") == 3))
+//            return;
 
         if (v.getId() == R.id.llyt_take_tip1) {
             step = 0;

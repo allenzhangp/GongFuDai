@@ -77,13 +77,16 @@ public class EmeContactFragmfent extends BaseFragment {
     private int relation = -1;
     private int relation2 = -1;
 
+
+    boolean hasGetInfo = false;//已经上传成功的
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_eme_contact, container, false);
     }
 
     private boolean submitEnable() {
-        return relation >= 0 && relation2 >= 0 && !TextUtils.isEmpty(tv_phone2.getText()) && !TextUtils.isEmpty(et_idcard2.getText())
+        return isEditable() && relation >= 0 && relation2 >= 0 && !TextUtils.isEmpty(tv_phone2.getText()) && !TextUtils.isEmpty(et_idcard2.getText())
                 && !TextUtils.isEmpty(tv_phone.getText()) && !TextUtils.isEmpty(et_idcard.getText());
     }
 
@@ -103,6 +106,71 @@ public class EmeContactFragmfent extends BaseFragment {
             btn_submit.setEnabled(submitEnable());
         }
     };
+
+    JSONArray retcontactArray = null;
+
+    private void setData() {
+        if (retcontactArray.length() >= 2) {
+            JSONObject json1 = retcontactArray.optJSONObject(0);
+            tv_phone.setText(json1.optString("phone", ""));
+            et_idcard.setText(json1.optString("name", ""));
+            int relation = Integer.valueOf(json1.optString("relation", "0"));
+            if (relation == 1)
+                rg_gx.check(R.id.rbtn_ts);
+            else if (relation == 2)
+                rg_gx.check(R.id.rbtn_py);
+            else
+                rg_gx.check(R.id.rbtn_qs);
+
+            JSONObject json2 = retcontactArray.optJSONObject(1);
+            tv_phone2.setText(json2.optString("phone", ""));
+            et_idcard2.setText(json2.optString("name", ""));
+            int relation2 = Integer.valueOf(json2.optString("relation", "0"));
+            if (relation2 == 1)
+                rg_gx2.check(R.id.rbtn_ts2);
+            else if (relation == 2)
+                rg_gx2.check(R.id.rbtn_py2);
+            else
+                rg_gx2.check(R.id.rbtn_qs2);
+
+        }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        int status = App.checkStatus("ice");
+        if (status == 1 || status == 2 || status == 3) {
+            rg_gx.setClickable(false);
+            rg_gx2.setClickable(false);
+            if (hasGetInfo) {
+                if (retcontactArray != null && retcontactArray.length() >= 2)
+                    setData();
+            } else {
+                RespListener respListener = new RespListener();
+                respListener.onRespError = this;
+                respListener.onRespSuccess = new RespListener.OnRespSuccess() {
+                    @Override
+                    public void onSuccess(String response, String extras) {
+                        dismiss();
+                        if (response == null)
+                            return;
+                        hasGetInfo = true;
+                        try {
+                            retcontactArray = new JSONArray(response);
+                            if (retcontactArray != null && retcontactArray.length() >= 2)
+                                setData();
+                        } catch (JSONException e) {
+                        }
+                    }
+                };
+
+                CustomStringRequest request = new CustomStringRequest(Request.Method.GET, DsApi.getTokenUserId(String.format(DsApi.LIST, DsApi.GETICE)), respListener);
+                executeRequest(request);
+            }
+
+        }
+    }
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
@@ -149,11 +217,16 @@ public class EmeContactFragmfent extends BaseFragment {
         });
     }
 
+    private boolean isEditable() {
+        int status = App.checkStatus("ice");
+        if (status == 2 || status == 3 || status == 1)
+            return false;
+        return true;
+    }
+
     @OnClick({R.id.btn_contact_add, R.id.btn_contact_add2})
     public void chooseContact(View v) {
-
-        JSONObject contactsJSON = App.allstatusMap.get("ice");
-        if (contactsJSON != null && (contactsJSON.optInt("status") == 1 || contactsJSON.optInt("status") == 2 || contactsJSON.optInt("status") == 2))
+        if (!isEditable())
             return;
 
         if (v.getId() == R.id.btn_contact_add) {
@@ -187,6 +260,7 @@ public class EmeContactFragmfent extends BaseFragment {
             } else {
                 tv_phone.setText(datas.get(0).getNumber());
                 et_idcard.setText(datas.get(0).getContactName());
+                et_idcard.setEnabled(true);
             }
         } else if (requestCode == CONTACT_ADD2) {
             if (datas.size() > 1) {
@@ -198,6 +272,7 @@ public class EmeContactFragmfent extends BaseFragment {
             } else {
                 tv_phone2.setText(datas.get(0).getNumber());
                 et_idcard2.setText(datas.get(0).getContactName());
+                et_idcard2.setEnabled(true);
             }
         }
     }
@@ -208,6 +283,7 @@ public class EmeContactFragmfent extends BaseFragment {
             dialog.dismiss();
             tv_phone.setText(datas.get(which).getNumber());
             et_idcard.setText(datas.get(which).getContactName());
+            et_idcard.setEnabled(true);
         }
     };
     DialogInterface.OnClickListener itemClicklistener2 = new DialogInterface.OnClickListener() {
@@ -216,6 +292,7 @@ public class EmeContactFragmfent extends BaseFragment {
             dialog.dismiss();
             tv_phone2.setText(datas.get(which).getNumber());
             et_idcard2.setText(datas.get(which).getContactName());
+            et_idcard2.setEnabled(true);
         }
     };
 

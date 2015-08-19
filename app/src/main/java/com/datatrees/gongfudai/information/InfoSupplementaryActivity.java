@@ -8,7 +8,6 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -77,15 +76,15 @@ public class InfoSupplementaryActivity extends BaseFragmentActivity {
     TextView txXxyq;
 
     @Bind(R.id.iv_idcard)
-    Button iv_idcard;
+    ImageView iv_idcard;
     @Bind(R.id.iv_lxr)
-    Button iv_lxr;
+    ImageView iv_lxr;
     @Bind(R.id.iv_yj)
-    Button iv_yj;
+    ImageView iv_yj;
     @Bind(R.id.iv_yys)
-    Button iv_yys;
+    ImageView iv_yys;
     @Bind(R.id.iv_ds)
-    Button iv_ds;
+    ImageView iv_ds;
 
 
     @Bind(R.id.rlyt_idcard)
@@ -340,7 +339,7 @@ public class InfoSupplementaryActivity extends BaseFragmentActivity {
         if (idCardlStatus == 1) {
             startAnimation(0);
         } else if (idCardlStatus == 2) {
-            stopAnimation(0);
+            statusOk(0);
         } else if (idCardlStatus == 3) {
             statusFail(0);
         } else {

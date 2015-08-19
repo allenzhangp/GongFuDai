@@ -5,6 +5,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.util.AttributeSet;
 import android.webkit.CookieManager;
+import android.webkit.CookieSyncManager;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
@@ -140,6 +141,12 @@ public class CustomWebView extends WebView {
     };
 
     private void init() {
+        CookieSyncManager.createInstance(getContext());
+        CookieSyncManager.getInstance().startSync();
+        CookieManager.getInstance().removeSessionCookie();
+        clearCache(true);
+        clearHistory();
+
         cookies = new ArrayList<>();
         getSettings().setJavaScriptEnabled(true);
         getSettings().setDefaultTextEncodingName("utf-8");
@@ -207,6 +214,8 @@ public class CustomWebView extends WebView {
             }
 
             public void onPageFinished(WebView view, String url) {
+                LogUtil.d("info", "===>>> onPageFinished method is called!-->" + url);
+
                 CookieManager cookieManager = CookieManager.getInstance();
                 String cookieStr = cookieManager.getCookie(url);
                 LogUtil.e("TAG", "Cookies = " + cookieStr);
@@ -215,6 +224,11 @@ public class CustomWebView extends WebView {
                 }
                 if (jsCssStr != null && StringUtils.isNotTrimBlank(jsCssStr.toString()))
                     loadUrl("javascript:" + jsCssStr.toString());
+                if (isEnd(url) && onVisitEndUrl != null) {
+                    LogUtil.i("TAG", "end url-->" + url);
+                    onVisitEndUrl.onVisitEndUrl(url, (String[]) cookies.toArray(new String[cookies.size()]), headerJSONObj);
+                }
+
                 super.onPageFinished(view, url);
             }
 

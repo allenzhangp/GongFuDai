@@ -47,4 +47,5 @@ dependencies {
     compile files('libs/oss-android-sdk-1.3.0.jar')
     compile files('libs/locSDK_6.05.jar')
     compile files('libs/cordova-3.7.0-dev.jar')
+    compile project(':camera')
 }

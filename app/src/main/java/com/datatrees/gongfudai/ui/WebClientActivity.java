@@ -11,6 +11,7 @@ import com.datatrees.gongfudai.R;
 import com.datatrees.gongfudai.base.BaseActivity;
 import com.datatrees.gongfudai.utils.BK;
 import com.datatrees.gongfudai.utils.LogUtil;
+import com.datatrees.gongfudai.utils.StringUtils;
 import com.datatrees.gongfudai.widget.CustomWebView;
 
 import java.util.Arrays;
@@ -44,16 +45,13 @@ public class WebClientActivity extends BaseActivity implements CustomWebView.OnV
         cssStr = extras.getStringExtra("insert_css");
         title = extras.getStringExtra("visit_title");
         url = extras.getStringExtra("visit_url");
-        usePCUA = extras.getBooleanExtra("usePCUA",false);
+        usePCUA = extras.getBooleanExtra("usePCUA", false);
 
         tv_title.setText(title);
         endUrls = extras.getStringArrayExtra("end_urls");
         mWebView.setOnVisitEndUrl(this);
 
-        StringBuilder sb = new StringBuilder("<style type=\"text/css\">");
-        sb.append(cssStr);
-        sb.append("</style>");
-        mWebView.customLoadUrl(url, endUrls, sb.toString(),usePCUA);
+        mWebView.customLoadUrl(url, endUrls, cssStr, usePCUA);
     }
 
     private void clearCookieHis() {
@@ -76,8 +74,8 @@ public class WebClientActivity extends BaseActivity implements CustomWebView.OnV
         Intent data = new Intent();
         data.putExtra("end_cookies", cookies);
         data.putExtra("end_url", endUrl);
-        data.putExtra("end_header", headerStr);
-        setResult(RESULT_OK,data);
+        data.putExtra("end_header", StringUtils.isTrimBlank(headerStr) ? "" : headerStr);
+        setResult(RESULT_OK, data);
         this.finish();
     }
 

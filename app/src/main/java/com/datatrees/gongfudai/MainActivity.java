@@ -10,21 +10,24 @@ import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.SystemClock;
-import android.provider.MediaStore;
 import android.util.Log;
 import android.widget.ImageView;
 import android.widget.ListView;
 
 import com.android.camera.Crop;
+import com.datatrees.camera.CameraActivity;
+import com.datatrees.camera.PhotoPreActivity;
 import com.datatrees.gongfudai.adapter.TestFoodListAdapter;
 import com.datatrees.gongfudai.model.ContactData;
 import com.datatrees.gongfudai.ui.WebClientActivity;
+import com.datatrees.gongfudai.utils.ConstantUtils;
 import com.datatrees.gongfudai.utils.ContactsAccessPublic;
 import com.datatrees.gongfudai.utils.FileUtils;
 import com.datatrees.gongfudai.utils.PickUtils;
+import com.datatrees.gongfudai.utils.ToastUtils;
 import com.umeng.analytics.MobclickAgent;
 
-import org.apache.cordova.Config;
+import org.apache.cordova.CordovaActivity;
 import org.apache.cordova.CordovaInterface;
 import org.apache.cordova.CordovaPlugin;
 import org.apache.cordova.CordovaWebView;
@@ -46,7 +49,7 @@ import butterknife.OnClick;
  * main activity
  * Created by zhangping on 15/7/25.
  */
-public class MainActivity extends Activity implements CordovaInterface {
+public class MainActivity extends CordovaActivity implements CordovaInterface {
 
     public final static String[] imageThumbUrls = new String[]{
             "http://img.my.csdn.net/uploads/201407/26/1406383299_1976.jpg",
@@ -147,7 +150,7 @@ public class MainActivity extends Activity implements CordovaInterface {
     private CordovaWebView cordova_webview;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         MobclickAgent.updateOnlineConfig(this);
@@ -163,11 +166,11 @@ public class MainActivity extends Activity implements CordovaInterface {
         Log.e("TAG", "macAddress:" + macAddress);
 
 
-        cordova_webview = (CordovaWebView) findViewById(R.id.tutorialView);
-         Config.init(this);
-        String url = "http://192.168.0.241:1818/tos";
-        Config.addWhiteListEntry(url,true);
-        cordova_webview.loadUrl(url);
+        appView = (CordovaWebView) findViewById(R.id.tutorialView);
+//        Config.init(this);
+        String url = "http://192.168.0.241:1818/home";
+//        Config.addWhiteListEntry(url, true);
+        appView.loadUrl(url);
 
     }
 
@@ -190,7 +193,7 @@ public class MainActivity extends Activity implements CordovaInterface {
 
     @OnClick(R.id.btn_contacts_access)
     public void accessContacts() {
-      List<ContactData> contactDataList = ContactsAccessPublic.getContactsAll(this, null);
+        List<ContactData> contactDataList = ContactsAccessPublic.getContactsAll(this, null);
     }
 
     @OnClick(R.id.btn_cutsom_webview)
@@ -202,10 +205,13 @@ public class MainActivity extends Activity implements CordovaInterface {
 
     @OnClick(R.id.btn_tack_photo)
     public void onclickTackP() {
-        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);//action is
-        // capture
-        intent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
-        startActivityForResult(intent, TACK_PICTURE_RC);
+//        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);//action is
+//        // capture
+//        intent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
+//        startActivityForResult(intent, TACK_PICTURE_RC);
+
+        Intent intent = new Intent(this, CameraActivity.class);//action is
+        startActivityForResult(intent, ConstantUtils.TAKE_PHOTO_CODE);
     }
 
     @OnClick(R.id.btn_pic_photo)
@@ -219,7 +225,10 @@ public class MainActivity extends Activity implements CordovaInterface {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode != RESULT_OK)
             return;
-        if (requestCode == PICK_IMAGE_RC) {
+        if (requestCode == ConstantUtils.TAKE_PHOTO_CODE) {
+            String filePath = data.getStringExtra(PhotoPreActivity.IMAGE_PATH);
+            ToastUtils.showShort(filePath);
+        } else if (requestCode == PICK_IMAGE_RC) {
             Uri imageUri1 = data.getData();
             String path = PickUtils.getPath(this, imageUri1);
             new Crop(Uri.fromFile(new File(path))).output(imageUri)
@@ -290,6 +299,7 @@ public class MainActivity extends Activity implements CordovaInterface {
     public ExecutorService getThreadPool() {
         return threadPool;
     }
+
     private final ExecutorService threadPool = Executors.newCachedThreadPool();
 
 }

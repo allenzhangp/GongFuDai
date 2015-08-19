@@ -8,9 +8,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
-import android.net.Uri;
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
@@ -30,7 +28,8 @@ import com.alibaba.sdk.android.oss.model.StsTokenGetter;
 import com.alibaba.sdk.android.oss.storage.OSSBucket;
 import com.alibaba.sdk.android.oss.storage.OSSFile;
 import com.alibaba.sdk.android.oss.storage.TaskHandler;
-import com.android.camera.Crop;
+import com.datatrees.camera.CameraActivity;
+import com.datatrees.camera.PhotoPreActivity;
 import com.datatrees.gongfudai.App;
 import com.datatrees.gongfudai.R;
 import com.datatrees.gongfudai.base.BaseFragment;
@@ -39,11 +38,12 @@ import com.datatrees.gongfudai.model.FederationTokenGetter;
 import com.datatrees.gongfudai.net.CustomStringRequest;
 import com.datatrees.gongfudai.net.RespListener;
 import com.datatrees.gongfudai.utils.BK;
+import com.datatrees.gongfudai.utils.ConstantUtils;
 import com.datatrees.gongfudai.utils.DialogHelper;
 import com.datatrees.gongfudai.utils.DsApi;
-import com.datatrees.gongfudai.utils.FileUtils;
 import com.datatrees.gongfudai.utils.LogUtil;
 import com.datatrees.gongfudai.utils.PreferenceUtils;
+import com.datatrees.gongfudai.utils.StringUtils;
 import com.datatrees.gongfudai.utils.ToastUtils;
 import com.datatrees.gongfudai.volley.Request;
 
@@ -52,8 +52,6 @@ import org.json.JSONObject;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -104,16 +102,16 @@ public class IDCardFragment extends BaseFragment implements View.OnClickListener
 
     private OSSBucket bucket;
 
-    private Uri imageUri;
-    public static int TACK_PICTURE_RC = 1002;
     private int step = 0;//第几步骤
     private ProgressDialog progressDialog;
     private TaskHandler tk;
 
-    public boolean isFinish = true;
+    public boolean isFinish = false;
     private boolean isUploadPhotoFinish = false;//三张照片拍完上传成功之后为true
 
     private long timestamp = 0;
+
+    String imagePath;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -123,7 +121,6 @@ public class IDCardFragment extends BaseFragment implements View.OnClickListener
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         BK.bind(this, view);
-        imageUri = FileUtils.buildUri();
         bucket = App.ossService.getOssBucket(App.BUCKETNAME);
         et_idcard.addTextChangedListener(textWatcher);
         et_real_name.addTextChangedListener(textWatcher);
@@ -181,16 +178,11 @@ public class IDCardFragment extends BaseFragment implements View.OnClickListener
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode != Activity.RESULT_OK)
             return;
-        if (requestCode == TACK_PICTURE_RC) {
-            new Crop(imageUri).output(imageUri).withMazSize(500, 500)
-                    .start(getActivity(), this);
-        } else if (requestCode == Crop.REQUEST_CROP) {
-            if (imageUri != null) {
-                Bitmap bitmap = BitmapFactory.decodeFile(imageUri.getPath());
-                File imageFile = bitmap2file(bitmap);
-
-                uploadFile2OSS(imageFile.getAbsolutePath());
-
+        if (requestCode == ConstantUtils.TAKE_PHOTO_CODE) {
+            imagePath = data.getStringExtra(PhotoPreActivity.IMAGE_PATH);
+            ToastUtils.showShort(imagePath);
+            if (StringUtils.isNotBlank(imagePath)) {
+                uploadFile2OSS(imagePath);
                 if (progressDialog == null)
                     progressDialog = DialogHelper.progressDialog(getActivity(), uploadListener);
                 progressDialog.show();
@@ -198,46 +190,20 @@ public class IDCardFragment extends BaseFragment implements View.OnClickListener
         }
     }
 
-    private File bitmap2file(Bitmap bitmap) {
-        String stringDate = "front";
-        if (step == 1)
-            stringDate = "back";
-        else if (step == 2) {
-            stringDate = "withCard";
-        } else {
-            stringDate = "front";
-        }
-        String folderPath = FileUtils.getExtImageFilesDir().getPath();
-        String fileName = stringDate + ".jpg";
-        File fileDir = new File(folderPath);
-        if (!fileDir.exists()) {
-            fileDir.mkdirs();
-        }
-        File file = new File(folderPath + File.separator + fileName);
-        if (file.exists()) {
-            file.delete();
-        }
-        try {
-            FileOutputStream out = new FileOutputStream(file);
-            if (bitmap.compress(Bitmap.CompressFormat.JPEG, 100, out)) {
-                out.flush();
-                out.close();
-            }
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-            return null;
-        } catch (IOException e) {
-            e.printStackTrace();
-            return null;
-        }
-        return file;
+    private Bitmap getBimap(String filePath) {
+        Bitmap realImage;
+        final BitmapFactory.Options options = new BitmapFactory.Options();
+        options.inSampleSize = 5;
+        options.inPurgeable = true;                   //Tell to gc that whether it needs free memory, the Bitmap can be cleared
+        options.inInputShareable = true;              //Which kind of reference will be used to recover the Bitmap data after being clear, when it will be used in the future
+        realImage = BitmapFactory.decodeFile(filePath, options);
+        return realImage;
     }
-
 
     private void uploadFile2OSS(String filePath) {
         String fileName = filePath.substring(filePath.lastIndexOf("/") + 1);
         long expirationTime = timestamp;
-        OSSFile ossFile = App.ossService.getOssFile(bucket, App.loginUserInfo.getUserId() + File.separator + expirationTime + File.separator + fileName);
+        OSSFile ossFile = App.ossService.getOssFile(bucket, App.loginUserInfo.getUserId() + File.separator + expirationTime + File.separator + fileName + ".jpg");
         try {
             ossFile.setUploadFilePath(filePath, "file");
 
@@ -265,7 +231,7 @@ public class IDCardFragment extends BaseFragment implements View.OnClickListener
                     LogUtil.i(objectKey);
                     getActivity().runOnUiThread(new Runnable() {
                         public void run() {
-                            Bitmap bitmap = BitmapFactory.decodeFile(imageUri.getPath());
+                            Bitmap bitmap = getBimap(imagePath);
                             Drawable drawable = new BitmapDrawable(null, bitmap);
                             if (step == 0) {
                                 iv_take_photo1.setImageDrawable(null);
@@ -331,6 +297,7 @@ public class IDCardFragment extends BaseFragment implements View.OnClickListener
         respListener.onRespSuccess = new RespListener.OnRespSuccess() {
             @Override
             public void onSuccess(String response, String extras) {
+                dismiss();
                 if (response == null)
                     return;
                 isFinish = true;
@@ -409,9 +376,10 @@ public class IDCardFragment extends BaseFragment implements View.OnClickListener
             }
         });
 
-        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);//action is capture
-        intent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
-        startActivityForResult(intent, TACK_PICTURE_RC);
+
+        Intent intent = new Intent(getActivity(), CameraActivity.class);//action is
+        intent.putExtra(CameraActivity.IDCARD_TYPE, step);
+        startActivityForResult(intent, ConstantUtils.TAKE_PHOTO_CODE);
 
     }
 }

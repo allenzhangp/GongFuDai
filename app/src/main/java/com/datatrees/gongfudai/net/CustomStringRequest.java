@@ -54,7 +54,7 @@ public class CustomStringRequest extends StringRequest {
 
     @Override
     public RetryPolicy getRetryPolicy() {
-        RetryPolicy retryPolicy = new DefaultRetryPolicy(ConstantUtils.CUSTOM_TIMEOUT_MS, 0, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
+        RetryPolicy retryPolicy = new DefaultRetryPolicy(ConstantUtils.CUSTOM_TIMEOUT_MS, ConstantUtils.CUSTOM_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
         return retryPolicy;
     }
 

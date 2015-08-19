@@ -13,7 +13,7 @@ public class EmailValidModelFather {
     public String endUrl;
     public String css;
     public String website;
-    public String usePCUA;
+    public boolean usePCUA;
     //运营商专用
     public ArrayList<EmailValidModel> operatorlist = new ArrayList<>();
 

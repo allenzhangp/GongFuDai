@@ -74,6 +74,7 @@ public class CordovaFragment extends BaseFragment implements CordovaInterface {
 
     }
 
+
     @Override
     public void setActivityResultCallback(CordovaPlugin cordovaPlugin) {
     }

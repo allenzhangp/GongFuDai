@@ -31,7 +31,7 @@ public class DsApi {
 
     private static final String HOST = "http://192.168.0.242:8080/service";
 
-//    private static final String HOST = "http://192.168.3.109:14501";
+//    private static final String HOST = "http://192.168.3.110:14501";
 
     /**
      * 登陆成功之后接口模块

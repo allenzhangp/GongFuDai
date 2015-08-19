@@ -11,6 +11,6 @@ public class EmailValidModel {
     public String endUrl;
     public String css;
     public String website;
-    public String usePCUA;
+    public boolean usePCUA;
 
 }

@@ -92,6 +92,7 @@ public class ElectricityValidFragmfent extends BaseFragment {
         respListener.onRespSuccess = new RespListener.OnRespSuccess() {
             @Override
             public void onSuccess(String response, String extras) {
+                dismiss();
                 if (extras.contains(ConstantUtils.KEY_TAOBAO))
                     isTaobaoValid = true;
                 ToastUtils.showShort(R.string.upload_succeed);
@@ -139,7 +140,7 @@ public class ElectricityValidFragmfent extends BaseFragment {
                 model.startUrl = obj.optString("startUrl");
                 model.title = obj.optString("title");
                 model.website = obj.optString("website");
-                model.usePCUA = obj.optString("usePCUA");
+                model.usePCUA = obj.optBoolean("usePCUA");
                 urlDatas.put(key, model);
             }
         } catch (JSONException e) {

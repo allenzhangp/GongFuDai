@@ -4,8 +4,12 @@ package com.datatrees.gongfudai.utils;
  * Created by zhangping on 15/8/15.
  */
 public class ConstantUtils {
+    //code
+    public static final int TAKE_PHOTO_CODE = 102;
+
     //net
-    public static final int CUSTOM_TIMEOUT_MS = 45000;
+    public static final int CUSTOM_TIMEOUT_MS = 120000;
+    public static final int CUSTOM_MAX_RETRIES = 2;
 
     //Preference
     public static final String LOGIN_NAME = "login_name";

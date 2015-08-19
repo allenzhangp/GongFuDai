@@ -82,7 +82,7 @@ public class EmailValidFragmfent extends BaseFragment {
                 model.startUrl = obj.optString("startUrl");
                 model.title = obj.optString("title");
                 model.website = obj.optString("website");
-                model.usePCUA = obj.optString("usePCUA");
+                model.usePCUA = obj.optBoolean("usePCUA");
                 urlDatas.put(key, model);
             }
         } catch (JSONException e) {

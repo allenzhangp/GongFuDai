@@ -74,7 +74,7 @@ public class OperatorValidFragmfent extends BaseFragment {
                 for (int i = 0; i < items.length; i++) {
                     items[i] = modelFather.operatorlist.get(i).title;
                 }
-                DialogHelper.singleChoiceItems(getActivity(), null, itemClicklistener);
+                DialogHelper.singleChoiceItems(getActivity(), items, itemClicklistener).show();
             } else {
                 website = modelFather.website;
                 String[] endUrls = {modelFather.endUrl};
@@ -88,6 +88,7 @@ public class OperatorValidFragmfent extends BaseFragment {
     DialogInterface.OnClickListener itemClicklistener = new DialogInterface.OnClickListener() {
         @Override
         public void onClick(DialogInterface dialog, int which) {
+            dialog.dismiss();
             if (modelFather != null) {
                 EmailValidModel model = modelFather.operatorlist.get(which);
                 website = model.website;
@@ -127,6 +128,7 @@ public class OperatorValidFragmfent extends BaseFragment {
         respListener.onRespSuccess = new RespListener.OnRespSuccess() {
             @Override
             public void onSuccess(String response, String extras) {
+                dismiss();
                 if (extras.contains(ConstantUtils.KEY_10010_NUMBER))
                     isLTValid = true;
                 else if (extras.contains(ConstantUtils.KEY_10086_NUMBER))
@@ -168,7 +170,7 @@ public class OperatorValidFragmfent extends BaseFragment {
             urlDatas = new HashMap<>();
 
             JSONArray operatorArray = jsonResp.optJSONArray("operator");
-            JSONArray operatorListArray = jsonResp.optJSONArray("ecommerce");
+            JSONArray operatorListArray = jsonResp.optJSONArray("operatorList");
 
             for (int i = 0; i < operatorArray.length(); i++) {
                 JSONObject operatorObj = operatorArray.optJSONObject(i);
@@ -180,12 +182,12 @@ public class OperatorValidFragmfent extends BaseFragment {
                 model.startUrl = operatorObj.optString("startUrl");
                 model.title = operatorObj.optString("title");
                 model.website = operatorObj.optString("website");
-                model.usePCUA = operatorObj.optString("usePCUA");
+                model.usePCUA = operatorObj.optBoolean("usePCUA");
 
                 int length = operatorListArray.length();
                 for (int j = 0; j < length; j++) {
                     JSONObject objChild = operatorListArray.optJSONObject(j);
-                    String key = operatorObj.optString("key");
+                    String key = objChild.optString("key");
                     if (key.contains(model.key)) {
                         EmailValidModel modelChilde = new EmailValidModel();
                         modelChilde.key = objChild.optString("key");
@@ -195,7 +197,7 @@ public class OperatorValidFragmfent extends BaseFragment {
                         modelChilde.startUrl = objChild.optString("startUrl");
                         modelChilde.title = objChild.optString("title");
                         modelChilde.website = objChild.optString("website");
-                        modelChilde.usePCUA = objChild.optString("usePCUA");
+                        modelChilde.usePCUA = objChild.optBoolean("usePCUA");
                         model.operatorlist.add(modelChilde);
                     }
                 }

@@ -125,6 +125,10 @@ public class App extends Application {
         return mContext;
     }
 
+    public static int checkStatus(String type) {
+        JSONObject statusJSON = allstatusMap.get(type);
+        return statusJSON == null ? 0 : statusJSON.optInt("status");
+    }
 
     /**
      * 实现实时位置回调监听

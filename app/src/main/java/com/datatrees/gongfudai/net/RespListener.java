@@ -46,6 +46,7 @@ public class RespListener implements Response.Listener<String>, Response.ErrorLi
                     onRespSuccess.onSuccess(obj.optString("data"), extras);
             }
         } catch (JSONException e) {
+            LogUtil.e(e.getMessage());
             if (onRespError != null)
                 onRespError.onError(e.getMessage(), extras);
         }
@@ -53,6 +54,7 @@ public class RespListener implements Response.Listener<String>, Response.ErrorLi
 
     @Override
     public void onErrorResponse(VolleyError error) {
+        LogUtil.e(error.getMessage());
         try {
             if (onRespError != null) {
                 if (error.networkResponse == null) {
@@ -73,6 +75,7 @@ public class RespListener implements Response.Listener<String>, Response.ErrorLi
             }
 
         } catch (Exception e) {
+            LogUtil.e(e.getMessage());
             if (onRespError != null)
                 onRespError.onError(VolleyErrorHelper.getMessage(e, App.getContext()), extras);
         }

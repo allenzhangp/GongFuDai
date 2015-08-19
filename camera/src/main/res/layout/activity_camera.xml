@@ -1,0 +1,121 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:camera="http://schemas.android.com/apk/res-auto"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent">
+
+    <FrameLayout
+        android:id="@+id/preview"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_weight="1">
+
+        <SurfaceView
+            android:id="@+id/camera_fragment"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_marginBottom="50dp"
+            android:layout_marginTop="50dp" />
+
+
+        <ImageView
+            android:id="@+id/iv_camera_bg"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_marginBottom="50dp"
+            android:layout_marginTop="50dp" />
+
+        <com.datatrees.camera.FocusImageView
+            android:id="@+id/focusImageView"
+            android:layout_width="75dip"
+            android:layout_height="75dip"
+            camera:focus_fail_id="@drawable/focus_focus_failed"
+            camera:focus_focusing_id="@drawable/focus_focusing"
+            camera:focus_success_id="@drawable/focus_focused" />
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:alpha="1"
+            android:background="#2b2d39"
+            android:orientation="vertical"
+            android:padding="10dp">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <ImageButton
+                    android:id="@+id/ibtn_cancle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="3dp"
+                    android:background="@null"
+                    android:scaleType="centerInside"
+                    android:src="@drawable/ico_camera_cancel" />
+
+                <ImageButton
+                    android:id="@+id/btn_swicamera"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:background="@null"
+                    android:scaleType="centerInside"
+                    android:src="@drawable/ico_camera_change" />
+
+                <ImageButton
+                    android:id="@+id/ibtn_open_light"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:layout_centerVertical="true"
+                    android:background="@null"
+                    android:scaleType="centerInside"
+                    android:src="@drawable/ico_camera_openligt" />
+
+
+            </RelativeLayout>
+
+            <LinearLayout
+                android:id="@+id/progress_layout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:visibility="gone">
+
+                <ProgressBar
+                    android:id="@+id/progressBar1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+                <TextView
+                    android:id="@+id/islem_value_textView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Loading..." />
+
+            </LinearLayout>
+        </FrameLayout>
+
+        <LinearLayout
+            android:id="@+id/RelativeLayout1"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_alignParentBottom="true"
+            android:layout_gravity="bottom"
+            android:background="#2b2d39"
+            android:gravity="center">
+
+            <ImageView
+                android:id="@+id/ibtn_camera_take"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:src="@drawable/ico_camera" />
+        </LinearLayout>
+
+    </FrameLayout>
+
+</FrameLayout>

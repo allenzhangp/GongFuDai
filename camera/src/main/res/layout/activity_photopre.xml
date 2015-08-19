@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#eeeeee"
+    android:orientation="vertical">
+
+    <ImageView
+        android:id="@+id/image_photo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="#2b2d39"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/btn_camera_ok"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:text="@string/photo_ok" />
+
+        <Button
+            android:id="@+id/btn_camera_cancle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_margin="5dp"
+            android:text="@string/photo_retry" />
+    </RelativeLayout>
+</LinearLayout>

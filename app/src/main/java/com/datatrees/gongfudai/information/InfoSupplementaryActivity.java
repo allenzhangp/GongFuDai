@@ -2,9 +2,12 @@ package com.datatrees.gongfudai.information;
 
 import android.app.Dialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -13,6 +16,7 @@ import com.datatrees.gongfudai.App;
 import com.datatrees.gongfudai.R;
 import com.datatrees.gongfudai.base.BaseFragment;
 import com.datatrees.gongfudai.base.BaseFragmentActivity;
+import com.datatrees.gongfudai.cordova.CordovaActivity;
 import com.datatrees.gongfudai.net.CustomStringRequest;
 import com.datatrees.gongfudai.net.RespListener;
 import com.datatrees.gongfudai.service.VerifyReciver;
@@ -202,6 +206,7 @@ public class InfoSupplementaryActivity extends BaseFragmentActivity {
                 changeBgColor(5);
                 if (infoSecurityFragmfent == null)
                     infoSecurityFragmfent = new InfoSecurityFragmfent();
+                startActivity(new Intent(this, CordovaActivity.class).putExtra("load_url", DsApi.TOS_RUL));
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, infoSecurityFragmfent).commit();
                 break;
         }
@@ -212,11 +217,96 @@ public class InfoSupplementaryActivity extends BaseFragmentActivity {
         changeBgColor(position, true);
     }
 
+    private void startAnimation(int postion) {
+        Animation animation = AnimationUtils.loadAnimation(this, R.anim.alpha);
+        if (postion == 0) {
+            animation.setAnimationListener(new RepeatAnimationLister(ivIDcardBg));
+            ivIDcardBg.setVisibility(View.VISIBLE);
+            ivIDcardBg.startAnimation(animation);
+        } else if (postion == 1) {
+            animation.setAnimationListener(new RepeatAnimationLister(ivLxrBg));
+            ivLxrBg.setVisibility(View.VISIBLE);
+            ivLxrBg.startAnimation(animation);
+        } else if (postion == 2) {
+            animation.setAnimationListener(new RepeatAnimationLister(ivYjBg));
+            ivYjBg.setVisibility(View.VISIBLE);
+            ivYjBg.startAnimation(animation);
+        } else if (postion == 3) {
+            animation.setAnimationListener(new RepeatAnimationLister(ivYysBg));
+            ivYysBg.setVisibility(View.VISIBLE);
+            ivYysBg.startAnimation(animation);
+        } else if (postion == 4) {
+            animation.setAnimationListener(new RepeatAnimationLister(ivDsBg));
+            ivDsBg.setVisibility(View.VISIBLE);
+            ivDsBg.startAnimation(animation);
+        } else if (postion == 5) {
+
+        }
+    }
+
+    private void stopAnimation(int postion) {
+        Animation animation = null;
+        if (postion == 0) {
+            animation = ivIDcardBg.getAnimation();
+        } else if (postion == 1) {
+            animation = ivLxrBg.getAnimation();
+        } else if (postion == 2) {
+            animation = ivYjBg.getAnimation();
+        } else if (postion == 3) {
+            animation = ivYysBg.getAnimation();
+        } else if (postion == 4) {
+            animation = ivDsBg.getAnimation();
+        } else if (postion == 5) {
+
+        }
+        if (null != animation) {
+            animation.cancel();
+        }
+    }
+
+
+    //当状态为通过或者成功之后背景动画变化
+    private void checkstatus() {
+        int idCardlStatus = App.checkStatus("idcard");
+        int contactsStatus = App.checkStatus("ice");
+        int operatorStatus = App.checkStatus("operator");
+        int ecommerceStatus = App.checkStatus("ecommerce");
+        int emailStatus = App.checkStatus("email");
+
+        if (emailStatus == 1 || emailStatus == 2) {
+            startAnimation(2);
+        } else {
+            stopAnimation(2);
+        }
+        if (idCardlStatus == 1 || idCardlStatus == 2) {
+            startAnimation(0);
+        } else {
+            stopAnimation(0);
+        }
+        if (contactsStatus == 1 || contactsStatus == 2) {
+            startAnimation(1);
+        } else {
+            stopAnimation(1);
+        }
+        if (operatorStatus == 1 || operatorStatus == 2) {
+            startAnimation(3);
+        } else {
+            stopAnimation(3);
+        }
+        if (ecommerceStatus == 1 || ecommerceStatus == 2) {
+            startAnimation(4);
+        } else {
+            stopAnimation(4);
+        }
+    }
+
+
     private void changeBgColor(int position, boolean invisible) {
         if (position == 0) {
             ivIDcardBg.setVisibility(View.VISIBLE);
             tvIDcard.setTextColor(getResources().getColor(R.color.white));
             if (invisible) {
+
                 ivDsBg.setVisibility(View.INVISIBLE);
                 ivLxrBg.setVisibility(View.INVISIBLE);
                 ivXxyqBg.setVisibility(View.INVISIBLE);
@@ -310,6 +400,7 @@ public class InfoSupplementaryActivity extends BaseFragmentActivity {
                 tvDs.setTextColor(getResources().getColor(R.color.info_text));
             }
         }
+        checkstatus();
     }
 
     @OnClick(R.id.ibtn_back)
@@ -380,4 +471,27 @@ public class InfoSupplementaryActivity extends BaseFragmentActivity {
         }
     };
 
+
+    class RepeatAnimationLister implements Animation.AnimationListener {
+        View v;
+
+        RepeatAnimationLister(View view) {
+            this.v = view;
+        }
+
+        @Override
+        public void onAnimationStart(Animation animation) {
+
+        }
+
+        @Override
+        public void onAnimationEnd(Animation animation) {
+            v.startAnimation(animation);
+        }
+
+        @Override
+        public void onAnimationRepeat(Animation animation) {
+
+        }
+    }
 }

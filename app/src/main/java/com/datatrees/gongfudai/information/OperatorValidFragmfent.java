@@ -56,7 +56,7 @@ public class OperatorValidFragmfent extends BaseFragment {
         if (!getConfigSuccess && urlDatas != null)
             return;
         JSONObject operatorJSON = App.allstatusMap.get("operator");
-        if (operatorJSON != null && (operatorJSON.optInt("status") == 1 || operatorJSON.optInt("status") == 2))
+        if (operatorJSON != null && (operatorJSON.optInt("status") == 1 || operatorJSON.optInt("status") == 2 || operatorJSON.optInt("status") == 3))
             return;
         modelFather = null;
         if (v.getId() == R.id.ibtn_lt) {

@@ -103,7 +103,7 @@ public class EmailValidFragmfent extends BaseFragment {
         if (!getConfigSuccess || urlDatas == null)
             return;
         JSONObject emailJSON = App.allstatusMap.get("email");
-        if (emailJSON != null && (emailJSON.optInt("status") == 1 || emailJSON.optInt("status") == 2))
+        if (emailJSON != null && (emailJSON.optInt("status") == 1 || emailJSON.optInt("status") == 2 || emailJSON.optInt("status") == 3))
             return;
         EmailValidModel model = null;
         if (view.getId() == R.id.ibtn_126) {

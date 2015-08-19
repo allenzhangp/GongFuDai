@@ -23,7 +23,8 @@
         android:background="@color/bg_header"
         android:orientation="horizontal">
 
-        <RelativeLayout android:id="@+id/rlyt_idcard"
+        <RelativeLayout
+            android:id="@+id/rlyt_idcard"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/padding"
@@ -39,12 +40,12 @@
                 android:layout_centerHorizontal="true"
                 android:background="@drawable/bg_circle" />
 
-            <ImageView
+            <Button
                 android:id="@+id/iv_idcard"
                 android:layout_width="@dimen/width_image_info"
                 android:layout_height="@dimen/width_image_info"
                 android:layout_centerHorizontal="true"
-                android:src="@mipmap/bg_card_id" />
+                android:background="@drawable/btn_home_idcard_selector" />
 
             <TextView
                 android:id="@+id/tv_idcard_tip"
@@ -58,7 +59,8 @@
                 android:textSize="@dimen/size_small" />
         </RelativeLayout>
 
-        <RelativeLayout android:id="@+id/rlyt_lxr"
+        <RelativeLayout
+            android:id="@+id/rlyt_lxr"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/padding"
@@ -74,12 +76,12 @@
                 android:background="@drawable/bg_circle"
                 android:visibility="invisible" />
 
-            <ImageView
+            <Button
                 android:id="@+id/iv_lxr"
                 android:layout_width="@dimen/width_image_info"
                 android:layout_height="@dimen/width_image_info"
                 android:layout_centerHorizontal="true"
-                android:src="@mipmap/bg_lxr" />
+                android:background="@drawable/btn_home_jjlxr_selector" />
 
             <TextView
                 android:id="@+id/tv_lxr"
@@ -93,7 +95,8 @@
                 android:textSize="@dimen/size_small" />
         </RelativeLayout>
 
-        <RelativeLayout  android:id="@+id/rlyt_yj"
+        <RelativeLayout
+            android:id="@+id/rlyt_yj"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/padding"
@@ -109,12 +112,12 @@
                 android:background="@drawable/bg_circle"
                 android:visibility="invisible" />
 
-            <ImageView
+            <Button
                 android:id="@+id/iv_yj"
                 android:layout_width="@dimen/width_image_info"
                 android:layout_height="@dimen/width_image_info"
                 android:layout_centerHorizontal="true"
-                android:src="@mipmap/bg_yj" />
+                android:background="@drawable/btn_home_yx_selector" />
 
             <TextView
                 android:id="@+id/tv_yj"
@@ -136,7 +139,8 @@
         android:background="@color/bg_header"
         android:orientation="horizontal">
 
-        <RelativeLayout  android:id="@+id/rlyt_yys"
+        <RelativeLayout
+            android:id="@+id/rlyt_yys"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_margin="@dimen/padding"
@@ -152,12 +156,12 @@
                 android:background="@drawable/bg_circle"
                 android:visibility="invisible" />
 
-            <ImageView
+            <Button
                 android:id="@+id/iv_yys"
                 android:layout_width="@dimen/width_image_info"
                 android:layout_height="@dimen/width_image_info"
                 android:layout_centerHorizontal="true"
-                android:src="@mipmap/bg_yys" />
+                android:background="@drawable/btn_home_yys_selector" />
 
             <TextView
                 android:id="@+id/tv_yys"
@@ -171,7 +175,8 @@
                 android:textSize="@dimen/size_small" />
         </RelativeLayout>
 
-        <RelativeLayout  android:id="@+id/rlyt_ds"
+        <RelativeLayout
+            android:id="@+id/rlyt_ds"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/padding"
@@ -185,12 +190,12 @@
                 android:background="@drawable/bg_circle"
                 android:visibility="invisible" />
 
-            <ImageView
+            <Button
                 android:id="@+id/iv_ds"
                 android:layout_width="@dimen/width_image_info"
                 android:layout_height="@dimen/width_image_info"
                 android:layout_centerHorizontal="true"
-                android:src="@mipmap/bg_ds" />
+                android:background="@drawable/btn_home_ds_selector" />
 
             <TextView
                 android:id="@+id/tv_ds"
@@ -205,7 +210,8 @@
         </RelativeLayout>
 
 
-        <RelativeLayout  android:id="@+id/rlyt_xxyq"
+        <RelativeLayout
+            android:id="@+id/rlyt_xxyq"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/padding"
@@ -221,12 +227,12 @@
                 android:background="@drawable/bg_circle"
                 android:visibility="invisible" />
 
-            <ImageView
+            <Button
                 android:id="@+id/iv_xxyq"
                 android:layout_width="@dimen/width_image_info"
                 android:layout_height="@dimen/width_image_info"
                 android:layout_centerHorizontal="true"
-                android:src="@mipmap/bg_xxyq" />
+                android:background="@drawable/btn_home_xxaq_selector" />
 
             <TextView
                 android:id="@+id/tv_xxyq"

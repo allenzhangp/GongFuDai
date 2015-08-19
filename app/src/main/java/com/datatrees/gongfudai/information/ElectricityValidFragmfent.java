@@ -52,7 +52,7 @@ public class ElectricityValidFragmfent extends BaseFragment {
         if (!getConfigSuccess && urlDatas != null)
             return;
         JSONObject ecommerceJSON = App.allstatusMap.get("ecommerce");
-        if (ecommerceJSON != null && (ecommerceJSON.optInt("status") == 1 || ecommerceJSON.optInt("status") == 2))
+        if (ecommerceJSON != null && (ecommerceJSON.optInt("status") == 1 || ecommerceJSON.optInt("status") == 2 || ecommerceJSON.optInt("status") == 3))
             return;
         EmailValidModel model = null;
         if (v.getId() == R.id.ibtn_taobao) {

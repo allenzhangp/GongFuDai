@@ -153,7 +153,7 @@ public class EmeContactFragmfent extends BaseFragment {
     public void chooseContact(View v) {
 
         JSONObject contactsJSON = App.allstatusMap.get("ice");
-        if (contactsJSON != null && (contactsJSON.optInt("status") == 1 || contactsJSON.optInt("status") == 2))
+        if (contactsJSON != null && (contactsJSON.optInt("status") == 1 || contactsJSON.optInt("status") == 2 || contactsJSON.optInt("status") == 2))
             return;
 
         if (v.getId() == R.id.btn_contact_add) {

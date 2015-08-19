@@ -7,12 +7,12 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
 import android.view.KeyEvent;
+import android.widget.FrameLayout;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 
 import com.datatrees.gongfudai.base.BaseFragmentActivity;
 import com.datatrees.gongfudai.cheats.CheatsFragment;
-import com.datatrees.gongfudai.cordova.CordovaFragment;
 import com.datatrees.gongfudai.information.InfoSupplementaryActivity;
 import com.datatrees.gongfudai.net.CustomStringRequest;
 import com.datatrees.gongfudai.net.RespListener;
@@ -23,6 +23,7 @@ import com.datatrees.gongfudai.utils.ConstantUtils;
 import com.datatrees.gongfudai.utils.DialogHelper;
 import com.datatrees.gongfudai.utils.DsApi;
 import com.datatrees.gongfudai.utils.ToastUtils;
+import com.datatrees.gongfudai.utils.ViewUtils;
 import com.datatrees.gongfudai.volley.Request;
 import com.datatrees.gongfudai.widget.VerifyDialog;
 
@@ -60,6 +61,9 @@ public class HomeActivity extends BaseFragmentActivity implements CordovaInterfa
 
     boolean keepRunning = true;
 
+    @Bind(R.id.fragment_container)
+    FrameLayout fragment_container;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -78,21 +82,24 @@ public class HomeActivity extends BaseFragmentActivity implements CordovaInterfa
         Config.addWhiteListEntry(DsApi.HOME_RUL, true);
         cordovaWebViewv.loadUrl(DsApi.HOME_RUL);
 
-//        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, CordovaFragment.newInstance(DsApi.HOME_RUL)).commit();
         radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
                 switch (checkedId) {
                     case R.id.rbtn_sw:
                         mTvTitle.setText(R.string.home_sw);
-                        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, CordovaFragment.newInstance(DsApi.HOME_RUL)).commit();
+                        ViewUtils.setGone(fragment_container, true);
+                        ViewUtils.setGone(cordovaWebViewv, false);
                         break;
                     case R.id.rbtn_qz:
                         mTvTitle.setText(R.string.home_qz);
-                        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new TestFragment()).commit();
+                        ViewUtils.setGone(fragment_container, true);
+                        ViewUtils.setGone(cordovaWebViewv, false);
                         break;
                     case R.id.rbtn_mj:
                         mTvTitle.setText(R.string.home_mj);
+                        ViewUtils.setGone(fragment_container, false);
+                        ViewUtils.setGone(cordovaWebViewv, true);
                         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new CheatsFragment()).commit();
                         break;
                 }

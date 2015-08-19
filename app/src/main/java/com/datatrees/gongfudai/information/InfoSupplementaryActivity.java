@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -74,6 +75,17 @@ public class InfoSupplementaryActivity extends BaseFragmentActivity {
     ImageView ivXxyqBg;
     @Bind(R.id.tv_xxyq)
     TextView txXxyq;
+
+    @Bind(R.id.iv_idcard)
+    Button iv_idcard;
+    @Bind(R.id.iv_lxr)
+    Button iv_lxr;
+    @Bind(R.id.iv_yj)
+    Button iv_yj;
+    @Bind(R.id.iv_yys)
+    Button iv_yys;
+    @Bind(R.id.iv_ds)
+    Button iv_ds;
 
 
     @Bind(R.id.rlyt_idcard)
@@ -217,6 +229,56 @@ public class InfoSupplementaryActivity extends BaseFragmentActivity {
         changeBgColor(position, true);
     }
 
+    private void statusFail(int postion) {
+        if (postion == 0) {
+            stopAnimation(0);
+            ivIDcardBg.setVisibility(View.GONE);
+            iv_idcard.setEnabled(false);
+        } else if (postion == 1) {
+            stopAnimation(0);
+            ivLxrBg.setVisibility(View.GONE);
+            iv_lxr.setEnabled(false);
+        } else if (postion == 2) {
+            stopAnimation(0);
+            ivYjBg.setVisibility(View.GONE);
+            iv_yj.setEnabled(false);
+        } else if (postion == 3) {
+            stopAnimation(0);
+            ivYysBg.setVisibility(View.GONE);
+            iv_yys.setEnabled(false);
+        } else if (postion == 4) {
+            stopAnimation(0);
+            ivDsBg.setVisibility(View.GONE);
+            iv_ds.setEnabled(false);
+        } else if (postion == 5) {
+            stopAnimation(0);
+            ivXxyqBg.setVisibility(View.GONE);
+            ivXxyqBg.setEnabled(false);
+        }
+    }
+
+    private void statusOk(int postion) {
+        if (postion == 0) {
+            stopAnimation(0);
+            ivIDcardBg.setVisibility(View.VISIBLE);
+        } else if (postion == 1) {
+            stopAnimation(0);
+            ivLxrBg.setVisibility(View.VISIBLE);
+        } else if (postion == 2) {
+            stopAnimation(0);
+            ivYjBg.setVisibility(View.VISIBLE);
+        } else if (postion == 3) {
+            stopAnimation(0);
+            ivYysBg.setVisibility(View.VISIBLE);
+        } else if (postion == 4) {
+            stopAnimation(0);
+            ivDsBg.setVisibility(View.VISIBLE);
+        } else if (postion == 5) {
+            stopAnimation(0);
+            ivXxyqBg.setVisibility(View.VISIBLE);
+        }
+    }
+
     private void startAnimation(int postion) {
         Animation animation = AnimationUtils.loadAnimation(this, R.anim.alpha);
         if (postion == 0) {
@@ -240,7 +302,9 @@ public class InfoSupplementaryActivity extends BaseFragmentActivity {
             ivDsBg.setVisibility(View.VISIBLE);
             ivDsBg.startAnimation(animation);
         } else if (postion == 5) {
-
+            animation.setAnimationListener(new RepeatAnimationLister(ivDsBg));
+            ivXxyqBg.setVisibility(View.VISIBLE);
+            ivXxyqBg.startAnimation(animation);
         }
     }
 
@@ -257,7 +321,7 @@ public class InfoSupplementaryActivity extends BaseFragmentActivity {
         } else if (postion == 4) {
             animation = ivDsBg.getAnimation();
         } else if (postion == 5) {
-
+            animation = ivXxyqBg.getAnimation();
         }
         if (null != animation) {
             animation.cancel();
@@ -273,31 +337,59 @@ public class InfoSupplementaryActivity extends BaseFragmentActivity {
         int ecommerceStatus = App.checkStatus("ecommerce");
         int emailStatus = App.checkStatus("email");
 
-        if (emailStatus == 1 || emailStatus == 2) {
-            startAnimation(2);
-        } else {
-            stopAnimation(2);
-        }
-        if (idCardlStatus == 1 || idCardlStatus == 2) {
+        if (idCardlStatus == 1) {
             startAnimation(0);
+        } else if (idCardlStatus == 2) {
+            stopAnimation(0);
+        } else if (idCardlStatus == 3) {
+            statusFail(0);
         } else {
             stopAnimation(0);
         }
-        if (contactsStatus == 1 || contactsStatus == 2) {
+
+        if (contactsStatus == 1) {
             startAnimation(1);
+        } else if (contactsStatus == 2) {
+            statusOk(1);
+        } else if (contactsStatus == 3) {
+            statusFail(1);
         } else {
             stopAnimation(1);
         }
-        if (operatorStatus == 1 || operatorStatus == 2) {
+
+        if (emailStatus == 1) {
+            startAnimation(2);
+        } else if (emailStatus == 2) {
+            statusOk(2);
+        } else if (emailStatus == 3) {
+            statusFail(2);
+        } else {
+            stopAnimation(2);
+        }
+
+
+        if (operatorStatus == 1) {
             startAnimation(3);
+        } else if (operatorStatus == 2) {
+            statusOk(3);
+        } else if (operatorStatus == 2) {
+            statusFail(3);
         } else {
             stopAnimation(3);
         }
-        if (ecommerceStatus == 1 || ecommerceStatus == 2) {
+
+
+        if (ecommerceStatus == 1) {
             startAnimation(4);
+        } else if (ecommerceStatus == 2) {
+            statusOk(4);
+        } else if (ecommerceStatus == 3) {
+            statusFail(4);
         } else {
             stopAnimation(4);
         }
+
+
     }
 
 

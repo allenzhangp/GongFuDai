@@ -9,7 +9,7 @@
         android:layout_height="wrap_content"
         android:background="@color/white"
         android:padding="@dimen/padding"
-        android:text="@string/info_xxaq"
+        android:text="@string/info_sqed"
         android:textColor="@color/black"
         android:textSize="@dimen/size_title" />
 
@@ -18,7 +18,39 @@
         android:layout_height="1dp"
         android:background="@color/line" />
 
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/padding_double"
+        android:text="@string/info_sqed_tip"
+        android:textColor="@color/hint"
+        android:textSize="@dimen/size_normal" />
+
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"></LinearLayout>
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/padding_double"
+        android:orientation="horizontal"
+        android:padding="@dimen/padding_double">
+
+        <Button
+            android:id="@+id/btn_jxbc"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@drawable/btn_submit_selector"
+            android:text="@string/info_btn_jxsq"
+            android:textColor="@color/btn_submit_txt_selector" />
+
+        <Button
+            android:id="@+id/btn_qrsq"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/padding_double"
+            android:layout_weight="1"
+            android:background="@drawable/btn_submit_selector"
+            android:text="@string/info_btn_qrsq"
+            android:textColor="@color/btn_submit_txt_selector" />
+
+    </LinearLayout>
 </LinearLayout>

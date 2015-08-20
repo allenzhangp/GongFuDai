@@ -64,9 +64,7 @@ public class CustomWebView extends WebView {
     private List<String> cookies;
     private OnVisitEndUrl onVisitEndUrl;
     private String headerJSONObj;
-    private String cssStr;
     private StringBuilder jsCssStr;
-    private boolean usePCUA;
 
     public CustomWebView(Context context) {
         super(context);
@@ -93,8 +91,6 @@ public class CustomWebView extends WebView {
         else
             cookies = new ArrayList<>();
         this.endUrls = endUrls;
-        this.cssStr = cssStr;
-        this.usePCUA = usePCUA;
 
         if (StringUtils.isNotTrimBlank(cssStr)) {
             jsCssStr = new StringBuilder();

@@ -2,7 +2,6 @@ package com.datatrees.gongfudai.information;
 
 import android.app.Dialog;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
 import android.view.View;
@@ -16,7 +15,6 @@ import com.datatrees.gongfudai.App;
 import com.datatrees.gongfudai.R;
 import com.datatrees.gongfudai.base.BaseFragment;
 import com.datatrees.gongfudai.base.BaseFragmentActivity;
-import com.datatrees.gongfudai.cordova.CordovaActivity;
 import com.datatrees.gongfudai.net.CustomStringRequest;
 import com.datatrees.gongfudai.net.RespListener;
 import com.datatrees.gongfudai.service.VerifyReciver;
@@ -150,7 +148,7 @@ public class InfoSupplementaryActivity extends BaseFragmentActivity {
     @Override
     public void onSuccess(String response, String extras) {
         super.onSuccess(response, extras);
-        JSONObject jsonResp = null;
+        JSONObject jsonResp;
         try {
             jsonResp = new JSONObject(response);
             int allow = jsonResp.optInt("allow");
@@ -217,7 +215,6 @@ public class InfoSupplementaryActivity extends BaseFragmentActivity {
                 changeBgColor(5);
                 if (infoSecurityFragmfent == null)
                     infoSecurityFragmfent = new InfoSecurityFragmfent();
-                startActivity(new Intent(this, CordovaActivity.class).putExtra("load_url", DsApi.TOS_RUL));
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, infoSecurityFragmfent).commit();
                 break;
         }
@@ -339,7 +336,7 @@ public class InfoSupplementaryActivity extends BaseFragmentActivity {
         if (idCardlStatus == 1) {
             startAnimation(0);
         } else if (idCardlStatus == 2) {
-            statusOk(0);
+            stopAnimation(0);
         } else if (idCardlStatus == 3) {
             statusFail(0);
         } else {
@@ -371,7 +368,7 @@ public class InfoSupplementaryActivity extends BaseFragmentActivity {
             startAnimation(3);
         } else if (operatorStatus == 2) {
             statusOk(3);
-        } else if (operatorStatus == 2) {
+        } else if (operatorStatus == 3) {
             statusFail(3);
         } else {
             stopAnimation(3);

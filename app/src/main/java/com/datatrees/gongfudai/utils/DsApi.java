@@ -14,7 +14,7 @@ public class DsApi {
     /**
      * 用户中心接口模块
      */
-    private static final String USERCENTERHOST = "http://192.168.0.241:12172/usercenter/api";
+    private static final String USERCENTERHOST = "http://91gfd.com.cn/usercenter/api";
 
     public static final String LISTUSERCENTER = USERCENTERHOST + "%1$s";
 
@@ -29,7 +29,7 @@ public class DsApi {
     public static final String PWDRESET = "/customers/pwdreset";
 
 
-    private static final String HOST = "http://192.168.0.242:8080/service";
+    private static final String HOST = "http://91gfd.com.cn/gongfudai";
 
 //    private static final String HOST = "http://192.168.3.110:14501";
 
@@ -64,8 +64,6 @@ public class DsApi {
     public static final String STATUSUPDATE = "/postStatus";
 
     public static final String SUBMITVERFYCODE = "/preconditions/verifyCode";
-
-    public static final String GEOS = "http://192.168.0.241:1818/tos";
 
 
     public static String getTokenUserId(String url) {

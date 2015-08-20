@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <item android:drawable="@mipmap/bg_xxyq" android:state_enabled="false"></item>
-    <item android:drawable="@mipmap/bg_xxyq"></item>
+    <item android:drawable="@mipmap/bg_sqed_disable" android:state_enabled="false"></item>
+    <item android:drawable="@mipmap/bg_sqed"></item>
 
 
 </selector>

@@ -56,7 +56,21 @@
             android:name=".HomeActivity"
             android:configChanges="keyboardHidden|screenLayout"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustPan|stateAlwaysHidden"></activity>
+            android:windowSoftInputMode="adjustPan|stateAlwaysHidden" />
+
+        <!-- users-->
+        <activity
+            android:name=".user.UserInfoActivity"
+            android:configChanges="keyboardHidden|screenLayout"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan|stateAlwaysHidden" />
+
+        <activity
+            android:name=".user.UserSettingActivity"
+            android:configChanges="keyboardHidden|screenLayout"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan|stateAlwaysHidden" />
+
 
         <activity
             android:name=".ui.WebClientActivity"

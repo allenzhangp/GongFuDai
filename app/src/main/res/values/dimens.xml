@@ -12,6 +12,7 @@
     <dimen name="width_image_info_b">50dp</dimen>
     <dimen name="height_cheats">100dp</dimen>
     <dimen name="width_image_cheats">40dp</dimen>
+    <dimen name="height_list_item">60dp</dimen>
 
     <dimen name="size_big">20sp</dimen>
     <dimen name="size_title">18sp</dimen>

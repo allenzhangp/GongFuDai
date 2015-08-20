@@ -74,9 +74,13 @@ public class BaseFragment extends Fragment implements RespListener.OnRespError, 
         VolleyUtil.getRequestQueue().cancelAll(this);
     }
 
-    protected void executeRequest(Request<?> request) {
-        showLoading();
+    protected void executeRequest(Request<?> request, boolean showLoading) {
+        if (showLoading) showLoading();
         VolleyUtil.addRequest(request);
+    }
+
+    protected void executeRequest(Request<?> request) {
+        executeRequest(request, true);
     }
 
     @Override

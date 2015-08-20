@@ -80,9 +80,6 @@ public class WelcomeActivity extends BaseFragmentActivity {
                 || "".equalsIgnoreCase(className))
             return false;
         boolean mResultStr = PreferenceUtils.getPrefBoolean(App.getContext(), ConstantUtils.KEY_GUIDE_ACTIVITY, false);
-        if (mResultStr)
-            return false;
-        else
-            return true;
+        return !mResultStr;
     }
 }

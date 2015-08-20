@@ -40,7 +40,6 @@ public class EmailValidFragmfent extends BaseFragment {
 
     boolean getConfigSuccess = false;
     HashMap<String, EmailValidModel> urlDatas;
-    boolean isEmailValid = false;
     private static final int WEBCLINET_CODE = 8;
 
     private String website;
@@ -63,7 +62,7 @@ public class EmailValidFragmfent extends BaseFragment {
     @Override
     public void onSuccess(String response, String extras) {
         super.onSuccess(response, extras);
-        JSONObject jsonResp = null;
+        JSONObject jsonResp;
         try {
             jsonResp = new JSONObject(response);
             getConfigSuccess = true;
@@ -116,9 +115,7 @@ public class EmailValidFragmfent extends BaseFragment {
         if (model != null) {
             website = model.website;
             String[] endUrls = {model.endUrl};
-            if (model != null) {
-                startActivityForResult(new Intent(getActivity(), WebClientActivity.class).putExtra("usePCUA", model.usePCUA).putExtra("insert_css", model.css).putExtra("visit_title", model.title).putExtra("visit_url", model.startUrl).putExtra("end_urls", endUrls), WEBCLINET_CODE);
-            }
+            startActivityForResult(new Intent(getActivity(), WebClientActivity.class).putExtra("usePCUA", model.usePCUA).putExtra("insert_css", model.css).putExtra("visit_title", model.title).putExtra("visit_url", model.startUrl).putExtra("end_urls", endUrls), WEBCLINET_CODE);
         }
 
     }
@@ -149,7 +146,7 @@ public class EmailValidFragmfent extends BaseFragment {
         params.put("userId", App.loginUserInfo.getUserId() + "");
         params.put("key", website);
         params.put("header", end_header);
-        params.put("cookie",endCookiesBuilder.toString());
+        params.put("cookie", endCookiesBuilder.toString());
         params.put("url", end_url);
         RespListener respListener = new RespListener(website);
         respListener.onRespError = this;
@@ -159,7 +156,7 @@ public class EmailValidFragmfent extends BaseFragment {
                 dismiss();
                 if (extras.contains(ConstantUtils.KEY_QQ))
                     isQQvalid = true;
-                else if (equals(extras.contains(ConstantUtils.KEY_126)))
+                else if (extras.contains(ConstantUtils.KEY_126))
                     is126Valid = true;
                 else if (extras.contains(ConstantUtils.KEY_163))
                     is163valid = true;
@@ -167,6 +164,7 @@ public class EmailValidFragmfent extends BaseFragment {
                 btn_submit.setEnabled(isSubmitEnable());
             }
         };
+
         CustomStringRequest request = new CustomStringRequest(Request.Method.POST, String.format(DsApi.LIST, DsApi.COLLECTPRE), respListener, params);
         executeRequest(request);
     }

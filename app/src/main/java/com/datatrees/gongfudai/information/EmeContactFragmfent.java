@@ -219,9 +219,7 @@ public class EmeContactFragmfent extends BaseFragment {
 
     private boolean isEditable() {
         int status = App.checkStatus("ice");
-        if (status == 2 || status == 3 || status == 1)
-            return false;
-        return true;
+        return !(status == 2 || status == 3 || status == 1);
     }
 
     @OnClick({R.id.btn_contact_add, R.id.btn_contact_add2})
@@ -303,7 +301,7 @@ public class EmeContactFragmfent extends BaseFragment {
     public void onSubmit() {
         showLoading();
         if (contactUPload == true) {
-            Map<String, String> params = new HashMap<String, String>();
+            Map<String, String> params = new HashMap<>();
             params.put("userId", App.loginUserInfo.getUserId() + "");
             JSONArray jsonArray = new JSONArray();
             try {
@@ -323,30 +321,31 @@ public class EmeContactFragmfent extends BaseFragment {
             CustomStringRequest request = new CustomStringRequest(Request.Method.POST, String.format(DsApi.LIST, DsApi.ADDICE), getRespListener(), params);
             executeRequest(request);
         } else {
-            handler.post(new Runnable() {
-                @Override
-                public void run() {
-                    try {
-                        contactArray = new JSONArray();
-                        List<ContactData> contactDatas = ContactsAccessPublic.getContactsAll(getActivity(), null);
-                        if (contactDatas.size() > 0) {
-                            for (ContactData itmeContact : contactDatas) {
-                                JSONObject jsonObject = new JSONObject();
-                                jsonObject.put("fn", itmeContact.getFn());
-                                jsonObject.put("mn", itmeContact.getMn());
-                                jsonObject.put("ln", itmeContact.getLn());
-                                jsonObject.put("ext", itmeContact.getExt());
-                                jsonObject.put("insDt", itmeContact.getInsDt());
-                                jsonObject.put("updDt", itmeContact.getUpdDt());
-                                jsonObject.put("cns", itmeContact.getPhoneArray().toString());
-                                contactArray.put(jsonObject);
+            handler.post(
+                    new Runnable() {
+                        @Override
+                        public void run() {
+                            try {
+                                contactArray = new JSONArray();
+                                List<ContactData> contactDatas = ContactsAccessPublic.getContactsAll(getActivity(), null);
+                                if (contactDatas.size() > 0) {
+                                    for (ContactData itmeContact : contactDatas) {
+                                        JSONObject jsonObject = new JSONObject();
+                                        jsonObject.put("fn", itmeContact.getFn());
+                                        jsonObject.put("mn", itmeContact.getMn());
+                                        jsonObject.put("ln", itmeContact.getLn());
+                                        jsonObject.put("ext", itmeContact.getExt());
+                                        jsonObject.put("insDt", itmeContact.getInsDt());
+                                        jsonObject.put("updDt", itmeContact.getUpdDt());
+                                        jsonObject.put("cns", itmeContact.getPhoneArray().toString());
+                                        contactArray.put(jsonObject);
+                                    }
+                                }
+                                handler.sendEmptyMessage(1);
+                            } catch (JSONException e) {
                             }
                         }
-                        handler.sendEmptyMessage(1);
-                    } catch (JSONException e) {
-                    }
-                }
-            });
+                    });
         }
     }
 

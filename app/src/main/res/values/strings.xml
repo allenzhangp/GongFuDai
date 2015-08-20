@@ -59,6 +59,8 @@
     <string name="info_sfyz">身份验证</string>
     <string name="info_sfyz_pz">身份证拍照验证</string>
     <string name="info_xxaq">信息安全</string>
+    <string name="info_sqed">申请额度</string>
+    <string name="info_sqed_tip">您已补全五项信息,请点击申请按钮进行额度估算。如您有多个邮箱/运营商/电商账号,也可以继续补全信息之后再来申请。</string>
     <string name="info_yj">邮箱验证</string>
     <string name="info_yys">运营商验证</string>
     <string name="info_take_photo_tip1">拍摄身份证正面照</string>
@@ -80,6 +82,8 @@
     <string name="info_operation_tip2">运营商验证目前只支持浙江及广东用户，其他省市即将开放，敬请期待。验证过程中您有可能收到运营商发送的短信，请根据短信验证码提示的内容进行相关操作。</string>
     <string name="info_ele_tip">电商说明</string>
     <string name="info_ele_tip2">请输入您本人常用的电商网站账户，以便提升声誉。</string>
+    <string name="info_btn_jxsq">继续补充</string>
+    <string name="info_btn_qrsq">确认申请</string>
 
     <!-- cheats-->
     <string name="cheats_yhk">银行卡</string>
@@ -91,5 +95,20 @@
     <string name="cheats_qdyl">签到有礼</string>
     <string name="cheats_kf">客服</string>
     <string name="cheats_more">更多</string>
+
+    <!--user-->
+    <string name="user_info">个人信息</string>
+    <string name="user_setting">设置</string>
+    <string name="user_name">姓名</string>
+    <string name="user_idcard">身份证</string>
+    <string name="user_phone">手机号</string>
+    <string name="user_email">邮箱</string>
+    <string name="user_dszh">电商账号</string>
+    <string name="user_jjlxr">紧急联系人</string>
+    <string name="user_setting_phone">手机号</string>
+    <string name="user_setting_pass_edit">修改密码</string>
+    <string name="user_setting_feedback">问题反馈</string>
+    <string name="user_setting_ysaq">隐私安全</string>
+    <string name="user_setting_lxwm">关于我们</string>
 
 </resources>

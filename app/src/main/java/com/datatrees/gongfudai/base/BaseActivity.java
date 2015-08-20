@@ -9,7 +9,6 @@ import com.datatrees.gongfudai.net.RespListener;
 import com.datatrees.gongfudai.net.VolleyUtil;
 import com.datatrees.gongfudai.utils.StringUtils;
 import com.datatrees.gongfudai.utils.ToastUtils;
-import com.datatrees.gongfudai.volley.DefaultRetryPolicy;
 import com.datatrees.gongfudai.volley.Request;
 import com.umeng.analytics.MobclickAgent;
 
@@ -73,9 +72,13 @@ public class BaseActivity extends Activity implements RespListener.OnRespError, 
         VolleyUtil.getRequestQueue().cancelAll(this);
     }
 
-    protected void executeRequest(Request<?> request) {
-        showLoading();
+    protected void executeRequest(Request<?> request, boolean showLoading) {
+        if (showLoading) showLoading();
         VolleyUtil.addRequest(request);
+    }
+
+    protected void executeRequest(Request<?> request) {
+        executeRequest(request, true);
     }
 
 

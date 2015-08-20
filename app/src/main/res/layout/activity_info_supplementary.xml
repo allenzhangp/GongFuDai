@@ -241,7 +241,7 @@
                 android:layout_below="@+id/iv_xxyq"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="@dimen/padding_half"
-                android:text="@string/info_xxaq"
+                android:text="@string/info_sqed"
                 android:textColor="@color/info_text"
                 android:textSize="@dimen/size_small" />
         </RelativeLayout>

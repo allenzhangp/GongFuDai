@@ -61,9 +61,7 @@ public class ElectricityValidFragmfent extends BaseFragment {
         if (model != null) {
             website = model.website;
             String[] endUrls = {model.endUrl};
-            if (model != null) {
-                startActivityForResult(new Intent(getActivity(), WebClientActivity.class).putExtra("usePCUA", model.usePCUA).putExtra("insert_css", model.css).putExtra("visit_title", model.title).putExtra("visit_url", model.startUrl).putExtra("end_urls", endUrls), WEBCLINET_CODE);
-            }
+            startActivityForResult(new Intent(getActivity(), WebClientActivity.class).putExtra("usePCUA", model.usePCUA).putExtra("insert_css", model.css).putExtra("visit_title", model.title).putExtra("visit_url", model.startUrl).putExtra("end_urls", endUrls), WEBCLINET_CODE);
         }
     }
 

@@ -219,7 +219,6 @@ public class IDCardFragment extends BaseFragment implements View.OnClickListener
                         } catch (JSONException e) {
                         }
 
-
                     }
                 };
 
@@ -289,7 +288,7 @@ public class IDCardFragment extends BaseFragment implements View.OnClickListener
         try {
             ossFile.setUploadFilePath(filePath, "file");
 
-            TaskHandler tk = ossFile.uploadInBackground(new SaveCallback() {
+            tk = ossFile.uploadInBackground(new SaveCallback() {
                 @Override
                 public void onProgress(String objectKey, int byteCount, int totalSize) {
                     if (progressDialog != null && progressDialog.isShowing()) {
@@ -301,6 +300,7 @@ public class IDCardFragment extends BaseFragment implements View.OnClickListener
                 @Override
                 public void onFailure(String objectKey, OSSException ossException) {
                     getActivity().runOnUiThread(new Runnable() {
+                        @Override
                         public void run() {
                             progressDialog.dismiss();
                             ToastUtils.showShort(R.string.upload_fail);
@@ -312,6 +312,7 @@ public class IDCardFragment extends BaseFragment implements View.OnClickListener
                 public void onSuccess(String objectKey) {
                     LogUtil.i(objectKey);
                     getActivity().runOnUiThread(new Runnable() {
+                        @Override
                         public void run() {
                             Bitmap bitmap = getBimap(imagePath);
                             Drawable drawable = new BitmapDrawable(null, bitmap);
@@ -359,7 +360,6 @@ public class IDCardFragment extends BaseFragment implements View.OnClickListener
                                 CustomStringRequest request = new CustomStringRequest(Request.Method.POST, String.format(DsApi.LIST, DsApi.GETICR), getRespListener(), params);
                                 executeRequest(request);
                             }
-
                         }
                     });
 
@@ -402,7 +402,7 @@ public class IDCardFragment extends BaseFragment implements View.OnClickListener
     @Override
     public void onSuccess(String response, String extras) {
         super.onSuccess(response, extras);
-        JSONObject jsonResp = null;
+        JSONObject jsonResp;
         try {
             jsonResp = new JSONObject(response);
             String name = jsonResp.optString("name");

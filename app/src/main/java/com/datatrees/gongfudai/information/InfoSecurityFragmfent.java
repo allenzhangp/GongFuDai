@@ -9,7 +9,7 @@ import com.datatrees.gongfudai.R;
 import com.datatrees.gongfudai.base.BaseFragment;
 
 /**
- * 信息安全
+ * 申请额度
  * Created by zhangping on 15/8/11.
  */
 public class InfoSecurityFragmfent extends BaseFragment {

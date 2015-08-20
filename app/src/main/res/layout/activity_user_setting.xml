@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <include layout="@layout/layout_header" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="@dimen/padding"
+        android:background="@color/hint" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/height_list_item"
+        android:background="@drawable/bg_list_item_selector"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:padding="@dimen/padding">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/user_setting_phone"
+            android:textColor="@color/black_txt"
+            android:textSize="@dimen/size_title" />
+
+        <TextView
+            android:id="@+id/tv_user_setting_phone"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingRight="@dimen/padding"
+            android:textColor="@color/hint"
+            android:textSize="@dimen/size_normal" />
+
+        <ImageView
+            android:layout_width="@dimen/padding"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:src="@mipmap/ico_right_arr" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/height_list_item"
+        android:background="@drawable/bg_list_item_selector"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:padding="@dimen/padding">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/user_setting_pass_edit"
+            android:textColor="@color/black_txt"
+            android:textSize="@dimen/size_title" />
+
+        <TextView
+            android:id="@+id/tv_user_setting_pass"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="@dimen/padding"
+            android:textColor="@color/hint"
+            android:textSize="@dimen/size_normal" />
+
+        <ImageView
+            android:layout_width="@dimen/padding"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:src="@mipmap/ico_right_arr" />
+    </LinearLayout>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="@dimen/padding"
+        android:background="@color/hint" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/height_list_item"
+        android:background="@drawable/bg_list_item_selector"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:padding="@dimen/padding">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/user_setting_feedback"
+            android:textColor="@color/black_txt"
+            android:textSize="@dimen/size_title" />
+
+        <TextView
+            android:id="@+id/tv_user_setting_feedback"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="@dimen/padding"
+            android:textColor="@color/hint"
+            android:textSize="@dimen/size_normal" />
+
+        <ImageView
+            android:layout_width="@dimen/padding"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:src="@mipmap/ico_right_arr" />
+    </LinearLayout>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="@dimen/padding"
+        android:background="@color/hint" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/height_list_item"
+        android:background="@drawable/bg_list_item_selector"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:padding="@dimen/padding">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/user_setting_ysaq"
+            android:textColor="@color/black_txt"
+            android:textSize="@dimen/size_title" />
+
+        <TextView
+            android:id="@+id/tv_user_setting_ysaq"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="@dimen/padding"
+            android:textColor="@color/hint"
+            android:textSize="@dimen/size_normal" />
+
+        <ImageView
+            android:layout_width="@dimen/padding"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:src="@mipmap/ico_right_arr" />
+    </LinearLayout>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="@dimen/padding"
+        android:background="@color/hint" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/height_list_item"
+        android:background="@drawable/bg_list_item_selector"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:padding="@dimen/padding">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/user_setting_lxwm"
+            android:textColor="@color/black_txt"
+            android:textSize="@dimen/size_title" />
+
+        <TextView
+            android:id="@+id/tv_user_setting_lxwm"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="@dimen/padding"
+            android:textColor="@color/hint"
+            android:textSize="@dimen/size_normal" />
+
+        <ImageView
+            android:layout_width="@dimen/padding"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:src="@mipmap/ico_right_arr" />
+    </LinearLayout>
+</LinearLayout>

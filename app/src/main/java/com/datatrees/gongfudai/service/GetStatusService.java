@@ -39,6 +39,7 @@ public class GetStatusService extends Service implements RespListener.OnRespSucc
     @Override
     public void onDestroy() {
         super.onDestroy();
+        isFinish = true;
     }
 
     private static int TIME_INTERVAL = 30 * 1000;

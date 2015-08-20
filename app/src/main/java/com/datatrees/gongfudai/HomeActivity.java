@@ -19,6 +19,7 @@ import com.datatrees.gongfudai.net.CustomStringRequest;
 import com.datatrees.gongfudai.net.RespListener;
 import com.datatrees.gongfudai.service.GetStatusService;
 import com.datatrees.gongfudai.service.VerifyReciver;
+import com.datatrees.gongfudai.user.UserSettingActivity;
 import com.datatrees.gongfudai.utils.BK;
 import com.datatrees.gongfudai.utils.ConstantUtils;
 import com.datatrees.gongfudai.utils.DialogHelper;
@@ -143,6 +144,11 @@ public class HomeActivity extends BaseFragmentActivity implements CordovaInterfa
     @OnClick(R.id.ibtn_news)
     public void toHis() {
 
+    }
+
+    @OnClick(R.id.ibtn_setting)
+    public void toSetting() {
+        startActivity(new Intent(this, UserSettingActivity.class));
     }
 
     @OnClick(R.id.ibtn_operation)

@@ -178,8 +178,7 @@ public class IDCardFragment extends BaseFragment implements View.OnClickListener
     };
 
     private boolean submitEnable() {
-        int status = App.checkStatus("idcard");
-        return status != 1 && status != 2 && status != 3 && !TextUtils.isEmpty(et_idcard.getText()) && !TextUtils.isEmpty(et_real_name.getText());
+        return App.isEditable(0) && !TextUtils.isEmpty(et_idcard.getText()) && !TextUtils.isEmpty(et_real_name.getText());
     }
 
     JSONObject idJSON = null;
@@ -187,9 +186,9 @@ public class IDCardFragment extends BaseFragment implements View.OnClickListener
     @Override
     public void onResume() {
         super.onResume();
-        int status = App.checkStatus("idcard");
+        int status = App.checkStatus(ConstantUtils.ALLSTATUS_IDCARD);
 
-        if (status == 1 || status == 2 || status == 3) {
+        if (status != 0) {
             isFinish = true;
             isUploadPhotoFinish = true;
             if (hasGetInfo && idJSON != null) {
@@ -241,8 +240,8 @@ public class IDCardFragment extends BaseFragment implements View.OnClickListener
 
     @OnClick({R.id.tv_idcard_update, R.id.tv_realname_update})
     public void onUpdateClick(View view) {
-        int status = App.checkStatus("idcard");
-        if (status == 2 || status == 3 || status == 1)
+        int status = App.checkStatus(ConstantUtils.ALLSTATUS_IDCARD);
+        if (!App.isEditable(0))
             return;
         if (view.getId() == R.id.tv_realname_update) {
             et_real_name.setFocusable(true);
@@ -382,6 +381,7 @@ public class IDCardFragment extends BaseFragment implements View.OnClickListener
                 if (response == null)
                     return;
                 isFinish = true;
+                App.putStatus(ConstantUtils.ALLSTATUS_IDCARD, 1, getString(R.string.info_doing));
                 ToastUtils.showShort(R.string.upload_succeed);
                 //next step
                 if (getActivity() instanceof InfoSupplementaryActivity) {
@@ -417,8 +417,12 @@ public class IDCardFragment extends BaseFragment implements View.OnClickListener
 
     @Override
     public void onClick(View v) {
-        JSONObject idCardlJSON = App.allstatusMap.get("idcard");
-        if (idCardlJSON != null && (idCardlJSON.optInt("status") == 1 || idCardlJSON.optInt("status") == 2 || idCardlJSON.optInt("status") == 3))
+        int status = App.checkStatus(ConstantUtils.ALLSTATUS_IDCARD);
+        if (status == 1) {
+            ToastUtils.showShort(R.string.info_doing_somting);
+            return;
+        }
+        if (!App.isEditable(0))
             return;
 
         if (v.getId() == R.id.llyt_take_tip1) {
@@ -438,7 +442,7 @@ public class IDCardFragment extends BaseFragment implements View.OnClickListener
                 FederationToken token = null;
                 if ((timeMillis - expiration) > 2700 * 100) {
                     // 为指定的用户拿取服务其授权需求的FederationToken
-                    token = FederationTokenGetter.getToken(App.loginUserInfo.getUserId());
+                    token = FederationTokenGetter.getToken();
                     if (token == null) {
                         getActivity().runOnUiThread(new Runnable() {
                             @Override

@@ -51,9 +51,14 @@ public class ElectricityValidFragmfent extends BaseFragment {
     public void onClickTD(View v) {
         if (!getConfigSuccess && urlDatas != null)
             return;
-        JSONObject ecommerceJSON = App.allstatusMap.get("ecommerce");
-        if (ecommerceJSON != null && (ecommerceJSON.optInt("status") == 1 || ecommerceJSON.optInt("status") == 2 || ecommerceJSON.optInt("status") == 3))
+        int status = App.checkStatus(ConstantUtils.ALLSTATUS_ECOMMERCE);
+        if (status == 1) {
+            ToastUtils.showShort(R.string.info_doing_somting);
             return;
+        }
+        if (!App.isEditable(4))
+            return;
+
         EmailValidModel model = null;
         if (v.getId() == R.id.ibtn_taobao) {
             model = urlDatas.get(ConstantUtils.KEY_TAOBAO);
@@ -67,8 +72,10 @@ public class ElectricityValidFragmfent extends BaseFragment {
 
     boolean isTaobaoValid = false;
 
+    boolean isJDValid = false;
+
     private boolean isSubmitEnable() {
-        return isTaobaoValid;
+        return isTaobaoValid || isJDValid;
     }
 
     @Override
@@ -99,9 +106,14 @@ public class ElectricityValidFragmfent extends BaseFragment {
             @Override
             public void onSuccess(String response, String extras) {
                 dismiss();
+
                 if (extras.contains(ConstantUtils.KEY_TAOBAO))
                     isTaobaoValid = true;
+                if (extras.contains(ConstantUtils.KEY_JD))
+                    isJDValid = true;
+
                 ToastUtils.showShort(R.string.upload_succeed);
+                App.putStatus(ConstantUtils.ALLSTATUS_ECOMMERCE, 1, getString(R.string.info_doing));
                 btn_submit.setEnabled(isSubmitEnable());
             }
         };

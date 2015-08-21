@@ -25,13 +25,13 @@ public class FederationTokenGetter {
 
     private static FederationToken token;
 
-    public static FederationToken getToken(long userId) {
-        token = getTokenFromServer(userId);
+    public static FederationToken getToken() {
+        token = getTokenFromServer();
         return token;
     }
 
-    private static FederationToken getTokenFromServer(long userId) {
-        String queryUrl = String.format(DsApi.LIST, DsApi.GETFEDERATIONTOKEN) + "?userId=" + userId;
+    private static FederationToken getTokenFromServer() {
+        String queryUrl = DsApi.getTokenUserId(String.format(DsApi.LIST, DsApi.GETFEDERATIONTOKEN));
         String responseStr = null;
         try {
             HttpClient client = new DefaultHttpClient();

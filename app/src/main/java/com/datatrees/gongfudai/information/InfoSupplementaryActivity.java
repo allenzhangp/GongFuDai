@@ -21,8 +21,6 @@ import com.datatrees.gongfudai.service.VerifyReciver;
 import com.datatrees.gongfudai.utils.BK;
 import com.datatrees.gongfudai.utils.DialogHelper;
 import com.datatrees.gongfudai.utils.DsApi;
-import com.datatrees.gongfudai.utils.PreferenceUtils;
-import com.datatrees.gongfudai.utils.ToastUtils;
 import com.datatrees.gongfudai.volley.Request;
 import com.datatrees.gongfudai.widget.VerifyDialog;
 
@@ -120,7 +118,6 @@ public class InfoSupplementaryActivity extends BaseFragmentActivity {
         IntentFilter intentFilter = new IntentFilter(VerifyReciver.VERFY_RECEIVED);
         registerReceiver(verifyReciver, intentFilter);
 
-        request();
 
     }
 
@@ -128,44 +125,6 @@ public class InfoSupplementaryActivity extends BaseFragmentActivity {
     public void onDestroy() {
         super.onDestroy();
         unregisterReceiver(verifyReciver);
-    }
-
-    private void request() {
-        String latitude = PreferenceUtils.getPrefString(this, "latitude", "");
-        String longitude = PreferenceUtils.getPrefString(this, "longitude", "");
-        String province = PreferenceUtils.getPrefString(this, "province", "");
-
-        HashMap<String, String> params = new HashMap<>();
-        params.put("lng", longitude);
-        params.put("lat", latitude);
-        params.put("province", province);
-        params.put("userId", App.loginUserInfo.getUserId() + "");
-
-        CustomStringRequest request = new CustomStringRequest(Request.Method.POST, String.format(DsApi.LIST, DsApi.PRECHECK), getRespListener(), params);
-        executeRequest(request);
-    }
-
-    @Override
-    public void onSuccess(String response, String extras) {
-        super.onSuccess(response, extras);
-        JSONObject jsonResp;
-        try {
-            jsonResp = new JSONObject(response);
-            int allow = jsonResp.optInt("allow");
-            int certify = jsonResp.optInt("certify");
-            if (allow == 0) {
-                ToastUtils.showShort(R.string.info_not_allow);
-                this.finish();
-            }
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-    }
-
-    @Override
-    public void onError(String error, String extras) {
-        super.onError(error, extras);
-        this.finish();
     }
 
     @OnClick({R.id.rlyt_ds, R.id.rlyt_yys, R.id.rlyt_yj, R.id.rlyt_xxyq, R.id.rlyt_lxr, R.id.rlyt_idcard})

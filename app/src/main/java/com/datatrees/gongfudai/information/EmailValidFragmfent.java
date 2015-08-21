@@ -101,9 +101,14 @@ public class EmailValidFragmfent extends BaseFragment {
     public void emailClick(View view) {
         if (!getConfigSuccess || urlDatas == null)
             return;
-        JSONObject emailJSON = App.allstatusMap.get("email");
-        if (emailJSON != null && (emailJSON.optInt("status") == 1 || emailJSON.optInt("status") == 2 || emailJSON.optInt("status") == 3))
+        int status = App.checkStatus(ConstantUtils.ALLSTATUS_EMAIL);
+        if (status == 1) {
+            ToastUtils.showShort(R.string.info_doing_somting);
             return;
+        }
+        if (!App.isEditable(2))
+            return;
+
         EmailValidModel model = null;
         if (view.getId() == R.id.ibtn_126) {
             model = urlDatas.get(ConstantUtils.KEY_126);
@@ -121,7 +126,7 @@ public class EmailValidFragmfent extends BaseFragment {
     }
 
     private boolean isSubmitEnable() {
-        return isQQvalid && is126Valid && is163valid;
+        return isQQvalid || is126Valid || is163valid;
     }
 
     @Override
@@ -161,6 +166,7 @@ public class EmailValidFragmfent extends BaseFragment {
                 else if (extras.contains(ConstantUtils.KEY_163))
                     is163valid = true;
                 ToastUtils.showShort(R.string.upload_succeed);
+                App.putStatus(ConstantUtils.ALLSTATUS_EMAIL, 1, getString(R.string.info_doing));
                 btn_submit.setEnabled(isSubmitEnable());
             }
         };

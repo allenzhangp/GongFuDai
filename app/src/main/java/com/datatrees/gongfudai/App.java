@@ -15,9 +15,11 @@ import com.baidu.location.LocationClient;
 import com.baidu.location.LocationClientOption;
 import com.datatrees.gongfudai.model.LoginUserInfo;
 import com.datatrees.gongfudai.net.VolleyUtil;
+import com.datatrees.gongfudai.utils.ConstantUtils;
 import com.datatrees.gongfudai.utils.LogUtil;
 import com.datatrees.gongfudai.utils.PreferenceUtils;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -125,10 +127,51 @@ public class App extends Application {
         return mContext;
     }
 
+    /**
+     * int,0:初始;1:处理中;2:完成;3:失败;4:待补充
+     *
+     * @param type
+     * @return
+     */
     public static int checkStatus(String type) {
         JSONObject statusJSON = allstatusMap.get(type);
         return statusJSON == null ? 0 : statusJSON.optInt("status");
     }
+
+    /**
+     *  int,0:初始;1:处理中;2:完成;3:失败;4:待补充
+     * @param position
+     * @return
+     */
+    public static boolean isEditable(int position) {
+        int status = 0;
+        if (position == 0) {
+            status = checkStatus(ConstantUtils.ALLSTATUS_IDCARD);
+        } else if (position == 1) {
+            status = checkStatus(ConstantUtils.ALLSTATUS_ICE);
+        } else if (position == 2) {
+            status = checkStatus(ConstantUtils.ALLSTATUS_EMAIL);
+        } else if (position == 3) {
+            status = checkStatus(ConstantUtils.ALLSTATUS_OPERATOR);
+        } else if (position == 4) {
+            status = checkStatus(ConstantUtils.ALLSTATUS_ECOMMERCE);
+        }
+        if (status == 1)
+            return false;
+        else
+            return true;
+    }
+
+    public static void putStatus(String type, int status, String msg) {
+        JSONObject statusJson = new JSONObject();
+        try {
+            statusJson.put("status", status);
+            statusJson.put("msg", msg);
+            allstatusMap.put(type, statusJson);
+        } catch (JSONException e) {
+        }
+    }
+
 
     /**
      * 实现实时位置回调监听

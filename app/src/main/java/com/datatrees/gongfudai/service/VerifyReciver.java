@@ -50,33 +50,33 @@ public class VerifyReciver extends BroadcastReceiver {
                         }
                     }
                 }
-            }
-        } else if (context instanceof InfoSupplementaryActivity) {
-            boolean statusOk = true;
-            InfoSupplementaryActivity infoSupplementaryActivity = (InfoSupplementaryActivity) context;
-            for (String keyStr : App.allstatusMap.keySet()) {
-                JSONObject valueObj = App.allstatusMap.get(keyStr);
-                if (valueObj != null) {
-                    int status = valueObj.optInt("status");
-                    if (status == 3 || status == 4) {
-                        App.isInHand = true;
-                        statusOk = false;
-                        infoSupplementaryActivity.confirm(valueObj.optString("msg"), keyStr);
-                        break;
+            } else if (context instanceof InfoSupplementaryActivity) {
+                boolean statusOk = true;
+                InfoSupplementaryActivity infoSupplementaryActivity = (InfoSupplementaryActivity) context;
+                for (String keyStr : App.allstatusMap.keySet()) {
+                    JSONObject valueObj = App.allstatusMap.get(keyStr);
+                    if (valueObj != null) {
+                        int status = valueObj.optInt("status");
+                        if (status == 3 || status == 4) {
+                            App.isInHand = true;
+                            statusOk = false;
+                            infoSupplementaryActivity.confirm(valueObj.optString("msg"), keyStr);
+                            break;
+                        }
                     }
                 }
-            }
-            if (statusOk) {
-                for (String keyStr : App.verifyMap.keySet()) {
-                    JSONObject valueObj = App.verifyMap.get(keyStr);
-                    if (valueObj != null) {
-                        App.isInHand = true;
-                        if (valueObj.optString("codeType").equals("image"))
-                            infoSupplementaryActivity.inputDialog(valueObj.optString("tip"), valueObj.optString("codeContent"), valueObj.optString("key"));
-                        else {
-                            infoSupplementaryActivity.inputDialog(valueObj.optString("tip"), null, valueObj.optString("key"));
+                if (statusOk) {
+                    for (String keyStr : App.verifyMap.keySet()) {
+                        JSONObject valueObj = App.verifyMap.get(keyStr);
+                        if (valueObj != null) {
+                            App.isInHand = true;
+                            if (valueObj.optString("codeType").equals("image"))
+                                infoSupplementaryActivity.inputDialog(valueObj.optString("tip"), valueObj.optString("codeContent"), valueObj.optString("key"));
+                            else {
+                                infoSupplementaryActivity.inputDialog(valueObj.optString("tip"), null, valueObj.optString("key"));
+                            }
+                            break;
                         }
-                        break;
                     }
                 }
             }

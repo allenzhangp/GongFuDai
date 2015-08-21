@@ -27,6 +27,7 @@ import com.datatrees.gongfudai.model.ContactData;
 import com.datatrees.gongfudai.net.CustomStringRequest;
 import com.datatrees.gongfudai.net.RespListener;
 import com.datatrees.gongfudai.utils.BK;
+import com.datatrees.gongfudai.utils.ConstantUtils;
 import com.datatrees.gongfudai.utils.ContactsAccessPublic;
 import com.datatrees.gongfudai.utils.DialogHelper;
 import com.datatrees.gongfudai.utils.DsApi;
@@ -139,10 +140,12 @@ public class EmeContactFragmfent extends BaseFragment {
     @Override
     public void onResume() {
         super.onResume();
-        int status = App.checkStatus("ice");
-        if (status == 1 || status == 2 || status == 3) {
+        int status = App.checkStatus(ConstantUtils.ALLSTATUS_ICE);
+        if (App.isEditable(1)) {
             rg_gx.setClickable(false);
             rg_gx2.setClickable(false);
+        }
+        if (status != 0) {
             if (hasGetInfo) {
                 if (retcontactArray != null && retcontactArray.length() >= 2)
                     setData();
@@ -168,7 +171,6 @@ public class EmeContactFragmfent extends BaseFragment {
                 CustomStringRequest request = new CustomStringRequest(Request.Method.GET, DsApi.getTokenUserId(String.format(DsApi.LIST, DsApi.GETICE)), respListener);
                 executeRequest(request);
             }
-
         }
     }
 
@@ -218,8 +220,7 @@ public class EmeContactFragmfent extends BaseFragment {
     }
 
     private boolean isEditable() {
-        int status = App.checkStatus("ice");
-        return !(status == 2 || status == 3 || status == 1);
+        return App.isEditable(1);
     }
 
     @OnClick({R.id.btn_contact_add, R.id.btn_contact_add2})
@@ -381,6 +382,7 @@ public class EmeContactFragmfent extends BaseFragment {
     public void onSuccess(String response, String extras) {
         super.onSuccess(response, extras);
         ToastUtils.showShort(R.string.upload_succeed);
+        App.putStatus(ConstantUtils.ALLSTATUS_ICE, 1, getString(R.string.info_doing));
         //next step
         if (getActivity() instanceof InfoSupplementaryActivity) {
             InfoSupplementaryActivity supplementaryActivity = (InfoSupplementaryActivity) getActivity();

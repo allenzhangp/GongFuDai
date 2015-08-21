@@ -12,7 +12,7 @@ public class ConstantUtils {
 
     //net
     public static final int CUSTOM_TIMEOUT_MS = 120000;
-    public static final int CUSTOM_MAX_RETRIES = 0;
+    public static final int CUSTOM_MAX_RETRIES = 2;
 
     //Preference
     public static final String KEY_GUIDE_ACTIVITY = "guide_activity";
@@ -39,16 +39,11 @@ public class ConstantUtils {
     public static final String KEY_10010_NUMBER = "10010";
     public static final String KEY_189_NUMBER = "189";
 
-    public static final String WEBSITE_QQ = "qq.com";
-    public static final String WEBSITE_126 = "126.com";
-    public static final String WEBSITE_163 = "163.com";
-    public static final String WEBSITE_TAOBAO = "alipay.com";
-    public static final String WEBSITE_JINGDONG = "";
-    public static final String WEBSITE_10086_ZJ = "zj.10086.cn";
-    public static final String WEBSITE_10086_GD = "gd.10086.cn";
-    public static final String WEBSITE_189_ZJ = "zj.189.cn";
-    public static final String WEBSITE_189_GD = "gd.189.cn";
-    public static final String WEBSITE_10010_ZJ = "zj.10086.cn";
-    public static final String WEBSITE_10010_GD = "gd.10086.cn";
+    public static final String ALLSTATUS_IDCARD = "idcard";
+    public static final String ALLSTATUS_OPERATOR = "operator";
+    public static final String ALLSTATUS_ECOMMERCE = "ecommerce";
+    public static final String ALLSTATUS_EMAIL = "email";
+    public static final String ALLSTATUS_ICE = "ice";
+    public static final String ALLSTATUS_CONTACTS = "contacts";
 
 }

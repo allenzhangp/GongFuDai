@@ -55,9 +55,14 @@ public class OperatorValidFragmfent extends BaseFragment {
     public void onClickOperator(View v) {
         if (!getConfigSuccess && urlDatas != null)
             return;
-        JSONObject operatorJSON = App.allstatusMap.get("operator");
-        if (operatorJSON != null && (operatorJSON.optInt("status") == 1 || operatorJSON.optInt("status") == 2 || operatorJSON.optInt("status") == 3))
+        int status = App.checkStatus(ConstantUtils.ALLSTATUS_OPERATOR);
+        if (status == 1) {
+            ToastUtils.showShort(R.string.info_doing_somting);
             return;
+        }
+        if (!App.isEditable(3))
+            return;
+
         modelFather = null;
         if (v.getId() == R.id.ibtn_lt) {
             modelFather = urlDatas.get(ConstantUtils.KEY_10010);
@@ -104,7 +109,7 @@ public class OperatorValidFragmfent extends BaseFragment {
 
 
     private boolean isSubmitEnable() {
-        return isLTValid && isYDValid && isDXValid;
+        return isLTValid || isYDValid || isDXValid;
     }
 
     @Override
@@ -144,6 +149,7 @@ public class OperatorValidFragmfent extends BaseFragment {
                     isDXValid = true;
 
                 ToastUtils.showShort(R.string.upload_succeed);
+                App.putStatus(ConstantUtils.ALLSTATUS_OPERATOR, 1, getString(R.string.info_doing));
                 btn_submit.setEnabled(isSubmitEnable());
             }
         };

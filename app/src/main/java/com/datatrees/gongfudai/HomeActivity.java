@@ -24,6 +24,7 @@ import com.datatrees.gongfudai.utils.BK;
 import com.datatrees.gongfudai.utils.ConstantUtils;
 import com.datatrees.gongfudai.utils.DialogHelper;
 import com.datatrees.gongfudai.utils.DsApi;
+import com.datatrees.gongfudai.utils.PreferenceUtils;
 import com.datatrees.gongfudai.utils.ToastUtils;
 import com.datatrees.gongfudai.utils.ViewUtils;
 import com.datatrees.gongfudai.volley.Request;
@@ -125,6 +126,51 @@ public class HomeActivity extends BaseFragmentActivity implements CordovaInterfa
             }
         });
 
+        request();
+    }
+
+    boolean isAllow = false;
+
+    private void request() {
+        String latitude = PreferenceUtils.getPrefString(this, "latitude", "");
+        String longitude = PreferenceUtils.getPrefString(this, "longitude", "");
+        String province = PreferenceUtils.getPrefString(this, "province", "");
+
+        HashMap<String, String> params = new HashMap<>();
+        params.put("lng", longitude);
+        params.put("lat", latitude);
+        params.put("province", province);
+        params.put("userId", App.loginUserInfo.getUserId() + "");
+
+        RespListener respListener = new RespListener();
+        respListener.onRespError = this;
+        respListener.onRespSuccess = new RespListener.OnRespSuccess() {
+            @Override
+            public void onSuccess(String response, String extras) {
+                dismiss();
+                JSONObject jsonResp;
+                try {
+                    jsonResp = new JSONObject(response);
+                    int allow = jsonResp.optInt("allow");
+                    int certify = jsonResp.optInt("certify");
+                    if (allow == 0) {
+                        ToastUtils.showShort(R.string.info_not_allow);
+                    } else {
+                        isAllow = true;
+                        if (certify == 0) {
+                            startActivity(new Intent(HomeActivity.this, InfoSupplementaryActivity.class));
+                            ToastUtils.showShort(R.string.info_verify);
+                        }
+                    }
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        };
+
+        CustomStringRequest request = new CustomStringRequest(Request.Method.POST, String.format(DsApi.LIST, DsApi.PRECHECK), respListener, params);
+        executeRequest(request);
     }
 
 
@@ -153,7 +199,10 @@ public class HomeActivity extends BaseFragmentActivity implements CordovaInterfa
 
     @OnClick(R.id.ibtn_operation)
     public void toOperation() {
-        startActivity(new Intent(this, InfoSupplementaryActivity.class));
+        if (isAllow)
+            startActivity(new Intent(this, InfoSupplementaryActivity.class));
+        else
+            ToastUtils.showShort(R.string.info_not_allow);
     }
 
 

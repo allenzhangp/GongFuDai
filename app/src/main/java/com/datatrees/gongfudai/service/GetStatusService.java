@@ -8,6 +8,7 @@ import com.datatrees.gongfudai.App;
 import com.datatrees.gongfudai.net.CustomStringRequest;
 import com.datatrees.gongfudai.net.RespListener;
 import com.datatrees.gongfudai.net.VolleyUtil;
+import com.datatrees.gongfudai.utils.ConstantUtils;
 import com.datatrees.gongfudai.utils.DsApi;
 import com.datatrees.gongfudai.utils.LogUtil;
 import com.datatrees.gongfudai.utils.StringUtils;
@@ -59,12 +60,12 @@ public class GetStatusService extends Service implements RespListener.OnRespSucc
         try {
             JSONObject jsonResp = new JSONObject(response);
             JSONObject allstatusJSON = jsonResp.optJSONObject("allstatus");
-            App.allstatusMap.put("idcard", allstatusJSON.optJSONObject("idcard"));
-            App.allstatusMap.put("operator", allstatusJSON.optJSONObject("operator"));
-            App.allstatusMap.put("ecommerce", allstatusJSON.optJSONObject("ecommerce"));
-            App.allstatusMap.put("email", allstatusJSON.optJSONObject("email"));
-            App.allstatusMap.put("ice", allstatusJSON.optJSONObject("ice"));
-            App.allstatusMap.put("contacts", allstatusJSON.optJSONObject("contacts"));
+            App.allstatusMap.put(ConstantUtils.ALLSTATUS_IDCARD, allstatusJSON.optJSONObject(ConstantUtils.ALLSTATUS_IDCARD));
+            App.allstatusMap.put(ConstantUtils.ALLSTATUS_OPERATOR, allstatusJSON.optJSONObject(ConstantUtils.ALLSTATUS_OPERATOR));
+            App.allstatusMap.put(ConstantUtils.ALLSTATUS_ECOMMERCE, allstatusJSON.optJSONObject(ConstantUtils.ALLSTATUS_ECOMMERCE));
+            App.allstatusMap.put(ConstantUtils.ALLSTATUS_EMAIL, allstatusJSON.optJSONObject(ConstantUtils.ALLSTATUS_EMAIL));
+            App.allstatusMap.put(ConstantUtils.ALLSTATUS_ICE, allstatusJSON.optJSONObject(ConstantUtils.ALLSTATUS_ICE));
+            App.allstatusMap.put(ConstantUtils.ALLSTATUS_CONTACTS, allstatusJSON.optJSONObject(ConstantUtils.ALLSTATUS_CONTACTS));
             JSONArray verifyArray = jsonResp.optJSONArray("operate");
             for (int i = 0; i < verifyArray.length(); i++) {
                 JSONObject obj = verifyArray.optJSONObject(i);

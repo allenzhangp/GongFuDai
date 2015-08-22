@@ -11,6 +11,7 @@ import com.datatrees.gongfudai.R;
 import com.datatrees.gongfudai.widget.VerifyDialog;
 
 /**
+ * DialogHelper
  * Created by zhangping on 15/8/12.
  */
 public class DialogHelper {
@@ -54,6 +55,8 @@ public class DialogHelper {
         b.setMessage(msg);
         b.setPositiveButton(buttonStr, listener);
         final AlertDialog d = b.create();
+        d.setCanceledOnTouchOutside(false);
+        d.setCancelable(false);
         return d;
     }
 

@@ -107,7 +107,7 @@ public class PhotoPreActivity extends Activity implements View.OnClickListener {
         }
         try {
             FileOutputStream out = new FileOutputStream(file);
-            if (bitmap.compress(Bitmap.CompressFormat.JPEG, 90, out)) {
+            if (bitmap.compress(Bitmap.CompressFormat.JPEG, 70, out)) {
                 out.flush();
                 out.close();
             }

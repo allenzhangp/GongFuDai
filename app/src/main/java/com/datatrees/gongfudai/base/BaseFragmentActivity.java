@@ -38,11 +38,11 @@ public class BaseFragmentActivity extends FragmentActivity implements RespListen
         }
     }
 
-    protected void showLoading() {
+    protected void showLoading(int msg) {
         try {
             if (loading == null) {
                 loading = ProgressDialog.show(this, null,
-                        getString(R.string.loading_dialog_message), false, true);
+                        getString(msg), false, true);
             } else {
                 if (!loading.isShowing())
                     loading.show();
@@ -50,6 +50,10 @@ public class BaseFragmentActivity extends FragmentActivity implements RespListen
         } catch (Exception e) {
         }
 
+    }
+
+    protected void showLoading() {
+        showLoading(R.string.loading_dialog_message);
     }
 
     protected void dismiss() {

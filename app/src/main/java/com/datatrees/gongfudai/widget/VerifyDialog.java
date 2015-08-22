@@ -11,6 +11,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 
+import com.datatrees.gongfudai.App;
 import com.datatrees.gongfudai.R;
 import com.datatrees.gongfudai.utils.BK;
 import com.datatrees.gongfudai.utils.StringUtils;
@@ -79,6 +80,7 @@ public class VerifyDialog extends Dialog {
             @Override
             public void onClick(View v) {
                 VerifyDialog.this.dismiss();
+                App.isInHand = false;
             }
         });
     }

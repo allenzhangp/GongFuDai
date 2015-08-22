@@ -4,14 +4,14 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 
 import com.datatrees.gongfudai.App;
 import com.datatrees.gongfudai.R;
 import com.datatrees.gongfudai.base.BaseFragment;
+import com.datatrees.gongfudai.utils.BK;
 import com.datatrees.gongfudai.utils.ConstantUtils;
+import com.datatrees.gongfudai.utils.ToastUtils;
 
-import butterknife.Bind;
 import butterknife.OnClick;
 
 /**
@@ -19,12 +19,6 @@ import butterknife.OnClick;
  * Created by zhangping on 15/8/11.
  */
 public class InfoSecurityFragmfent extends BaseFragment {
-
-    @Bind(R.id.btn_jxbc)
-    Button btn_jxbc;
-
-    @Bind(R.id.btn_qrsq)
-    Button btn_qrsq;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -34,58 +28,37 @@ public class InfoSecurityFragmfent extends BaseFragment {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-    }
-
-    @OnClick(R.id.btn_jxbc)
-    private void btnJxbc() {
-        int statusID = App.checkStatus(ConstantUtils.ALLSTATUS_IDCARD);
-        int statusICE = App.checkStatus(ConstantUtils.ALLSTATUS_ICE);
-        int statusEmail = App.checkStatus(ConstantUtils.ALLSTATUS_EMAIL);
-        int statusOper = App.checkStatus(ConstantUtils.ALLSTATUS_OPERATOR);
-        int statusEco = App.checkStatus(ConstantUtils.ALLSTATUS_ECOMMERCE);
-
-        InfoSupplementaryActivity supplementaryActivity = null;
-        //next step
-        if (getActivity() instanceof InfoSupplementaryActivity) {
-            supplementaryActivity = (InfoSupplementaryActivity) getActivity();
-        }
-
-        if (statusID != 0) {
-            if (supplementaryActivity != null) supplementaryActivity.rlytIdcard.performClick();
-        } else if (statusICE != 0) {
-            if (supplementaryActivity != null) supplementaryActivity.rlytLxr.performClick();
-        } else if (statusEmail != 0) {
-            if (supplementaryActivity != null) supplementaryActivity.rlytYj.performClick();
-        } else if (statusOper != 0) {
-            if (supplementaryActivity != null) supplementaryActivity.rlytYys.performClick();
-        } else if (statusEco != 0) {
-            if (supplementaryActivity != null) supplementaryActivity.rlytDs.performClick();
-        }
+        BK.bind(this, view);
     }
 
     @OnClick(R.id.btn_qrsq)
-    private void btnQrsq() {
+    public void btnQrsq() {
         int statusID = App.checkStatus(ConstantUtils.ALLSTATUS_IDCARD);
         int statusICE = App.checkStatus(ConstantUtils.ALLSTATUS_ICE);
         int statusEmail = App.checkStatus(ConstantUtils.ALLSTATUS_EMAIL);
         int statusOper = App.checkStatus(ConstantUtils.ALLSTATUS_OPERATOR);
         int statusEco = App.checkStatus(ConstantUtils.ALLSTATUS_ECOMMERCE);
+
         InfoSupplementaryActivity supplementaryActivity = null;
-        //next step
         if (getActivity() instanceof InfoSupplementaryActivity) {
             supplementaryActivity = (InfoSupplementaryActivity) getActivity();
         }
 
-        if (statusID != 0) {
-            if (supplementaryActivity != null) supplementaryActivity.rlytIdcard.performClick();
-        } else if (statusICE != 0) {
-            if (supplementaryActivity != null) supplementaryActivity.rlytLxr.performClick();
-        } else if (statusEmail != 0) {
-            if (supplementaryActivity != null) supplementaryActivity.rlytYj.performClick();
-        } else if (statusOper != 0) {
-            if (supplementaryActivity != null) supplementaryActivity.rlytYys.performClick();
-        } else if (statusEco != 0) {
-            if (supplementaryActivity != null) supplementaryActivity.rlytDs.performClick();
+        if (statusID != 2) {
+            ToastUtils.showShort(R.string.info_idcard_not_scc);
+//            if (supplementaryActivity != null) supplementaryActivity.rlytIdcard.performClick();
+        } else if (statusICE != 2) {
+            ToastUtils.showShort(R.string.info_ice_not_scc);
+//            if (supplementaryActivity != null) supplementaryActivity.rlytLxr.performClick();
+        } else if (statusEmail != 2) {
+            ToastUtils.showShort(R.string.info_email_not_scc);
+//            if (supplementaryActivity != null) supplementaryActivity.rlytYj.performClick();
+        } else if (statusOper != 2) {
+            ToastUtils.showShort(R.string.info_opr_not_scc);
+//            if (supplementaryActivity != null) supplementaryActivity.rlytYys.performClick();
+        } else if (statusEco != 2) {
+            ToastUtils.showShort(R.string.info_ele_not_scc);
+//            if (supplementaryActivity != null) supplementaryActivity.rlytDs.performClick();
         }
     }
 

@@ -80,9 +80,7 @@
 
         <activity
             android:name=".information.InfoSupplementaryActivity"
-            android:configChanges="keyboardHidden|screenLayout"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustResize|stateAlwaysHidden" />
+            android:screenOrientation="portrait" />
 
         <activity android:name=".MainActivity">
 
@@ -94,10 +92,6 @@
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan|stateAlwaysHidden">
 
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN"></action>
-                <category android:name="android.intent.category.LAUNCHER"></category>
-            </intent-filter>
 
         </activity>
 
@@ -111,8 +105,12 @@
             android:name=".cordova.CordovaActivity"
             android:configChanges="keyboardHidden|screenLayout"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustPan|stateAlwaysHidden" />
-
+            android:windowSoftInputMode="adjustPan|stateAlwaysHidden">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"></action>
+                <category android:name="android.intent.category.LAUNCHER"></category>
+            </intent-filter>
+        </activity>
         <activity
             android:name=".login.LoginActivity"
             android:configChanges="keyboardHidden|screenLayout"

@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!--
+<?xml version="1.0" encoding="UTF-8"?><!--
  Licensed to the Apache Software Foundation (ASF) under one
  or more contributor license agreements.  See the NOTICE file
  distributed with this work for additional information
@@ -19,13 +18,13 @@
 -->
 <widget
     id="io.cordova.helloCordova"
-    version="2.0.0">
+    version="3.7.0">
     <name>Hello Cordova</name>
 
+    <name>Hello Cordova</name>
     <description>
         A sample Apache Cordova application that responds to the deviceready event.
     </description>
-
     <author
         email="dev@cordova.apache.org"
         href="http://cordova.io">
@@ -34,27 +33,19 @@
 
     <access origin="*" />
 
-    <!-- <content src="http://mysite.com/myapp.html" /> for external pages -->
-    <content src="index.html" />
 
     <preference
         name="loglevel"
         value="DEBUG" />
-    <!--
-      <preference name="splashscreen" value="resourceName" />
-      <preference name="backgroundColor" value="0xFFF" />
-      <preference name="loadUrlTimeoutValue" value="20000" />
-      <preference name="InAppBrowserStorageEnabled" value="true" />
-      <preference name="disallowOverscroll" value="true" />
-    -->
-    <!-- This is required for native Android hooks -->
-    <feature name="App">
+
+    <feature name="BridgePlugin">
         <param
             name="android-package"
-            value="org.apache.cordova.App" />
+            value="com.datatrees.gongfudai.cordova.plugin.Echo" />
+        <param
+            name="onload"
+            value="true" />
     </feature>
 
-
-    <plugin name="plugintest" value="com.datatrees.gongfudai.cordova.plugin.Echo"/>
 
 </widget>

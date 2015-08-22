@@ -26,31 +26,14 @@
         android:textColor="@color/hint"
         android:textSize="@dimen/size_normal" />
 
-    <LinearLayout
+
+    <Button
+        android:id="@+id/btn_qrsq"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/padding_double"
-        android:orientation="horizontal"
-        android:padding="@dimen/padding_double">
+        android:layout_margin="@dimen/padding_double"
+        android:background="@drawable/btn_submit_selector"
+        android:text="@string/info_btn_qrsq"
+        android:textColor="@color/btn_submit_txt_selector" />
 
-        <Button
-            android:id="@+id/btn_jxbc"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:background="@drawable/btn_submit_selector"
-            android:text="@string/info_btn_jxsq"
-            android:textColor="@color/btn_submit_txt_selector" />
-
-        <Button
-            android:id="@+id/btn_qrsq"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/padding_double"
-            android:layout_weight="1"
-            android:background="@drawable/btn_submit_selector"
-            android:text="@string/info_btn_qrsq"
-            android:textColor="@color/btn_submit_txt_selector" />
-
-    </LinearLayout>
 </LinearLayout>

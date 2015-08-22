@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
 import android.view.KeyEvent;
+import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.RadioGroup;
@@ -28,6 +29,7 @@ import com.datatrees.gongfudai.utils.PreferenceUtils;
 import com.datatrees.gongfudai.utils.ToastUtils;
 import com.datatrees.gongfudai.utils.ViewUtils;
 import com.datatrees.gongfudai.volley.Request;
+import com.datatrees.gongfudai.widget.MorePopWindow;
 import com.datatrees.gongfudai.widget.VerifyDialog;
 
 import org.apache.cordova.Config;
@@ -48,7 +50,7 @@ import butterknife.OnClick;
  * 主页面
  * Created by zhangping on 15/8/10.
  */
-public class HomeActivity extends BaseFragmentActivity implements CordovaInterface {
+public class HomeActivity extends BaseFragmentActivity implements CordovaInterface, App.OnMLocation {
     @Bind(R.id.tv_title)
     TextView mTvTitle;
 
@@ -74,6 +76,8 @@ public class HomeActivity extends BaseFragmentActivity implements CordovaInterfa
     @Bind(R.id.fragment_container)
     FrameLayout fragment_container;
 
+    MorePopWindow morePopWindow;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -81,10 +85,6 @@ public class HomeActivity extends BaseFragmentActivity implements CordovaInterfa
         BK.bind(this);
 
         this.startService(new Intent(this, GetStatusService.class));
-
-        verifyReciver = new VerifyReciver();
-        IntentFilter intentFilter = new IntentFilter(VerifyReciver.VERFY_RECEIVED);
-        registerReceiver(verifyReciver, intentFilter);
 
         App.mLocationClient.start();
 
@@ -101,7 +101,7 @@ public class HomeActivity extends BaseFragmentActivity implements CordovaInterfa
                         ViewUtils.setGone(fragment_container, true);
                         ViewUtils.setGone(cordovaWebViewv, false);
                         ViewUtils.setInvisible(ibtn_news, false);
-                        ViewUtils.setInvisible(ibtn_operation, false);
+                        ViewUtils.setInvisible(ibtn_operation, true);
                         ViewUtils.setInvisible(ibtn_setting, true);
                         break;
                     case R.id.rbtn_qz:
@@ -126,7 +126,18 @@ public class HomeActivity extends BaseFragmentActivity implements CordovaInterfa
             }
         });
 
-        request();
+        App.onMLocation = this;
+        if (App.mLocationScu) {
+            request();
+        } else {
+            startLocation();
+        }
+
+    }
+
+    private void startLocation() {
+        showLoading(R.string.loacatioin_dialog_message);
+        App.mLocationClient.requestLocation();
     }
 
     boolean isAllow = false;
@@ -184,7 +195,8 @@ public class HomeActivity extends BaseFragmentActivity implements CordovaInterfa
     public void onDestroy() {
         super.onDestroy();
         App.mLocationClient.stop();
-        unregisterReceiver(verifyReciver);
+        App.onMLocation = null;
+
     }
 
     @OnClick(R.id.ibtn_news)
@@ -198,24 +210,49 @@ public class HomeActivity extends BaseFragmentActivity implements CordovaInterfa
     }
 
     @OnClick(R.id.ibtn_operation)
-    public void toOperation() {
-        if (isAllow)
-            startActivity(new Intent(this, InfoSupplementaryActivity.class));
-        else
-            ToastUtils.showShort(R.string.info_not_allow);
-    }
+    public void toOperation(View v) {
+        morePopWindow = new MorePopWindow(this);
+        morePopWindow.showPopupWindow(v);
 
+//        if (!App.mLocationScu) {
+//            startLocation();
+//            return;
+//        }
+//        if (isAllow)
+//            startActivity(new Intent(this, InfoSupplementaryActivity.class));
+//        else
+//            request();
+
+    }
 
     String key;
 
     public void confirm(String msg, String key) {
         this.key = key;
+        App.isInHand = true;
         DialogHelper.alert(this, msg, getString(R.string.dialog_konw), listener).show();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (verifyReciver != null)
+            verifyReciver = new VerifyReciver();
+        IntentFilter intentFilter = new IntentFilter(VerifyReciver.VERFY_RECEIVED);
+        registerReceiver(verifyReciver, intentFilter);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        if (verifyReciver != null)
+            unregisterReceiver(verifyReciver);
     }
 
     public void inputDialog(String message, String imageBase64, String key) {
         this.key = key;
-        DialogHelper.verifyDialog(this, message, imageBase64, onVerifyOkClick);
+        App.isInHand = true;
+        DialogHelper.verifyDialog(this, message, imageBase64, onVerifyOkClick).show();
     }
 
     VerifyDialog.OnVerifyOkClick onVerifyOkClick = new VerifyDialog.OnVerifyOkClick() {
@@ -228,10 +265,17 @@ public class HomeActivity extends BaseFragmentActivity implements CordovaInterfa
             params.put("key", key);
             params.put("code", editString);
             RespListener respListener = new RespListener(key);
-            respListener.onRespError = HomeActivity.this;
+            respListener.onRespError = new RespListener.OnRespError() {
+                @Override
+                public void onError(String errorResp, String extras) {
+                    dismiss();
+                    App.isInHand = false;
+                }
+            };
             respListener.onRespSuccess = new RespListener.OnRespSuccess() {
                 @Override
                 public void onSuccess(String response, String extras) {
+                    dismiss();
                     App.isInHand = false;
                     App.verifyMap.remove(extras);
                 }
@@ -250,10 +294,17 @@ public class HomeActivity extends BaseFragmentActivity implements CordovaInterfa
             params.put("userId", App.loginUserInfo.getUserId() + "");
             params.put("key", key);
             RespListener respListener = new RespListener(key);
-            respListener.onRespError = HomeActivity.this;
+            respListener.onRespError = new RespListener.OnRespError() {
+                @Override
+                public void onError(String errorResp, String extras) {
+                    dismiss();
+                    App.isInHand = false;
+                }
+            };
             respListener.onRespSuccess = new RespListener.OnRespSuccess() {
                 @Override
                 public void onSuccess(String response, String extras) {
+                    dismiss();
                     App.isInHand = false;
                     JSONObject json = App.allstatusMap.get(extras);
                     if (json != null)
@@ -356,4 +407,10 @@ public class HomeActivity extends BaseFragmentActivity implements CordovaInterfa
 
     private final ExecutorService threadPool = Executors.newCachedThreadPool();
 
+    @Override
+    public void onMLocation(boolean isSucc, String province) {
+        dismiss();
+        if (!isSucc)
+            ToastUtils.showShort(R.string.location_failed);
+    }
 }

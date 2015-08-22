@@ -71,6 +71,8 @@ public class GetStatusService extends Service implements RespListener.OnRespSucc
                 JSONObject obj = verifyArray.optJSONObject(i);
                 App.verifyMap.put(obj.optString("key"), obj);
             }
+
+//            App.putStatus(ConstantUtils.ALLSTATUS_IDCARD, 3, "失败！");
             Intent intent = new Intent();
             intent.setAction(VerifyReciver.VERFY_RECEIVED);
             sendBroadcast(intent);

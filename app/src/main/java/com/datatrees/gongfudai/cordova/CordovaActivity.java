@@ -5,6 +5,7 @@ import android.view.View;
 import android.widget.ImageButton;
 
 import com.datatrees.gongfudai.R;
+import com.datatrees.gongfudai.utils.DsApi;
 
 import org.apache.cordova.CordovaWebView;
 
@@ -24,8 +25,10 @@ public class CordovaActivity extends org.apache.cordova.CordovaActivity implemen
         url = getIntent().getStringExtra("load_url");
         ibtn_back = (ImageButton) findViewById(R.id.ibtn_back);
         ibtn_back.setOnClickListener(this);
+
         appView = (CordovaWebView) findViewById(R.id.tutorialView);
-        appView.loadUrl(url);
+        appView.loadUrlIntoView(DsApi.HOME_RUL);
+
     }
 
     @Override

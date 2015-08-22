@@ -29,7 +29,7 @@ public class VerifyReciver extends BroadcastReceiver {
                     if (valueObj != null) {
                         int status = valueObj.optInt("status");
                         if (status == 3 || status == 4) {
-                            App.isInHand = true;
+
                             statusOk = false;
                             homeActivity.confirm(valueObj.optString("msg"), keyStr);
                             break;
@@ -40,7 +40,7 @@ public class VerifyReciver extends BroadcastReceiver {
                     for (String keyStr : App.verifyMap.keySet()) {
                         JSONObject valueObj = App.verifyMap.get(keyStr);
                         if (valueObj != null) {
-                            App.isInHand = true;
+
                             if (valueObj.optString("codeType").equals("image"))
                                 homeActivity.inputDialog(valueObj.optString("tip"), valueObj.optString("codeContent"), valueObj.optString("key"));
                             else
@@ -58,7 +58,6 @@ public class VerifyReciver extends BroadcastReceiver {
                     if (valueObj != null) {
                         int status = valueObj.optInt("status");
                         if (status == 3 || status == 4) {
-                            App.isInHand = true;
                             statusOk = false;
                             infoSupplementaryActivity.confirm(valueObj.optString("msg"), keyStr);
                             break;
@@ -69,7 +68,6 @@ public class VerifyReciver extends BroadcastReceiver {
                     for (String keyStr : App.verifyMap.keySet()) {
                         JSONObject valueObj = App.verifyMap.get(keyStr);
                         if (valueObj != null) {
-                            App.isInHand = true;
                             if (valueObj.optString("codeType").equals("image"))
                                 infoSupplementaryActivity.inputDialog(valueObj.optString("tip"), valueObj.optString("codeContent"), valueObj.optString("key"));
                             else {

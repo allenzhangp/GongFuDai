@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">功夫贷</string>
     <string name="loading_dialog_message">加载中&#8230;</string>
+    <string name="loacatioin_dialog_message">定位中&#8230;</string>
 
     <string name="pick_photo">选择图片</string>
     <string name="pick_no_sdcard">没有sd卡</string>
@@ -13,6 +14,7 @@
     <string name="upload_succeed">上传成功!</string>
     <string name="uploading">上传中&#8230;</string>
     <string name="get_token_failed">获取FederationToken失败!</string>
+    <string name="location_failed">定位失败</string>
 
     <!--net error-->
     <string name="server_case_error">系统忙,请稍后重试.</string>
@@ -87,6 +89,11 @@
     <string name="info_ele_tip2">请输入您本人常用的电商网站账户，以便提升声誉。</string>
     <string name="info_btn_jxsq">继续补充</string>
     <string name="info_btn_qrsq">确认申请</string>
+    <string name="info_idcard_not_scc">身份验证未补全</string>
+    <string name="info_ice_not_scc">紧急联系人未补全</string>
+    <string name="info_email_not_scc">邮箱验证未补全</string>
+    <string name="info_opr_not_scc">运营商验证未补全</string>
+    <string name="info_ele_not_scc">电商验证未补全</string>
 
     <!-- cheats-->
     <string name="cheats_yhk">银行卡</string>
@@ -113,5 +120,9 @@
     <string name="user_setting_feedback">问题反馈</string>
     <string name="user_setting_ysaq">隐私安全</string>
     <string name="user_setting_lxwm">关于我们</string>
+
+    <!--more popup-->
+    <string name="more_popup_sqte">申请提额</string>
+    <string name="more_popup_bdyhk">绑定银行卡</string>
 
 </resources>

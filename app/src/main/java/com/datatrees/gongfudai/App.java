@@ -57,6 +57,10 @@ public class App extends Application {
 
     public static ArrayList<Activity> openActivityList;
 
+    public static boolean mLocationScu = false;
+
+    public static OnMLocation onMLocation;
+
     @Override
     public void onCreate() {
         super.onCreate();
@@ -139,7 +143,8 @@ public class App extends Application {
     }
 
     /**
-     *  int,0:初始;1:处理中;2:完成;3:失败;4:待补充
+     * int,0:初始;1:处理中;2:完成;3:失败;4:待补充
+     *
      * @param position
      * @return
      */
@@ -185,6 +190,8 @@ public class App extends Application {
             PreferenceUtils.setPrefString(App.getContext(), "longitude", location.getLongitude() + "");
             PreferenceUtils.setPrefString(App.getContext(), "province", location.getProvince());
 
+            String province = location.getProvince();
+
             //Receive Location
             StringBuffer sb = new StringBuffer(256);
             sb.append("time : ");
@@ -198,6 +205,7 @@ public class App extends Application {
             sb.append("\nradius : ");
             sb.append(location.getRadius());
             if (location.getLocType() == BDLocation.TypeGpsLocation) {// GPS定位结果
+                mLocationScu = true;
                 sb.append("\nspeed : ");
                 sb.append(location.getSpeed());// 单位：公里每小时
                 sb.append("\nsatellite : ");
@@ -212,6 +220,7 @@ public class App extends Application {
                 sb.append("gps定位成功");
 
             } else if (location.getLocType() == BDLocation.TypeNetWorkLocation) {// 网络定位结果
+                mLocationScu = true;
                 sb.append("\naddr : ");
                 sb.append(location.getAddrStr());
                 //运营商信息
@@ -223,19 +232,30 @@ public class App extends Application {
                 sb.append("\ndescribe : ");
                 sb.append("离线定位成功，离线定位结果也是有效的");
             } else if (location.getLocType() == BDLocation.TypeServerError) {
+                mLocationScu = false;
                 sb.append("\ndescribe : ");
                 sb.append("服务端网络定位失败，可以反馈IMEI号和大体定位时间到loc-bugs@baidu.com，会有人追查原因");
             } else if (location.getLocType() == BDLocation.TypeNetWorkException) {
+                mLocationScu = false;
                 sb.append("\ndescribe : ");
                 sb.append("网络不同导致定位失败，请检查网络是否通畅");
             } else if (location.getLocType() == BDLocation.TypeCriteriaException) {
+                mLocationScu = false;
                 sb.append("\ndescribe : ");
                 sb.append("无法获取有效定位依据导致定位失败，一般是由于手机的原因，处于飞行模式下一般会造成这种结果，可以试着重启手机");
+            } else {
+                mLocationScu = false;
             }
 
+            if (onMLocation != null)
+                onMLocation.onMLocation(mLocationScu, province);
             LogUtil.i("BaiduLocationApiDem", sb.toString());
         }
 
 
+    }
+
+    public interface OnMLocation {
+        public void onMLocation(boolean isSucc, String province);
     }
 }

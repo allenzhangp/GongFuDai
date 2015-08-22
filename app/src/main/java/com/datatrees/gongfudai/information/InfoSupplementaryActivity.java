@@ -19,8 +19,10 @@ import com.datatrees.gongfudai.net.CustomStringRequest;
 import com.datatrees.gongfudai.net.RespListener;
 import com.datatrees.gongfudai.service.VerifyReciver;
 import com.datatrees.gongfudai.utils.BK;
+import com.datatrees.gongfudai.utils.ConstantUtils;
 import com.datatrees.gongfudai.utils.DialogHelper;
 import com.datatrees.gongfudai.utils.DsApi;
+import com.datatrees.gongfudai.utils.ToastUtils;
 import com.datatrees.gongfudai.volley.Request;
 import com.datatrees.gongfudai.widget.VerifyDialog;
 
@@ -122,10 +124,21 @@ public class InfoSupplementaryActivity extends BaseFragmentActivity {
     }
 
     @Override
-    public void onDestroy() {
-        super.onDestroy();
-        unregisterReceiver(verifyReciver);
+    public void onResume() {
+        super.onResume();
+        if (verifyReciver == null)
+            verifyReciver = new VerifyReciver();
+        IntentFilter intentFilter = new IntentFilter(VerifyReciver.VERFY_RECEIVED);
+        registerReceiver(verifyReciver, intentFilter);
     }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        if (verifyReciver != null)
+            unregisterReceiver(verifyReciver);
+    }
+
 
     @OnClick({R.id.rlyt_ds, R.id.rlyt_yys, R.id.rlyt_yj, R.id.rlyt_xxyq, R.id.rlyt_lxr, R.id.rlyt_idcard})
     public void clickRlyt(View view) {
@@ -137,40 +150,50 @@ public class InfoSupplementaryActivity extends BaseFragmentActivity {
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, idCardFragment).commit();
                 break;
             case R.id.rlyt_lxr:
-                if (idCardFragment == null || !idCardFragment.isFinish)
+                if (idCardFragment == null || !idCardFragment.isFinish) {
+                    ToastUtils.showShort(R.string.info_idcard_not_scc);
                     return;
+                }
                 changeBgColor(1);
                 if (emeContactFragmfent == null)
                     emeContactFragmfent = new EmeContactFragmfent();
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, emeContactFragmfent).commit();
                 break;
             case R.id.rlyt_yj:
-                if (idCardFragment == null || !idCardFragment.isFinish)
+                if (idCardFragment == null || !idCardFragment.isFinish) {
+                    ToastUtils.showShort(R.string.info_idcard_not_scc);
                     return;
+                }
                 changeBgColor(2);
                 if (emailValidFragmfent == null)
                     emailValidFragmfent = new EmailValidFragmfent();
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, emailValidFragmfent).commit();
                 break;
             case R.id.rlyt_yys:
-                if (idCardFragment == null || !idCardFragment.isFinish)
+                if (idCardFragment == null || !idCardFragment.isFinish) {
+                    ToastUtils.showShort(R.string.info_idcard_not_scc);
                     return;
+                }
                 changeBgColor(3);
                 if (operatorValidFragmfent == null)
                     operatorValidFragmfent = new OperatorValidFragmfent();
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, operatorValidFragmfent).commit();
                 break;
             case R.id.rlyt_ds:
-                if (idCardFragment == null || !idCardFragment.isFinish)
+                if (idCardFragment == null || !idCardFragment.isFinish) {
+                    ToastUtils.showShort(R.string.info_idcard_not_scc);
                     return;
+                }
                 changeBgColor(4);
                 if (electricityValidFragmfent == null)
                     electricityValidFragmfent = new ElectricityValidFragmfent();
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, electricityValidFragmfent).commit();
                 break;
             case R.id.rlyt_xxyq:
-                if (idCardFragment == null || !idCardFragment.isFinish)
+                if (idCardFragment == null || !idCardFragment.isFinish) {
+                    ToastUtils.showShort(R.string.info_idcard_not_scc);
                     return;
+                }
                 changeBgColor(5);
                 if (infoSecurityFragmfent == null)
                     infoSecurityFragmfent = new InfoSecurityFragmfent();
@@ -286,16 +309,16 @@ public class InfoSupplementaryActivity extends BaseFragmentActivity {
 
     //当状态为通过或者成功之后背景动画变化
     private void checkstatus() {
-        int idCardlStatus = App.checkStatus("idcard");
-        int contactsStatus = App.checkStatus("ice");
-        int operatorStatus = App.checkStatus("operator");
-        int ecommerceStatus = App.checkStatus("ecommerce");
-        int emailStatus = App.checkStatus("email");
+        int idCardlStatus = App.checkStatus(ConstantUtils.ALLSTATUS_IDCARD);
+        int contactsStatus = App.checkStatus(ConstantUtils.ALLSTATUS_ICE);
+        int operatorStatus = App.checkStatus(ConstantUtils.ALLSTATUS_OPERATOR);
+        int ecommerceStatus = App.checkStatus(ConstantUtils.ALLSTATUS_ECOMMERCE);
+        int emailStatus = App.checkStatus(ConstantUtils.ALLSTATUS_EMAIL);
 
         if (idCardlStatus == 1) {
             startAnimation(0);
         } else if (idCardlStatus == 2) {
-            stopAnimation(0);
+            statusOk(0);
         } else if (idCardlStatus == 3) {
             statusFail(0);
         } else {
@@ -459,6 +482,7 @@ public class InfoSupplementaryActivity extends BaseFragmentActivity {
 
     public void confirm(String msg, String key) {
         this.key = key;
+        App.isInHand = true;
         DialogHelper.alert(this, msg, getString(R.string.dialog_konw), listener).show();
     }
 
@@ -471,10 +495,17 @@ public class InfoSupplementaryActivity extends BaseFragmentActivity {
             params.put("userId", App.loginUserInfo.getUserId() + "");
             params.put("key", key);
             RespListener respListener = new RespListener(key);
-            respListener.onRespError = InfoSupplementaryActivity.this;
+            respListener.onRespError = new RespListener.OnRespError() {
+                @Override
+                public void onError(String errorResp, String extras) {
+                    dismiss();
+                    App.isInHand = false;
+                }
+            };
             respListener.onRespSuccess = new RespListener.OnRespSuccess() {
                 @Override
                 public void onSuccess(String response, String extras) {
+                    dismiss();
                     App.isInHand = false;
                     JSONObject json = App.allstatusMap.get(extras);
                     if (json != null)
@@ -492,7 +523,8 @@ public class InfoSupplementaryActivity extends BaseFragmentActivity {
 
     public void inputDialog(String message, String imageBase64, String key) {
         this.key = key;
-        DialogHelper.verifyDialog(this, message, imageBase64, onVerifyOkClick);
+        App.isInHand = true;
+        DialogHelper.verifyDialog(this, message, imageBase64, onVerifyOkClick).show();
     }
 
     VerifyDialog.OnVerifyOkClick onVerifyOkClick = new VerifyDialog.OnVerifyOkClick() {
@@ -505,10 +537,17 @@ public class InfoSupplementaryActivity extends BaseFragmentActivity {
             params.put("key", key);
             params.put("code", editString);
             RespListener respListener = new RespListener(key);
-            respListener.onRespError = InfoSupplementaryActivity.this;
+            respListener.onRespError = new RespListener.OnRespError() {
+                @Override
+                public void onError(String errorResp, String extras) {
+                    dismiss();
+                    App.isInHand = false;
+                }
+            };
             respListener.onRespSuccess = new RespListener.OnRespSuccess() {
                 @Override
                 public void onSuccess(String response, String extras) {
+                    dismiss();
                     App.isInHand = false;
                     App.verifyMap.remove(extras);
                 }

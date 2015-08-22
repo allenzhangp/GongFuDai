@@ -41,7 +41,7 @@
     <feature name="BridgePlugin">
         <param
             name="android-package"
-            value="com.datatrees.gongfudai.cordova.plugin.Echo" />
+            value="com.datatrees.gongfudai.cordova.plugin.MCordovaPlugin" />
         <param
             name="onload"
             value="true" />

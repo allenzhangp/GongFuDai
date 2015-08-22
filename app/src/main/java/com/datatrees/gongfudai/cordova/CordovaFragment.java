@@ -10,7 +10,7 @@ import android.view.ViewGroup;
 
 import com.datatrees.gongfudai.R;
 import com.datatrees.gongfudai.base.BaseFragment;
-import com.datatrees.gongfudai.cordova.plugin.Echo;
+import com.datatrees.gongfudai.cordova.plugin.MCordovaPlugin;
 import com.datatrees.gongfudai.utils.BK;
 
 import org.apache.cordova.Config;
@@ -38,7 +38,7 @@ public class CordovaFragment extends BaseFragment implements CordovaInterface {
     CordovaWebView cwv;
 
     String loadUrl;
-    Echo activityResultCallback;
+    MCordovaPlugin activityResultCallback;
 
     public static CordovaFragment newInstance(String loadUrl) {
         Bundle args = new Bundle();

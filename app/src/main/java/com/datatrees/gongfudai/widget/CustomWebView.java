@@ -9,6 +9,7 @@ import android.webkit.CookieSyncManager;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
+import com.datatrees.gongfudai.utils.CookieFormat;
 import com.datatrees.gongfudai.utils.LogUtil;
 import com.datatrees.gongfudai.utils.StringUtils;
 
@@ -32,23 +33,18 @@ import org.apache.http.params.HttpProtocolParams;
 import org.apache.http.protocol.HTTP;
 import org.json.JSONObject;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.net.Socket;
 import java.net.SocketException;
 import java.net.URI;
 import java.net.URL;
-import java.net.URLEncoder;
 import java.net.UnknownHostException;
 import java.security.KeyManagementException;
 import java.security.KeyStore;
 import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
 import java.security.UnrecoverableKeyException;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
 
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.TrustManager;
@@ -61,10 +57,11 @@ import javax.net.ssl.X509TrustManager;
 public class CustomWebView extends WebView {
 
     private String[] endUrls;
-    private List<String> cookies;
+    private HashMap<String, String> cookies;
     private OnVisitEndUrl onVisitEndUrl;
     private String headerJSONObj;
     private StringBuilder jsCssStr;
+    private boolean usePCUA;
 
     public CustomWebView(Context context) {
         super(context);
@@ -89,7 +86,7 @@ public class CustomWebView extends WebView {
         if (cookies != null)
             cookies.clear();
         else
-            cookies = new ArrayList<>();
+            cookies = new HashMap<>();
         this.endUrls = endUrls;
 
         if (StringUtils.isNotTrimBlank(cssStr)) {
@@ -103,9 +100,9 @@ public class CustomWebView extends WebView {
             jsCssStr.append("))");
             jsCssStr.append("};");
         }
-
+        this.usePCUA = usePCUA;
         if (usePCUA) {
-            getSettings().setUserAgentString("Mozilla/5.0 (Macintosh; Intel Mac OS X 10.10; rv:40.0) Gecko/20100101 Firefox/40.0");
+            getSettings().setUserAgentString("Mozilla");
         }
 
         loadUrl(url);
@@ -127,12 +124,7 @@ public class CustomWebView extends WebView {
     Handler handler = new Handler() {
         public void handleMessage(Message msg) {
             String url = (String) msg.obj;
-            if (isEnd(url) && onVisitEndUrl != null) {
-                LogUtil.i("TAG", "end url-->" + url);
-                onVisitEndUrl.onVisitEndUrl(url, (String[]) cookies.toArray(new String[cookies.size()]), headerJSONObj);
-            } else {
-                loadUrl(url);
-            }
+            loadUrl(url);
         }
     };
 
@@ -140,16 +132,20 @@ public class CustomWebView extends WebView {
         CookieSyncManager.createInstance(getContext());
         CookieSyncManager.getInstance().startSync();
         CookieManager.getInstance().removeSessionCookie();
+        CookieManager.getInstance().removeAllCookie();
         clearCache(true);
         clearHistory();
 
-        cookies = new ArrayList<>();
+        cookies = new HashMap<>();
         getSettings().setJavaScriptEnabled(true);
         getSettings().setDefaultTextEncodingName("utf-8");
         setWebViewClient(new WebViewClient() {
 
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, final String url) {
+                if (usePCUA) {
+                    getSettings().setUserAgentString("Mozilla");
+                }
                 LogUtil.d("info", "===>>> shouldOverrideUrlLoading method is called!-->" + url);
                 Thread theard = new Thread(new Runnable() {
                     @Override
@@ -162,9 +158,9 @@ public class CustomWebView extends WebView {
                             // 参数
                             HttpParams httpParameters = new BasicHttpParams();
                             // 设置连接超时
-                            HttpConnectionParams.setConnectionTimeout(httpParameters, 3000);
+                            HttpConnectionParams.setConnectionTimeout(httpParameters, 120000);
                             // 设置socket超时
-                            HttpConnectionParams.setSoTimeout(httpParameters, 3000);
+                            HttpConnectionParams.setSoTimeout(httpParameters, 120000);
                             // 获取HttpClient对象 （认证）
                             HttpClient hc = initHttpClient(httpParameters);
                             HttpPost post = new HttpPost(uri);
@@ -216,49 +212,20 @@ public class CustomWebView extends WebView {
                 String cookieStr = cookieManager.getCookie(url);
                 LogUtil.e("TAG", "Cookies = " + cookieStr);
                 if (StringUtils.isNotTrimBlank(cookieStr)) {
-                    cookies.add(cookieStr);
+                    cookies.putAll(CookieFormat.parserCookieToMap(cookieStr));
                 }
                 if (jsCssStr != null && StringUtils.isNotTrimBlank(jsCssStr.toString()))
                     loadUrl("javascript:" + jsCssStr.toString());
                 if (isEnd(url) && onVisitEndUrl != null) {
                     LogUtil.i("TAG", "end url-->" + url);
-                    onVisitEndUrl.onVisitEndUrl(url, (String[]) cookies.toArray(new String[cookies.size()]), headerJSONObj);
+                    onVisitEndUrl.onVisitEndUrl(url, CookieFormat.listToString(cookies), headerJSONObj);
                 }
-
                 super.onPageFinished(view, url);
             }
 
         });
     }
 
-    public String convertToString(InputStream inputStream) {
-        StringBuffer string = new StringBuffer();
-        BufferedReader reader = new BufferedReader(new InputStreamReader(
-                inputStream));
-        String line;
-        try {
-            while ((line = reader.readLine()) != null) {
-                string.append(line + "\n");
-            }
-        } catch (IOException e) {
-        }
-        return string.toString();
-    }
-
-    private String toURLEncoded(String paramString) {
-        if (paramString == null || paramString.equals("")) {
-            return "";
-        }
-
-        try {
-            String str = new String(paramString.getBytes(), "UTF-8");
-            str = URLEncoder.encode(str, "UTF-8");
-            return str;
-        } catch (Exception localException) {
-        }
-
-        return "";
-    }
 
     private static HttpClient client = null;
 
@@ -344,7 +311,7 @@ public class CustomWebView extends WebView {
     }
 
     public interface OnVisitEndUrl {
-        void onVisitEndUrl(String endUrl, String[] cookies, String headerStr);
+        void onVisitEndUrl(String endUrl, String cookies, String headerStr);
     }
 
 }

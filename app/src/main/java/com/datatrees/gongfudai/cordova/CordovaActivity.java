@@ -27,7 +27,7 @@ public class CordovaActivity extends org.apache.cordova.CordovaActivity implemen
         ibtn_back.setOnClickListener(this);
 
         appView = (CordovaWebView) findViewById(R.id.tutorialView);
-        appView.loadUrlIntoView(DsApi.HOME_RUL);
+        appView.loadUrl(DsApi.HOME_RUL);
 
     }
 

@@ -3,21 +3,26 @@ package com.datatrees.gongfudai.utils;
 import com.datatrees.gongfudai.App;
 
 /**
+ * DsApi
  * Created by zhangping on 15/8/11.
  */
 public class DsApi {
     //cordova
 //    public static final String HOME_RUL = "http://192.168.0.241:1818/home";
-    public static final String HOME_RUL = "http://192.168.0.105:8080/h5/home";
-//    public static final String HOME_RUL = "file:///android_asset/www/index.html";
-    public static final String TOS_RUL = "http://192.168.0.241:1818/tos";
+    public static final String HOME_RUL = "http://91gfd.com.cn/h5/home?platform=android";
+    public static final String QZ_RUL = "http://91gfd.com.cn/h5/application?platform=android";
+    //    public static final String HOME_RUL = "file:///android_asset/www/index.html";
+    public static final String TOS_RUL = "http://91gfd.com.cn/h5/tos?platform=android";
+    private static final String USERCENTERHOST = "http://91gfd.com.cn/usercenter/api";
+    //    private static final String USERCENTERHOST = " http://192.168.0.241:12172/usercenter/api";
+    private static final String HOST = "http://91gfd.com.cn/gongfudai";
+//    private static final String HOST = "http://192.168.0.242:8080/service";
+//    private static final String HOST = "http://192.168.3.110:14501";
 
 
     /**
      * 用户中心接口模块
      */
-//    private static final String USERCENTERHOST = "http://91gfd.com.cn/usercenter/api";
-    private static final String USERCENTERHOST = " http://192.168.0.241:12172/usercenter/api";
 
     public static final String LISTUSERCENTER = USERCENTERHOST + "%1$s";
 
@@ -31,11 +36,6 @@ public class DsApi {
 
     public static final String PWDRESET = "/customers/pwdreset";
 
-
-    //    private static final String HOST = "http://91gfd.com.cn/gongfudai";
-    private static final String HOST = "http://192.168.0.242:8080/service";
-
-//    private static final String HOST = "http://192.168.3.110:14501";
 
     /**
      * 登陆成功之后接口模块
@@ -68,6 +68,8 @@ public class DsApi {
     public static final String STATUSUPDATE = "/preconditions/postStatus";
 
     public static final String SUBMITVERFYCODE = "/preconditions/verifyCode";
+
+    public static final String CREDITAPPLY = "/loan/credit/apply";
 
 
     public static String getTokenUserId(String url) {

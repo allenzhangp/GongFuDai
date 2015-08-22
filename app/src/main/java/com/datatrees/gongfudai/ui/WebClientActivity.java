@@ -14,8 +14,6 @@ import com.datatrees.gongfudai.utils.LogUtil;
 import com.datatrees.gongfudai.utils.StringUtils;
 import com.datatrees.gongfudai.widget.CustomWebView;
 
-import java.util.Arrays;
-
 import butterknife.Bind;
 import butterknife.OnClick;
 
@@ -58,14 +56,14 @@ public class WebClientActivity extends BaseActivity implements CustomWebView.OnV
         CookieSyncManager.createInstance(this);
         CookieSyncManager.getInstance().startSync();
         CookieManager.getInstance().removeSessionCookie();
+        CookieManager.getInstance().removeAllCookie();
         mWebView.clearCache(true);
         mWebView.clearHistory();
     }
 
     @Override
-    public void onVisitEndUrl(String endUrl, String[] cookies, String headerStr) {
-        LogUtil.i("TAG", "end cookies size-->" + cookies.length);
-        LogUtil.i("TAG", "end cookies-->" + Arrays.toString(cookies));
+    public void onVisitEndUrl(String endUrl, String cookies, String headerStr) {
+        LogUtil.i("TAG", "end cookies-->" + cookies);
         LogUtil.i("TAG", "end url-->" + endUrl);
         LogUtil.i("TAG", "end header-->" + headerStr);
 
@@ -78,7 +76,6 @@ public class WebClientActivity extends BaseActivity implements CustomWebView.OnV
         setResult(RESULT_OK, data);
         this.finish();
     }
-
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {

@@ -116,24 +116,14 @@ public class OperatorValidFragmfent extends BaseFragment {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (resultCode != Activity.RESULT_OK)
             return;
-        String[] endCookies = data.getStringArrayExtra("end_cookies");
-        StringBuilder endCookiesBuilder = new StringBuilder();
-        boolean first = true;
-        for (String endCookie : endCookies) {
-            if (!first) {
-                endCookiesBuilder.append(";");
-            }
-            first = false;
-            endCookiesBuilder.append(endCookie);
-        }
-
+        String endCookies = data.getStringExtra("end_cookies");
         String end_url = data.getStringExtra("end_url");
         String end_header = data.getStringExtra("end_header");
         HashMap<String, String> params = new HashMap<>();
         params.put("userId", App.loginUserInfo.getUserId() + "");
         params.put("key", website);
         params.put("header", end_header);
-        params.put("cookie", endCookiesBuilder.toString());
+        params.put("cookie", endCookies);
         params.put("url", end_url);
         RespListener respListener = new RespListener(website);
         respListener.onRespError = this;

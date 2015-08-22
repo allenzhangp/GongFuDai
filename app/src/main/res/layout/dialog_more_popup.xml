@@ -1,18 +1,71 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:paddingRight="1dp"
+    android:paddingTop="17dp">
 
-    <TextView
-        android:id="@+id/tv_o"
-        android:layout_width="match_parent"
+    <LinearLayout
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/more_popup_sqte" />
+        android:layout_marginRight="@dimen/padding"
+        android:background="@drawable/bg_more_dropdown"
+        android:orientation="vertical"
+        android:padding="@dimen/padding">
 
-    <TextView
-        android:id="@+id/tv_o2"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/more_popup_bdyhk" />
+        <LinearLayout
+            android:id="@+id/llayt_sqte"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:padding="@dimen/padding">
+
+            <ImageView
+                android:layout_width="@dimen/padding_double"
+                android:layout_height="@dimen/padding_double"
+                android:src="@mipmap/ico_bdyhk_dropdown" />
+
+            <TextView
+                android:id="@+id/tv_sqed"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/padding"
+                android:text="@string/more_popup_sqte"
+                android:textColor="@color/white"
+                android:textSize="@dimen/size_normal" />
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:layout_marginBottom="@dimen/padding"
+            android:layout_marginTop="@dimen/padding"
+            android:background="#4b4e57" />
+
+        <LinearLayout
+            android:id="@+id/llayt_bdyhk"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:padding="@dimen/padding">
+
+            <ImageView
+                android:layout_width="@dimen/padding_double"
+                android:layout_height="@dimen/padding_double"
+                android:src="@mipmap/ico_yhk_dropdown" />
+
+            <TextView
+                android:id="@+id/tv_bdyhk"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/padding"
+                android:text="@string/more_popup_bdyhk"
+                android:textColor="@color/white"
+                android:textSize="@dimen/size_normal" />
+        </LinearLayout>
+
+    </LinearLayout>
 </LinearLayout>

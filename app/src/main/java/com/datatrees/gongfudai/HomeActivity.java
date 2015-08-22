@@ -8,6 +8,7 @@ import android.content.IntentFilter;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.RadioGroup;
@@ -90,6 +91,7 @@ public class HomeActivity extends BaseFragmentActivity implements CordovaInterfa
 
         Config.init(this);
         Config.addWhiteListEntry(DsApi.HOME_RUL, true);
+        Config.addWhiteListEntry(DsApi.QZ_RUL, true);
         cordovaWebViewv.loadUrl(DsApi.HOME_RUL);
 
         radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
@@ -103,6 +105,7 @@ public class HomeActivity extends BaseFragmentActivity implements CordovaInterfa
                         ViewUtils.setInvisible(ibtn_news, false);
                         ViewUtils.setInvisible(ibtn_operation, true);
                         ViewUtils.setInvisible(ibtn_setting, true);
+                        cordovaWebViewv.loadUrl(DsApi.HOME_RUL);
                         break;
                     case R.id.rbtn_qz:
                         mTvTitle.setText(R.string.home_qz);
@@ -111,6 +114,7 @@ public class HomeActivity extends BaseFragmentActivity implements CordovaInterfa
                         ViewUtils.setInvisible(ibtn_news, true);
                         ViewUtils.setInvisible(ibtn_operation, false);
                         ViewUtils.setInvisible(ibtn_setting, true);
+                        cordovaWebViewv.loadUrl(DsApi.QZ_RUL);
                         break;
                     case R.id.rbtn_mj:
                         mTvTitle.setText(R.string.home_mj);
@@ -211,18 +215,38 @@ public class HomeActivity extends BaseFragmentActivity implements CordovaInterfa
 
     @OnClick(R.id.ibtn_operation)
     public void toOperation(View v) {
-        morePopWindow = new MorePopWindow(this);
+        if (morePopWindow == null) {
+            morePopWindow = new MorePopWindow(this);
+        }
         morePopWindow.showPopupWindow(v);
+        morePopWindow.setBdyhkOnClickListener(bdyhkOnClickListener);
+        morePopWindow.setSqteOnClickListener(sqteOnClickListener);
+    }
 
-//        if (!App.mLocationScu) {
-//            startLocation();
-//            return;
-//        }
-//        if (isAllow)
-//            startActivity(new Intent(this, InfoSupplementaryActivity.class));
-//        else
-//            request();
+    OnClickListener bdyhkOnClickListener = new OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            morePopWindow.dismiss();
+        }
+    };
+    OnClickListener sqteOnClickListener = new OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            toInfoSupp();
+            morePopWindow.dismiss();
+        }
+    };
 
+
+    public void toInfoSupp() {
+        if (!App.mLocationScu) {
+            startLocation();
+            return;
+        }
+        if (isAllow)
+            startActivity(new Intent(this, InfoSupplementaryActivity.class));
+        else
+            request();
     }
 
     String key;
@@ -238,6 +262,7 @@ public class HomeActivity extends BaseFragmentActivity implements CordovaInterfa
         super.onResume();
         if (verifyReciver != null)
             verifyReciver = new VerifyReciver();
+        ((App) App.getContext()).setCurrentActivity(this);
         IntentFilter intentFilter = new IntentFilter(VerifyReciver.VERFY_RECEIVED);
         registerReceiver(verifyReciver, intentFilter);
     }
@@ -247,6 +272,7 @@ public class HomeActivity extends BaseFragmentActivity implements CordovaInterfa
         super.onPause();
         if (verifyReciver != null)
             unregisterReceiver(verifyReciver);
+        ((App) App.getContext()).setCurrentActivity(null);
     }
 
     public void inputDialog(String message, String imageBase64, String key) {

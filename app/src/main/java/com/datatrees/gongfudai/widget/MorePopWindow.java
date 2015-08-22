@@ -6,6 +6,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup.LayoutParams;
+import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 
 import com.datatrees.gongfudai.R;
@@ -17,16 +18,22 @@ import com.datatrees.gongfudai.R;
 public class MorePopWindow extends PopupWindow {
     private View conentView;
 
+
+    private LinearLayout llayt_bdyhk;
+    private LinearLayout llayt_sqte;
+
     public MorePopWindow(final Activity context) {
         LayoutInflater inflater = (LayoutInflater) context
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         conentView = inflater.inflate(R.layout.dialog_more_popup, null);
-        int h = context.getWindowManager().getDefaultDisplay().getHeight();
-        int w = context.getWindowManager().getDefaultDisplay().getWidth();
+        llayt_bdyhk = (LinearLayout) conentView.findViewById(R.id.llayt_bdyhk);
+        llayt_sqte = (LinearLayout) conentView.findViewById(R.id.llayt_sqte);
+
+//        int w = context.getWindowManager().getDefaultDisplay().getWidth();
         // 设置SelectPicPopupWindow的View
         this.setContentView(conentView);
         // 设置SelectPicPopupWindow弹出窗体的宽
-        this.setWidth(w / 2 + 50);
+        this.setWidth(LayoutParams.WRAP_CONTENT);
         // 设置SelectPicPopupWindow弹出窗体的高
         this.setHeight(LayoutParams.WRAP_CONTENT);
         // 设置SelectPicPopupWindow弹出窗体可点击
@@ -46,9 +53,18 @@ public class MorePopWindow extends PopupWindow {
 
     public void showPopupWindow(View parent) {
         if (!this.isShowing()) {
-            this.showAsDropDown(parent, parent.getLayoutParams().width / 2, 18);
+            this.showAsDropDown(parent);
         } else {
             this.dismiss();
         }
     }
+
+    public void setBdyhkOnClickListener(View.OnClickListener onClickListener) {
+        llayt_bdyhk.setOnClickListener(onClickListener);
+    }
+
+    public void setSqteOnClickListener(View.OnClickListener onClickListener) {
+        llayt_sqte.setOnClickListener(onClickListener);
+    }
+
 }

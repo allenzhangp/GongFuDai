@@ -11,7 +11,7 @@ public class ConstantUtils {
 
 
     //net
-    public static final int CUSTOM_TIMEOUT_MS = 120000;
+    public static final int CUSTOM_TIMEOUT_MS = 90000;
     public static final int CUSTOM_MAX_RETRIES = 0;
 
     //Preference

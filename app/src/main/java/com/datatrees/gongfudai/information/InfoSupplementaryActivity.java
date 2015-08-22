@@ -229,31 +229,31 @@ public class InfoSupplementaryActivity extends BaseFragmentActivity {
             ivDsBg.setVisibility(View.GONE);
             iv_ds.setEnabled(false);
         } else if (postion == 5) {
-            stopAnimation(0);
-            ivXxyqBg.setVisibility(View.GONE);
-            ivXxyqBg.setEnabled(false);
         }
     }
 
     private void statusOk(int postion) {
         if (postion == 0) {
             stopAnimation(0);
-            ivIDcardBg.setVisibility(View.VISIBLE);
+            ivIDcardBg.setVisibility(View.GONE);
+            iv_idcard.setEnabled(true);
         } else if (postion == 1) {
             stopAnimation(0);
-            ivLxrBg.setVisibility(View.VISIBLE);
+            ivLxrBg.setVisibility(View.GONE);
+            iv_lxr.setEnabled(true);
         } else if (postion == 2) {
             stopAnimation(0);
-            ivYjBg.setVisibility(View.VISIBLE);
+            ivYjBg.setVisibility(View.GONE);
+            iv_yj.setEnabled(true);
         } else if (postion == 3) {
             stopAnimation(0);
-            ivYysBg.setVisibility(View.VISIBLE);
+            ivYysBg.setVisibility(View.GONE);
+            iv_yys.setEnabled(true);
         } else if (postion == 4) {
             stopAnimation(0);
-            ivDsBg.setVisibility(View.VISIBLE);
+            ivDsBg.setVisibility(View.GONE);
+            iv_ds.setEnabled(true);
         } else if (postion == 5) {
-            stopAnimation(0);
-            ivXxyqBg.setVisibility(View.VISIBLE);
         }
     }
 

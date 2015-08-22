@@ -127,6 +127,12 @@ public class App extends Application {
 
     }
 
+    public Activity currentActivity;
+
+    public void setCurrentActivity(Activity activity) {
+        this.currentActivity = activity;
+    }
+
     public static Context getContext() {
         return mContext;
     }

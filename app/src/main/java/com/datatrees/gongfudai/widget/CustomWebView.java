@@ -102,7 +102,7 @@ public class CustomWebView extends WebView {
         }
         this.usePCUA = usePCUA;
         if (usePCUA) {
-            getSettings().setUserAgentString("Mozilla");
+            getSettings().setUserAgentString("Mozilla/5.0 (Macintosh; Intel Mac OS X 10.10; rv:40.0) Gecko/20100101 Firefox/40.0");
         }
 
         loadUrl(url);
@@ -144,7 +144,7 @@ public class CustomWebView extends WebView {
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, final String url) {
                 if (usePCUA) {
-                    getSettings().setUserAgentString("Mozilla");
+                    getSettings().setUserAgentString("Mozilla/5.0 (Macintosh; Intel Mac OS X 10.10; rv:40.0) Gecko/20100101 Firefox/40.0");
                 }
                 LogUtil.d("info", "===>>> shouldOverrideUrlLoading method is called!-->" + url);
                 Thread theard = new Thread(new Runnable() {

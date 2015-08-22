@@ -7,17 +7,32 @@ import com.datatrees.gongfudai.App;
  * Created by zhangping on 15/8/11.
  */
 public class DsApi {
-    //cordova
-//    public static final String HOME_RUL = "http://192.168.0.241:1818/home";
-    public static final String HOME_RUL = "http://91gfd.com.cn/h5/home?platform=android";
-    public static final String QZ_RUL = "http://91gfd.com.cn/h5/application?platform=android";
-    //    public static final String HOME_RUL = "file:///android_asset/www/index.html";
-    public static final String TOS_RUL = "http://91gfd.com.cn/h5/tos?platform=android";
+
+    /**
+     * h5页面
+     */
+    private static final String H5_HOST = "http://91gfd.com.cn/h5";
+//    private static final String H5_HOST = "http://192.168.0.241:1818";
+
+
+    /**
+     * 用户中心
+     */
     private static final String USERCENTERHOST = "http://91gfd.com.cn/usercenter/api";
-    //    private static final String USERCENTERHOST = " http://192.168.0.241:12172/usercenter/api";
+//    private static final String USERCENTERHOST = " http://192.168.0.241:12172/usercenter/api";
+
+    /**
+     * 信息补全
+     */
     private static final String HOST = "http://91gfd.com.cn/gongfudai";
 //    private static final String HOST = "http://192.168.0.242:8080/service";
 //    private static final String HOST = "http://192.168.3.110:14501";
+
+
+    //cordova
+    public static final String HOME_RUL = H5_HOST + "/home?platform=android";
+    public static final String QZ_RUL = H5_HOST + "/application?platform=android";
+    public static final String TOS_RUL = H5_HOST + "/tos?platform=android";
 
 
     /**

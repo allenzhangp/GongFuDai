@@ -44,26 +44,26 @@ public class InfoSecurityFragmfent extends BaseFragment {
         int statusOper = App.checkStatus(ConstantUtils.ALLSTATUS_OPERATOR);
         int statusEco = App.checkStatus(ConstantUtils.ALLSTATUS_ECOMMERCE);
 
-        InfoSupplementaryActivity supplementaryActivity = null;
-        if (getActivity() instanceof InfoSupplementaryActivity) {
-            supplementaryActivity = (InfoSupplementaryActivity) getActivity();
-        }
+//        InfoSupplementaryActivity supplementaryActivity = null;
+//        if (getActivity() instanceof InfoSupplementaryActivity) {
+//            supplementaryActivity = (InfoSupplementaryActivity) getActivity();
+//        }
 
         if (statusID != 2) {
             ToastUtils.showShort(R.string.info_idcard_not_scc);
-            if (supplementaryActivity != null) supplementaryActivity.rlytIdcard.performClick();
+            return;
         } else if (statusICE != 2) {
             ToastUtils.showShort(R.string.info_ice_not_scc);
-            if (supplementaryActivity != null) supplementaryActivity.rlytLxr.performClick();
+            return;
         } else if (statusEmail != 2) {
             ToastUtils.showShort(R.string.info_email_not_scc);
-            if (supplementaryActivity != null) supplementaryActivity.rlytYj.performClick();
+            return;
         } else if (statusOper != 2) {
             ToastUtils.showShort(R.string.info_opr_not_scc);
-            if (supplementaryActivity != null) supplementaryActivity.rlytYys.performClick();
+            return;
         } else if (statusEco != 2) {
             ToastUtils.showShort(R.string.info_ele_not_scc);
-            if (supplementaryActivity != null) supplementaryActivity.rlytDs.performClick();
+            return;
         }
 
         HashMap<String, String> params = new HashMap<>();

@@ -33,6 +33,8 @@ public class MCordovaPlugin extends CordovaPlugin {
         App app = (App) App.getContext();
         if (app.currentActivity != null && app.currentActivity instanceof HomeActivity) {
             if (param.equals(LOAN_VIEWNAME)) {
+                HomeActivity homeActivity = (HomeActivity) app.currentActivity;
+                homeActivity.toQzTab();
             } else if (param.equals(CREDIT_VIEWNAME)) {
                 HomeActivity homeActivity = (HomeActivity) app.currentActivity;
                 homeActivity.toInfoSupp();

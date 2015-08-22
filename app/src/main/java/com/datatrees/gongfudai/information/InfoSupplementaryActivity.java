@@ -308,7 +308,7 @@ public class InfoSupplementaryActivity extends BaseFragmentActivity {
 
 
     //当状态为通过或者成功之后背景动画变化
-    private void checkstatus() {
+    private void checkstatus(int currentPosition) {
         int idCardlStatus = App.checkStatus(ConstantUtils.ALLSTATUS_IDCARD);
         int contactsStatus = App.checkStatus(ConstantUtils.ALLSTATUS_ICE);
         int operatorStatus = App.checkStatus(ConstantUtils.ALLSTATUS_OPERATOR);
@@ -318,7 +318,7 @@ public class InfoSupplementaryActivity extends BaseFragmentActivity {
         if (idCardlStatus == 1) {
             startAnimation(0);
         } else if (idCardlStatus == 2) {
-            statusOk(0);
+            if (currentPosition != 0) statusOk(0);
         } else if (idCardlStatus == 3) {
             statusFail(0);
         } else {
@@ -328,7 +328,7 @@ public class InfoSupplementaryActivity extends BaseFragmentActivity {
         if (contactsStatus == 1) {
             startAnimation(1);
         } else if (contactsStatus == 2) {
-            statusOk(1);
+            if (currentPosition != 1) statusOk(1);
         } else if (contactsStatus == 3) {
             statusFail(1);
         } else {
@@ -338,7 +338,7 @@ public class InfoSupplementaryActivity extends BaseFragmentActivity {
         if (emailStatus == 1) {
             startAnimation(2);
         } else if (emailStatus == 2) {
-            statusOk(2);
+            if (currentPosition != 2) statusOk(2);
         } else if (emailStatus == 3) {
             statusFail(2);
         } else {
@@ -349,7 +349,7 @@ public class InfoSupplementaryActivity extends BaseFragmentActivity {
         if (operatorStatus == 1) {
             startAnimation(3);
         } else if (operatorStatus == 2) {
-            statusOk(3);
+            if (currentPosition != 3) statusOk(3);
         } else if (operatorStatus == 3) {
             statusFail(3);
         } else {
@@ -360,7 +360,7 @@ public class InfoSupplementaryActivity extends BaseFragmentActivity {
         if (ecommerceStatus == 1) {
             startAnimation(4);
         } else if (ecommerceStatus == 2) {
-            statusOk(4);
+            if (currentPosition != 4) statusOk(4);
         } else if (ecommerceStatus == 3) {
             statusFail(4);
         } else {
@@ -470,7 +470,7 @@ public class InfoSupplementaryActivity extends BaseFragmentActivity {
                 tvDs.setTextColor(getResources().getColor(R.color.info_text));
             }
         }
-        checkstatus();
+        checkstatus(position);
     }
 
     @OnClick(R.id.ibtn_back)

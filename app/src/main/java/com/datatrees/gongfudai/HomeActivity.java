@@ -26,6 +26,7 @@ import com.datatrees.gongfudai.utils.BK;
 import com.datatrees.gongfudai.utils.ConstantUtils;
 import com.datatrees.gongfudai.utils.DialogHelper;
 import com.datatrees.gongfudai.utils.DsApi;
+import com.datatrees.gongfudai.utils.LogUtil;
 import com.datatrees.gongfudai.utils.PreferenceUtils;
 import com.datatrees.gongfudai.utils.ToastUtils;
 import com.datatrees.gongfudai.utils.ViewUtils;
@@ -56,7 +57,7 @@ public class HomeActivity extends BaseFragmentActivity implements CordovaInterfa
     TextView mTvTitle;
 
     @Bind(R.id.rg_home)
-    RadioGroup radioGroup;
+    public RadioGroup radioGroup;
 
     @Bind(R.id.tutorialView)
     CordovaWebView cordovaWebViewv;
@@ -134,9 +135,19 @@ public class HomeActivity extends BaseFragmentActivity implements CordovaInterfa
         if (App.mLocationScu) {
             request();
         } else {
+            LogUtil.e("startLocation---------");
             startLocation();
         }
 
+    }
+
+    public void toQzTab() {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                radioGroup.check(R.id.rbtn_qz);
+            }
+        });
     }
 
     private void startLocation() {
@@ -240,6 +251,7 @@ public class HomeActivity extends BaseFragmentActivity implements CordovaInterfa
 
     public void toInfoSupp() {
         if (!App.mLocationScu) {
+            LogUtil.e("startLocation---------3455");
             startLocation();
             return;
         }
